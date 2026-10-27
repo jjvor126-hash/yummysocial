@@ -1,8 +1,16 @@
 import { useNavigate } from 'react-router-dom'
 import { Icon } from '../components/Icon'
+import { useAppStore } from '../store/useAppStore'
 
 export function Welcome() {
   const navigate = useNavigate()
+  const login = useAppStore((state) => state.login)
+  const hasOnboarded = useAppStore((state) => state.hasOnboarded)
+
+  function handleLogin() {
+    login()
+    navigate(hasOnboarded ? '/feed' : '/onboarding', { replace: true })
+  }
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -36,7 +44,7 @@ export function Welcome() {
         <div className="mt-auto flex flex-col gap-3 pt-8">
           <button
             type="button"
-            onClick={() => navigate('/onboarding')}
+            onClick={handleLogin}
             className="flex h-14 w-full items-center justify-center gap-3 rounded-2xl border-2 border-line bg-white text-sm font-bold text-ink transition-colors hover:bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
           >
             <svg className="size-6" viewBox="0 0 24 24" aria-hidden="true">
@@ -62,7 +70,7 @@ export function Welcome() {
 
           <button
             type="button"
-            onClick={() => navigate('/onboarding')}
+            onClick={handleLogin}
             className="flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-primary text-sm font-bold text-white shadow-lg shadow-primary/25 transition-transform active:scale-[0.98]"
           >
             <Icon name="mail" className="text-[22px]" />

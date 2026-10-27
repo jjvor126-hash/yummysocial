@@ -4,10 +4,10 @@
 
 Two things live side by side:
 
-- `app/` — the real app: Vite 8 + React 19 + TypeScript + Tailwind CSS v4 + React Router 7. Zustand is installed for the upcoming demo-data store.
+- `app/` — the real app: Vite 8 + React 19 + TypeScript + Tailwind CSS v4 + React Router 7 + Zustand 5.
 - 18 directories at the root, one per screen, each with `code.html` and `screen.png`. These are **static design comps** and the visual source of truth; they are not part of the app build and should not be edited unless the task is about the mockups themselves.
 
-There is no git repo, backend, test suite, or CI.
+There is no backend, test suite, or CI. The repository is local only (no remote).
 
 ## App commands
 
@@ -32,6 +32,14 @@ npm run lint       # oxlint
 - Images are local in `public/img/` (served as `/img/...`). `src/data/images.json` maps every downloaded image to its original mockup, screen, and alt text — consult it before adding new photos.
 - User-facing copy is Spanish. Brand is **YummySocial**; the mockups also contain "Dinner Dish", but the app uses one brand and one palette.
 - Demo data is meant to be persisted in `localStorage`; no backend or real auth.
+
+## Demo data, session and routing guards
+
+- `src/types.ts` defines `User`, `Recipe`, `Comment` and `AppNotification`. `src/data/seed.ts` holds the demo users, 8 recipes, comments and notifications; the demo account is `u-jesse` (`DEMO_USER_ID`).
+- `src/store/useAppStore.ts` is the single Zustand store, persisted under `yummysocial:store` (version 1). It exposes `login`, `logout`, `completeOnboarding`, `toggleLike`, `toggleSave`, `addComment`, `toggleFollow`, notification actions and `resetDemoData`. Helpers: `useCurrentUser()`, `useUnreadNotifications()`.
+- The custom persist `merge` keeps seed content authoritative while restoring the user's likes, saves, comments, follows and session. When adding fields, update `merge` too.
+- Route guards live in `src/App.tsx`: `HomeRedirect` (`/`), `WelcomeRoute` (no session only), `OnboardingRoute` (session without onboarding) and `Protected` (requires session + completed onboarding, wraps tab routes, create/detail/notifications/settings).
+- The welcome buttons call `login()` and go to `/onboarding` (or `/feed` if already onboarded). Onboarding has 4 swipeable slides and can be skipped; Settings handles theme, logout and `resetDemoData`.
 
 ## Working with the mockups
 
