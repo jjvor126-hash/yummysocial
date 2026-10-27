@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Editor de Historia - Social Food App</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e9a663",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#211911",
+                        // Pastel palette for the app context
+                        "pastel-pink": "#FFB7B2",
+                        "pastel-green": "#E2F0CB",
+                        "pastel-peach": "#FFDAC1",
+                        "pastel-mint": "#B5EAD7",
+                        "pastel-lavender": "#C7CEEA",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(233, 166, 99, 0.5)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .text-shadow {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .text-shadow-sm {
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        /* Hide scrollbar for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-white overflow-hidden h-screen w-full select-none">
+<!-- Main Editor Container -->
+<div class="relative w-full h-full flex flex-col items-center justify-center bg-background-dark">
+<!-- Background Content (User's Photo/Video) -->
+<div class="absolute inset-0 w-full h-full z-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="Overhead view of a delicious pasta dinner with basil and tomato sauce on a dark rustic table" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBJaPfB81p-yaGnwrHzWYObS0uKQBokl4WwqYkQrymcd8ArXS28UMvYyxueH53jGYWV3iGy93inuf4C6rd4S6e-ZeOd_X8h2nHWk4q3D4cTpNEFaLr4d6HkpAa7lrLyzT5wEoGQ6uLN0yLVT-AUeTd0lzZwQydldqIsXCRLOyg8XEWfyDZbKHrheBtMBB8EW5c1gQ4O3aqDa6vlU9kZkjUUliYtfeNRD6mtsqXiJ-UmUKO3h_Dt7h8jUF_F5f18Vs_OqsIPPt2sFVg');">
+</div>
+<!-- Vignette Overlays for UI visibility -->
+<div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/70 via-black/20 to-transparent pointer-events-none"></div>
+<div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
+</div>
+<!-- Canvas Area (Draggable Elements Layer) -->
+<div class="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+<!-- Example Editable Text Overlay -->
+<div class="absolute top-[35%] left-1/2 -translate-x-1/2 -rotate-6 pointer-events-auto cursor-move active:scale-105 transition-transform">
+<h2 class="text-[#FFDAC1] text-4xl md:text-5xl font-extrabold tracking-tight text-center drop-shadow-lg" style="font-family: 'Plus Jakarta Sans'; -webkit-text-stroke: 1px rgba(0,0,0,0.1);">
+                    Cena Lista! <span class="text-white">🍝</span>
+</h2>
+<div class="w-full text-center mt-2">
+<span class="inline-block bg-white/20 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg border border-white/10">
+                        @chef_maria
+                    </span>
+</div>
+</div>
+<!-- Example Sticker -->
+<div class="absolute bottom-[30%] right-8 rotate-12 pointer-events-auto cursor-move active:scale-105 transition-transform">
+<div class="bg-white p-2 rounded-xl shadow-xl transform rotate-3 w-24 h-24 flex items-center justify-center">
+<span class="text-5xl">🔥</span>
+</div>
+</div>
+<!-- Drawing Layer Simulation -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-80" xmlns="http://www.w3.org/2000/svg">
+<path d="M 40 150 Q 80 100 150 120" fill="none" stroke="#B5EAD7" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+</div>
+<!-- Top Navigation Bar -->
+<div class="absolute top-0 w-full z-50 pt-12 pb-4 px-5 flex justify-between items-start">
+<!-- Cancel / Close -->
+<button class="group flex items-center justify-center w-10 h-10 rounded-full bg-black/20 backdrop-blur-md border border-white/10 text-white hover:bg-black/40 transition-all">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<!-- Creative Tools -->
+<div class="flex gap-4">
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-10 h-10 rounded-full bg-black/20 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm group-hover:scale-110">
+<span class="material-symbols-outlined text-[24px]">title</span>
+</div>
+<span class="text-[10px] font-medium opacity-80 text-shadow-sm">Texto</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-10 h-10 rounded-full bg-black/20 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm group-hover:scale-110">
+<span class="material-symbols-outlined text-[24px]">sentiment_satisfied</span>
+</div>
+<span class="text-[10px] font-medium opacity-80 text-shadow-sm">Stickers</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-10 h-10 rounded-full bg-black/20 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm group-hover:scale-110">
+<span class="material-symbols-outlined text-[24px]">brush</span>
+</div>
+<span class="text-[10px] font-medium opacity-80 text-shadow-sm">Dibujo</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-10 h-10 rounded-full bg-black/20 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm group-hover:scale-110">
+<span class="material-symbols-outlined text-[24px]">auto_fix_high</span>
+</div>
+<span class="text-[10px] font-medium opacity-80 text-shadow-sm">Efectos</span>
+</button>
+</div>
+</div>
+<!-- Right Side: Color Palette (Vertical) -->
+<!-- Simulated as if a drawing tool or text tool is active/accessible -->
+<div class="absolute right-5 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3 p-2 bg-black/20 backdrop-blur-sm rounded-full border border-white/5">
+<button class="w-6 h-6 rounded-full border-2 border-white ring-2 ring-black/20 transform transition-transform hover:scale-125" style="background-color: #FFB7B2;"></button>
+<button class="w-6 h-6 rounded-full border-2 border-transparent hover:border-white ring-2 ring-black/20 transform transition-transform hover:scale-125" style="background-color: #FFDAC1;"></button>
+<button class="w-6 h-6 rounded-full border-2 border-transparent hover:border-white ring-2 ring-black/20 transform transition-transform hover:scale-125" style="background-color: #E2F0CB;"></button>
+<button class="w-6 h-6 rounded-full border-2 border-transparent hover:border-white ring-2 ring-black/20 transform transition-transform hover:scale-125" style="background-color: #B5EAD7;"></button>
+<button class="w-6 h-6 rounded-full border-2 border-transparent hover:border-white ring-2 ring-black/20 transform transition-transform hover:scale-125" style="background-color: #C7CEEA;"></button>
+<!-- Color Picker Opener -->
+<button class="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 via-red-500 to-purple-600 border-2 border-transparent"></button>
+</div>
+<!-- Bottom Action Bar -->
+<div class="absolute bottom-0 w-full z-50 px-6 pb-8 pt-4 flex flex-col gap-4">
+<!-- Quick Suggestion Pills (Contextual) -->
+<div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mask-linear-fade">
+<button class="whitespace-nowrap bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-medium border border-white/10 transition-colors">
+                    📍 Agregar ubicación
+                </button>
+<button class="whitespace-nowrap bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-medium border border-white/10 transition-colors">
+                    🎵 Música
+                </button>
+<button class="whitespace-nowrap bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-medium border border-white/10 transition-colors">
+                    👥 Etiquetar
+                </button>
+</div>
+<!-- Main Controls -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<!-- Undo Button -->
+<button class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[24px]">undo</span>
+</button>
+<!-- Download/Save Button -->
+<button class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[24px]">download</span>
+</button>
+</div>
+<!-- Next Button (Primary Action) -->
+<button class="group relative flex items-center gap-2 pl-6 pr-5 py-3.5 bg-primary text-white font-bold rounded-full shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95">
+<span class="text-base tracking-wide">Siguiente</span>
+<div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+</body></html>

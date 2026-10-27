@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mi Perfil con Logros Culinarios</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2a65a",
+                        "primary-light": "#fdf3e9",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221910",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Plus Jakarta Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#181411] dark:text-white font-display antialiased">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden pb-20">
+<div class="flex items-center p-4 pb-2 justify-between sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md">
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em] flex-1">Mi Perfil</h2>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center text-[#181411] dark:text-white transition-transform active:scale-95">
+<span class="material-symbols-outlined" style="font-size: 28px;">notifications</span>
+</button>
+<button class="flex items-center justify-center text-[#181411] dark:text-white transition-transform active:scale-95">
+<span class="material-symbols-outlined" style="font-size: 28px;">settings</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col items-center px-4 pt-2 pb-6 w-full">
+<div class="flex flex-col items-center gap-4 w-full">
+<div class="flex items-center justify-between w-full max-w-sm gap-4">
+<div class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-tr from-primary to-orange-300 rounded-full opacity-75 blur-sm group-hover:opacity-100 transition duration-200"></div>
+<div class="relative h-24 w-24 rounded-full border-4 border-white dark:border-background-dark bg-cover bg-center shadow-sm" data-alt="Portrait of a smiling woman chef in a bright kitchen" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCS7C9eMjo6CN5Ovbl4RNbe0Qm0qqACnIQ6X-Z_ibTfamnPuSv6ZBRp6oZecGNeFTPCA1m05PjZsFAeai4oERxnyKsqngeYhyXTjyLq3A8atIbstnSImjXKPNJ1iyFrMsD4o1IoG7nzq-QDJcaOGATtR4CEldRUjG9wTw0M2-FoGiAe9j5P7EVDLXfcTA9QRQrThEww-9bMiqGSQZnG-LsKo3l7I5q5Lzp1QwUGJzkzh8-fWHmd1ROa2faCSnK7RcsZPYlk6m0nacY');">
+</div>
+<div class="absolute bottom-1 right-1 bg-primary text-white rounded-full p-1 border-2 border-white dark:border-background-dark flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-size: 14px; font-weight: bold;">edit</span>
+</div>
+</div>
+<div class="flex flex-1 justify-around text-center">
+<div class="flex flex-col items-center cursor-pointer hover:opacity-70 transition-opacity">
+<span class="text-lg font-bold text-[#181411] dark:text-white">120</span>
+<span class="text-xs text-[#897561] dark:text-gray-400 font-medium">Recetas</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer hover:opacity-70 transition-opacity">
+<span class="text-lg font-bold text-[#181411] dark:text-white">5.2k</span>
+<span class="text-xs text-[#897561] dark:text-gray-400 font-medium">Seguidores</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer hover:opacity-70 transition-opacity">
+<span class="text-lg font-bold text-[#181411] dark:text-white">840</span>
+<span class="text-xs text-[#897561] dark:text-gray-400 font-medium">Seguidos</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center text-center max-w-xs">
+<p class="text-xl font-bold leading-tight tracking-tight">Sofia Cucina</p>
+<p class="text-primary font-semibold text-sm">@sofiacooks</p>
+<p class="text-[#4a453e] dark:text-gray-300 text-sm mt-2 leading-relaxed">
+                    🍳 Amante de la comida casera<br/>
+                    ✨ Compartiendo recetas fáciles y deliciosas<br/>
+                    📍 CDMX
+                </p>
+</div>
+<div class="flex gap-3 w-full max-w-sm mt-2">
+<button class="flex-1 h-10 rounded-xl bg-primary text-white text-sm font-bold flex items-center justify-center shadow-lg shadow-primary/30 active:scale-[0.98] transition-all">
+                    Editar Perfil
+                </button>
+<button class="h-10 w-10 rounded-xl bg-background-light dark:bg-[#332a21] border border-[#e6e0db] dark:border-[#443a30] text-[#181411] dark:text-white flex items-center justify-center active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined" style="font-size: 20px;">share</span>
+</button>
+</div>
+<div class="w-full max-w-sm mt-2">
+<div class="bg-gradient-to-br from-[#fffbf5] to-[#fff3e6] dark:from-[#2c241b] dark:to-[#221910] rounded-2xl p-4 shadow-sm border border-orange-100 dark:border-[#443a30] relative overflow-hidden group">
+<div class="absolute -right-8 -top-8 w-24 h-24 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/30 transition-colors"></div>
+<div class="flex items-center justify-between mb-3 relative z-10">
+<div>
+<div class="flex items-center gap-1.5 mb-1">
+<span class="bg-white/80 dark:bg-white/10 backdrop-blur-sm text-primary text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide border border-primary/20 shadow-sm">
+                                    Nivel Actual
+                                </span>
+</div>
+<h3 class="font-bold text-lg text-[#181411] dark:text-white leading-tight">
+                                Maestro del Menú
+                            </h3>
+</div>
+<div class="h-12 w-12 bg-white dark:bg-[#332a21] rounded-full flex items-center justify-center shadow-sm border border-orange-100 dark:border-[#443a30] text-2xl relative">
+                            👨‍🍳
+                            <div class="absolute -bottom-1 -right-1 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-white dark:border-[#332a21]">
+                                Lvl 12
+                            </div>
+</div>
+</div>
+<div class="relative z-10">
+<div class="flex justify-between items-end mb-2">
+<p class="text-xs text-[#897561] dark:text-gray-400 font-medium max-w-[85%] leading-snug">
+                                ¡A mover el bigote! Faltan <span class="text-primary font-bold">50 estrellas</span> para subir de rango.
+                            </p>
+</div>
+<div class="h-3 w-full bg-white dark:bg-[#332a21] rounded-full overflow-hidden border border-orange-100 dark:border-transparent shadow-inner">
+<div class="h-full bg-gradient-to-r from-yellow-300 to-primary rounded-full relative w-[75%] shadow-[0_0_10px_rgba(242,166,90,0.5)]">
+<div class="absolute inset-0 w-full h-full bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem] animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]"></div>
+</div>
+</div>
+<div class="flex justify-between mt-2 items-center">
+<div class="flex items-center gap-1 opacity-60">
+<span class="material-symbols-outlined text-[14px] text-[#897561] dark:text-gray-500">star</span>
+<span class="text-[10px] text-[#897561] dark:text-gray-500 font-bold uppercase tracking-wide">1,250 Estrellas</span>
+</div>
+<span class="text-[10px] text-primary font-bold uppercase tracking-wide flex items-center gap-1 bg-white dark:bg-[#332a21] px-2 py-0.5 rounded-full border border-primary/20 shadow-sm">
+                                Gurú Gastronómico <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full pl-4 py-2 mb-2">
+<div class="flex items-center gap-2 mb-3 pr-4">
+<h3 class="text-base font-bold text-[#181411] dark:text-white">Historias Destacadas</h3>
+<span class="material-symbols-outlined text-primary" style="font-size: 16px;">history_toggle_off</span>
+</div>
+<div class="flex w-full overflow-x-auto no-scrollbar gap-4 pb-2 pr-4">
+<div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
+<div class="w-[72px] h-[72px] rounded-full border-2 border-dashed border-primary/50 flex items-center justify-center bg-primary-light dark:bg-primary/10 group-active:scale-95 transition-all">
+<span class="material-symbols-outlined text-primary" style="font-size: 32px;">add</span>
+</div>
+<p class="text-xs font-medium text-[#181411] dark:text-gray-300">Nueva</p>
+</div>
+<div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
+<div class="w-[72px] h-[72px] rounded-full p-[2px] bg-gradient-to-tr from-primary to-yellow-300 group-active:scale-95 transition-all">
+<div class="w-full h-full rounded-full border-2 border-white dark:border-background-dark bg-cover bg-center" data-alt="Close up of fresh pasta dough being rolled out" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBAIBqJCXi9HI4V2P8p4g0MV0r2hz98ND0VI1_mpUPjaO_mDe6zBnhZ9Nxec7yKYgfPENn9QR3hDwRvh3urkJxxXRWOlGBRUHCnbI_XsEw_2KlXQTs1Wn8NFFGell0wSekttEd1wV302XGl8u2JqohlXBUtr4hB1Bnc4f9nItklRf-Rlb3NfxovyfNi17Im0SriqiTRfq5xQvc9fBIk9pMcrN9Zfz2L2X1fmpxlC_WWwqKAmOFFbSZlcQ9YCrjiFjxV5KPKzUYifTs');">
+</div>
+</div>
+<p class="text-xs font-medium text-[#181411] dark:text-gray-300">Pasta</p>
+</div>
+<div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
+<div class="w-[72px] h-[72px] rounded-full p-[2px] bg-[#e6e0db] dark:bg-[#443a30] group-active:scale-95 transition-all">
+<div class="w-full h-full rounded-full border-2 border-white dark:border-background-dark bg-cover bg-center opacity-80" data-alt="Bowl of fresh green salad with tomatoes" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCzlZ9O56IW7IsECOsU7VeF3lfT3O_yvXa2XJpv6gDrayIdHkNhd1yQYWZh09I-wVTU_hpctfQtx9A6l5hgtLNqAsoeAlxvp67Ui4fRqK1a4YHoDD7OJKvZal8LnFsxEyxOKoaDO8pDole_TlRx1DS2eMjB2wLXjqDHOGM1sdoXCBlJ69uQVTIbF7Aovv9JHY0nbA8tOA5_QOUx0cje-2rRTwYgfKpTUGyNdZ8e0k1JXIC-iE1dYobUMt1G3PcQg0_xoWrBwlCtY_w');">
+</div>
+</div>
+<p class="text-xs font-medium text-[#181411] dark:text-gray-300">Ensaladas</p>
+</div>
+<div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
+<div class="w-[72px] h-[72px] rounded-full p-[2px] bg-[#e6e0db] dark:bg-[#443a30] group-active:scale-95 transition-all">
+<div class="w-full h-full rounded-full border-2 border-white dark:border-background-dark bg-cover bg-center opacity-80" data-alt="A slice of chocolate cake on a plate" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCSWkVBEfN16_AQ9zD5ImincLihxNrZa_NZW2J2loqObQYfkwRM-HUbZ7c4ZmhFcqB2ayBuMYVIiiDRJSGRFIz4qslorh6cq8uQ24NoedEV5xY6LpI2z8jKk4-7vujVB6HQe9PHfKy64k47OCdUZy0ha3udVDtnk5QXE_w1gZScr1YHmIQ7-kC9i04yd6MdSuyyyW3Lffy_5QZk5HUeHFJntLvk_3GKoXVJWjM79Y3q--WS4I7oR_DpLNtwnx4_V5Y-uiTBO8XkZjo');">
+</div>
+</div>
+<p class="text-xs font-medium text-[#181411] dark:text-gray-300">Postres</p>
+</div>
+<div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
+<div class="w-[72px] h-[72px] rounded-full p-[2px] bg-[#e6e0db] dark:bg-[#443a30] group-active:scale-95 transition-all">
+<div class="w-full h-full rounded-full border-2 border-white dark:border-background-dark bg-cover bg-center opacity-80" data-alt="Various spices in wooden spoons" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC2Ces478pApPlcV_g40ByxS0IDNbMWGtJZDeCs_0btZL44LNhglMbNFV_X6WSAFb0LaBFVAdYjtr5h2YBq4qjjuqnNh9_UKR1USqpbFrjLe16s6eQEfnZyhG6OTXhDWCz0PqAkts8wHJrKkm6NLxZYCo64-EYuB4o7TF47v3RTZAvTOu964TdskpMRJGQNqBAinWWboVSLKZLtDhOvDTsa3dW5_6MYTnuxlHswEnRV-pwLdJV116jQ0RSM933bPdWOfP46nkiPeus');">
+</div>
+</div>
+<p class="text-xs font-medium text-[#181411] dark:text-gray-300">Tips</p>
+</div>
+</div>
+</div>
+<div class="sticky top-[68px] z-40 bg-background-light dark:bg-background-dark border-b border-[#e6e0db] dark:border-[#332a21] shadow-sm">
+<div class="flex px-4 justify-between">
+<button class="flex flex-col items-center justify-center border-b-[3px] border-primary text-[#181411] dark:text-white py-3 flex-1 transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<p class="text-sm font-bold tracking-[0.015em]">Recetas</p>
+</div>
+</button>
+<button class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-[#897561] dark:text-gray-500 hover:text-[#181411] dark:hover:text-gray-300 py-3 flex-1 transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">bookmark</span>
+<p class="text-sm font-bold tracking-[0.015em]">Guardadas</p>
+</div>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3 p-4 pb-24">
+<div class="relative group cursor-pointer active:scale-[0.98] transition-all">
+<div class="bg-cover bg-center rounded-xl aspect-[4/5] shadow-sm" data-alt="Tacos al pastor with pineapple and cilantro" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 50%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuBDq-mdD-fk7Vu99kAGm1jGZGmA7XX86ZpXDLR-6LBfDLVgenZNysDl1TnoETfE3gRE1AXdg9f2PXal25wShDxmqfR8e1I47JqeMRV5SCeamvSlFYW4G2B_OwJWvHqG56_3nwUfbZaWYXRhWExXYrtbHWr2-1Cse8hhbV2iOPXMeK1yzWN1rQ5Hu5YQufRineYNl9wScL12_PCtziXZf6XZDI6fNpyX9WO6A06ayZ0qPnn2RArF3zIOYHGwA9fUHirDRTtFFiW9LwA');">
+<div class="absolute top-2 right-2 bg-white/20 backdrop-blur-md rounded-full p-1.5 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xs">videocam</span>
+</div>
+<div class="absolute bottom-0 left-0 w-full p-3 text-white">
+<p class="text-sm font-bold leading-tight mb-1">Tacos al Pastor</p>
+<div class="flex items-center gap-1 text-[10px] opacity-90">
+<span class="material-symbols-outlined text-[10px]">schedule</span>
+<span>45 min</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span>2.3k</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative group cursor-pointer active:scale-[0.98] transition-all">
+<div class="bg-cover bg-center rounded-xl aspect-square shadow-sm" data-alt="Caesar salad with croutons and parmesan" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 50%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuDkvaMi7hjGWUzDT9xZC-ThPjGjHK3PGY_-DLH9Ii7PDddXtSMA4gQS0hyODtoQ3mRCiAtgHlVVuwjLx1CXEr6V7ysSWro2qz36N4k006i9RGI2N60vrtVmRBGgehUw58JNXaJokPjjWq-9LrE2nZe0iuf7ptIxO-8LovaxfjUNhE8_uJw7iCS1urTkYf39X7LQY0F1-iGByEHdOy5BR34blPmstPdDanszHlZkYsyOYMeQveCEUJGknaY24w6M_P07AqFTyne2Dsg');">
+<div class="absolute bottom-0 left-0 w-full p-3 text-white">
+<p class="text-sm font-bold leading-tight mb-1">Ensalada César</p>
+<div class="flex items-center gap-1 text-[10px] opacity-90">
+<span class="material-symbols-outlined text-[10px]">schedule</span>
+<span>15 min</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[10px]">favorite</span>
+<span>856</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative group cursor-pointer active:scale-[0.98] transition-all">
+<div class="bg-cover bg-center rounded-xl aspect-square shadow-sm" data-alt="Creamy mushroom risotto in a white bowl" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 50%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuDXCjv19_nqN948_NZgbTrc8cFvzUgibHj-J10RFNpdYpBn-IqI-s4U_QxdJzB1i03juojkzz02A_PKgL8sylhyjRDBraiFlrX_JuRl_o0Spt_hav6AlL89pEG_A5bmL50vM3Gr20lmhvERwCUmrx7a6N61AbrpqP6kC3ODVdroquqzb_8HRPX6pg_v9T9pIXhIhMyMvSmX4OmJNrk4Ugck8mybmCv8ZcgaZcmOsPXuQ_4Q7qLrDdAIVhXO_bU_zPlskz4ElHRiWts');">
+<div class="absolute bottom-0 left-0 w-full p-3 text-white">
+<p class="text-sm font-bold leading-tight mb-1">Risotto de Setas</p>
+<div class="flex items-center gap-1 text-[10px] opacity-90">
+<span class="material-symbols-outlined text-[10px]">schedule</span>
+<span>40 min</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[10px]">favorite</span>
+<span>1.2k</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative group cursor-pointer active:scale-[0.98] transition-all">
+<div class="bg-cover bg-center rounded-xl aspect-[4/5] shadow-sm" data-alt="Vegetarian lasagna with melted cheese" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 50%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuDl-A4JG5mOh22IxVVKr4IrBuX-xgCbtQl6vbb8kPKXcgpnwmPo8VcDlZVVv_db_qJHGxhxNcYQP8kBco477477NW3l2f8O6G1CF6ak6p9wJKHZz7efrfe24YlmbErPj8fDocqf-mTcZIn32_Aj0yDdg0sUPoYKwNJizSLP5VBz2K9fQ415NptgsG3iByv32a5kExOEioAoTA_fGxrcWgC0AIWeW5iZD6rSCpHXTQomsuzTFjYvqgRE-Bc55QOoouoaQiI7l7eNkL8');">
+<div class="absolute top-2 right-2 bg-white/20 backdrop-blur-md rounded-full p-1.5 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xs">photo_library</span>
+</div>
+<div class="absolute bottom-0 left-0 w-full p-3 text-white">
+<p class="text-sm font-bold leading-tight mb-1">Lasaña Vegetal</p>
+<div class="flex items-center gap-1 text-[10px] opacity-90">
+<span class="material-symbols-outlined text-[10px]">schedule</span>
+<span>60 min</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[10px]">favorite</span>
+<span>3.1k</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative group cursor-pointer active:scale-[0.98] transition-all">
+<div class="bg-cover bg-center rounded-xl aspect-[4/5] shadow-sm" data-alt="Tomato soup with basil leaf garnish" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 50%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuArpJIAHR0PrYB03Ih-4gKa_sF4xNixC8YIuT_1INn5A_GO1MRBb1oX0BnCvs0QfQdc-zeM9Km9lm6pCxeEdQmGk8Qq5BJPw_x0LY4_C2eay1NULkcYMbyRZwH9pkf8UndYtYpNzQZw2iSG0JXyKls2kIFb_b3jufT7V1vgAA0og3Sz65a_GzspimwTPeHEl-fejB-d19bPoqYxF7J6TpYLd8Zy9L6129w3bSPSow4-FwnQY9ZKKpe2GO-GVLaTk_NrmQ_P94GxFb4');">
+<div class="absolute bottom-0 left-0 w-full p-3 text-white">
+<p class="text-sm font-bold leading-tight mb-1">Sopa de Tomate</p>
+<div class="flex items-center gap-1 text-[10px] opacity-90">
+<span class="material-symbols-outlined text-[10px]">schedule</span>
+<span>25 min</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[10px]">favorite</span>
+<span>940</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative group cursor-pointer active:scale-[0.98] transition-all">
+<div class="bg-cover bg-center rounded-xl aspect-square shadow-sm" data-alt="Chicken curry with rice in a bowl" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 50%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuDfd-iAw-J5MErM46dqh9IAiSKFyBugq1s-BaxQQp9SchdWnwo4Y-y0Jwgv-UUMDn1KGlIQRUoICfiUgsAZmSyiBefMj-QzGWJUdE6bvxICNEkKRz8rsbxNSZxOXW37MKo5AoLClKT8KwVTc7AXKPqiPnsmdSNXKv9ZsMq3rwNYLHW2vg8g9wCsUt1wHTRbv9yAXYDORK72XP99LmmVK4shnu0yDwQBlQ2gHOJgoZ8NxiJWIiVM7vitbyILTO16SpcRA-q7VEvl1Ao');">
+<div class="absolute bottom-0 left-0 w-full p-3 text-white">
+<p class="text-sm font-bold leading-tight mb-1">Pollo al Curry</p>
+<div class="flex items-center gap-1 text-[10px] opacity-90">
+<span class="material-symbols-outlined text-[10px]">schedule</span>
+<span>35 min</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[10px]">favorite</span>
+<span>1.5k</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fixed bottom-0 w-full bg-white dark:bg-background-dark border-t border-[#e6e0db] dark:border-[#332a21] pb-6 pt-2 px-6 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 text-[#897561] dark:text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#897561] dark:text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-medium">Explorar</span>
+</button>
+<div class="relative -top-6">
+<button class="h-14 w-14 rounded-full bg-primary text-white shadow-lg shadow-primary/40 flex items-center justify-center transform hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined" style="font-size: 28px;">add</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-1 text-[#897561] dark:text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-[10px] font-medium">Favoritos</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-[10px] font-medium">Perfil</span>
+</button>
+</div>
+</div>
+
+</body></html>

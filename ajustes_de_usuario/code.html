@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ajustes de Usuario</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#eba660",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#211911",
+                        "text-main": "#181411",
+                        "text-secondary": "#887563",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main dark:text-white antialiased">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto shadow-xl bg-white dark:bg-[#1a120b]">
+<!-- TopAppBar -->
+<div class="sticky top-0 z-50 flex items-center bg-white dark:bg-[#1a120b] p-4 pb-2 justify-between border-b border-gray-100 dark:border-gray-800">
+<button class="text-text-main dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h2 class="text-text-main dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">Ajustes</h2>
+</div>
+<div class="flex-1 overflow-y-auto pb-24">
+<!-- ProfileHeader -->
+<div class="flex flex-col p-6 items-center border-b border-gray-50 dark:border-gray-800/50">
+<div class="relative group cursor-pointer">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-28 w-28 ring-4 ring-primary/20" data-alt="Portrait of a smiling woman in a bright kitchen" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDbkOOcVucL5u0_nF5rGwd-Ec6OJLtYt3nbBGqMr2QUwo445IVCs0LDyMCRppr8EoeJCCO3ctW8kVTGlCH38695OyJLaGp-epjey82cAKgZXhDxTagde6wnHcNkI5YFwiZ29LGMgtKmztjipAHjuJOskbxc6G7xSipRtcv4WE_AbSCTjQD3xO6bI5CGTKM3uGpWmZVdl90_WqDC6gjOFjP1VnaF-vNyxToF7OSkhEnhj-FA-Xa0U-JDS2kZXz3uiHY3LhH7sa5NoTY");'></div>
+<div class="absolute bottom-0 right-0 bg-primary text-white p-1.5 rounded-full border-2 border-white dark:border-[#1a120b] flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-sm">edit</span>
+</div>
+</div>
+<div class="mt-4 flex flex-col items-center justify-center">
+<p class="text-text-main dark:text-white text-xl font-bold leading-tight tracking-[-0.015em] text-center">Sofia Lopez</p>
+<p class="text-text-secondary text-sm font-medium leading-normal text-center mt-1">Entusiasta de la cocina 🥑</p>
+</div>
+</div>
+<!-- Form Fields -->
+<div class="px-4 pt-6 space-y-4">
+<h3 class="text-text-main dark:text-white text-lg font-bold px-1">Información Básica</h3>
+<!-- TextField: Username -->
+<label class="flex flex-col w-full group">
+<p class="text-text-main dark:text-gray-300 text-sm font-semibold leading-normal pb-2 pl-1">Nombre de Usuario</p>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-text-secondary">person</span>
+<input class="form-input flex w-full rounded-xl text-text-main dark:text-white dark:bg-[#2a221b] focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-200 dark:border-gray-700 h-12 pl-11 pr-4 text-sm font-medium transition-all" value="sofialopez_cocina"/>
+</div>
+</label>
+<!-- TextField: Email -->
+<label class="flex flex-col w-full group">
+<p class="text-text-main dark:text-gray-300 text-sm font-semibold leading-normal pb-2 pl-1">Correo Electrónico</p>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-text-secondary">mail</span>
+<input class="form-input flex w-full rounded-xl text-text-main dark:text-white dark:bg-[#2a221b] focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-200 dark:border-gray-700 h-12 pl-11 pr-4 text-sm font-medium transition-all" type="email" value="sofia.lopez@ejemplo.com"/>
+</div>
+</label>
+</div>
+<div class="h-6"></div>
+<!-- Notification Settings -->
+<div class="px-4">
+<h3 class="text-text-main dark:text-white text-lg font-bold mb-3 px-1">Notificaciones</h3>
+<div class="bg-background-light dark:bg-[#211911] rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
+<div class="flex items-center justify-between p-4 border-b border-gray-200/50 dark:border-gray-700/50">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-9 rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-text-main dark:text-white">Nuevos Me gusta</span>
+<span class="text-xs text-text-secondary">Cuando a alguien le gusta tu receta</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/30 dark:peer-focus:ring-primary/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-4 border-b border-gray-200/50 dark:border-gray-700/50">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-9 rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-xl">chat_bubble</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-text-main dark:text-white">Comentarios</span>
+<span class="text-xs text-text-secondary">Nuevos comentarios en tus posts</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/30 dark:peer-focus:ring-primary/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-9 rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-xl">restaurant_menu</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-text-main dark:text-white">Sugerencias de cena</span>
+<span class="text-xs text-text-secondary">Recetas diarias recomendadas</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/30 dark:peer-focus:ring-primary/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<div class="h-6"></div>
+<!-- General Settings Links -->
+<div class="px-4">
+<h3 class="text-text-main dark:text-white text-lg font-bold mb-3 px-1">General</h3>
+<div class="bg-background-light dark:bg-[#211911] rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
+<button class="w-full flex items-center justify-between p-4 border-b border-gray-200/50 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors text-left group">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-9 rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+<span class="material-symbols-outlined text-xl">lock</span>
+</div>
+<span class="text-sm font-bold text-text-main dark:text-white">Privacidad y Seguridad</span>
+</div>
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 border-b border-gray-200/50 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors text-left group">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-9 rounded-full bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
+<span class="material-symbols-outlined text-xl">language</span>
+</div>
+<span class="text-sm font-bold text-text-main dark:text-white">Idioma</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs text-text-secondary">Español</span>
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</button>
+<button class="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors text-left group">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-9 rounded-full bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+<span class="material-symbols-outlined text-xl">help</span>
+</div>
+<span class="text-sm font-bold text-text-main dark:text-white">Ayuda y Soporte</span>
+</div>
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="h-8"></div>
+<!-- Actions -->
+<div class="px-6 flex flex-col gap-4">
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-4 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all active:scale-[0.98]">
+                Guardar Cambios
+            </button>
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-4 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 text-base font-bold leading-normal tracking-[0.015em] hover:bg-red-100 dark:hover:bg-red-900/20 transition-all">
+                Cerrar Sesión
+            </button>
+<p class="text-center text-xs text-text-secondary mt-2">Versión 2.4.0</p>
+</div>
+<div class="h-8"></div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="sticky bottom-0 z-50 bg-white/90 dark:bg-[#1a120b]/90 backdrop-blur-md border-t border-gray-100 dark:border-gray-800 pb-safe">
+<div class="flex items-center justify-around p-3">
+<button class="flex flex-col items-center justify-center gap-1 text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">home</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">search</span>
+</button>
+<button class="flex items-center justify-center size-12 -mt-6 bg-primary text-white rounded-full shadow-lg shadow-primary/40 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">favorite</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-primary">
+<span class="material-symbols-outlined text-2xl fill-current">person</span>
+<div class="h-1 w-1 bg-primary rounded-full"></div>
+</button>
+</div>
+</div>
+</div>
+</body></html>

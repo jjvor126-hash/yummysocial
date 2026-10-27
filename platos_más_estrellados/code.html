@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Platos Más Estrellados</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e6664c",
+                        "primary-light": "#fcece9",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211411",
+                        "text-main": "#171211",
+                        "text-secondary": "#876a64",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+                    boxShadow: {
+                        "soft": "0 4px 20px -2px rgba(230, 102, 76, 0.15)",
+                        "card": "0 2px 8px rgba(0,0,0,0.04)"
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar hiding for cleaner look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-main font-display antialiased overflow-x-hidden selection:bg-primary selection:text-white">
+<div class="relative flex flex-col w-full min-h-screen max-w-md mx-auto bg-background-light dark:bg-background-dark shadow-2xl overflow-hidden pb-24">
+<!-- Header -->
+<header class="sticky top-0 z-20 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md transition-colors">
+<div class="flex items-center justify-between px-4 pt-6 pb-2">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-text-main dark:text-white">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold text-text-main dark:text-white tracking-tight">Ranking de Sabor</h1>
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-text-main dark:text-white">search</span>
+</button>
+</div>
+<!-- Segmented Control -->
+<div class="px-4 py-2">
+<div class="flex p-1 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+<button class="flex-1 py-2 text-sm font-bold text-white bg-primary rounded-lg shadow-sm transition-all">Semanal</button>
+<button class="flex-1 py-2 text-sm font-medium text-text-secondary dark:text-gray-400 hover:text-primary transition-all">Mensual</button>
+<button class="flex-1 py-2 text-sm font-medium text-text-secondary dark:text-gray-400 hover:text-primary transition-all">Histórico</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col gap-6 pt-4">
+<!-- The Podium (Top 3) -->
+<section class="px-4">
+<div class="text-center mb-6">
+<h2 class="text-2xl font-extrabold text-text-main dark:text-white tracking-tight flex items-center justify-center gap-2">
+<span class="text-primary material-symbols-outlined">hotel_class</span>
+                        El Podio
+                    </h2>
+<p class="text-sm text-text-secondary dark:text-gray-400">Los favoritos de esta semana</p>
+</div>
+<div class="flex items-end justify-center gap-3 w-full max-w-[360px] mx-auto pb-4">
+<!-- Rank 2 -->
+<div class="flex flex-col items-center w-1/3 group cursor-pointer">
+<div class="relative mb-2">
+<div class="w-20 h-20 rounded-full border-4 border-gray-300 dark:border-gray-600 p-0.5 shadow-lg bg-white dark:bg-gray-800 overflow-hidden transform group-hover:scale-105 transition-transform duration-300">
+<img alt="Tacos" class="w-full h-full object-cover rounded-full" data-alt="Close up of delicious tacos al pastor on a plate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxl8HxvWImldvh4dfBw5pOLFPuqosuoK_xlWFcaBiV_KFp0hYb62KaM1LUFWV4-SZx-ul3iXfKAqg8Bmg74VYQoShEhQOITdjUUXRXtqdiQjJ9sJL04vTXr4MUnSE4HJepZ29J8Gy1Z-5u4Rqu64VwhRKxaBG3jG95viZilQpK7pZWq-0U-9VCTf30zKvOD6oh4X9Ks27_D1Qwau2Mj-2JHj3C5i4G1KQTjrYIHwEpx1QisTSwkn0s657rA4_d3nebfHU7FsmsTf4"/>
+</div>
+<div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-gray-300 text-gray-800 text-xs font-bold px-2 py-0.5 rounded-full shadow-sm border border-white dark:border-gray-800">
+                                #2
+                            </div>
+</div>
+<div class="text-center mt-2">
+<h3 class="font-bold text-sm text-text-main dark:text-white leading-tight line-clamp-2">Tacos al Pastor</h3>
+<p class="text-xs text-primary font-bold mt-0.5">4.9 <span class="text-[10px]">★</span></p>
+</div>
+</div>
+<!-- Rank 1 -->
+<div class="flex flex-col items-center w-1/3 z-10 group cursor-pointer -mt-4">
+<div class="relative mb-3">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-[#FFD700] animate-bounce">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">crown</span>
+</div>
+<div class="w-24 h-24 rounded-full border-4 border-[#FFD700] p-0.5 shadow-xl shadow-primary/20 bg-white dark:bg-gray-800 overflow-hidden transform group-hover:scale-105 transition-transform duration-300">
+<img alt="Lasagna" class="w-full h-full object-cover rounded-full" data-alt="Top view of classic lasagna on a white plate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRx4IfvwvG5LASAid69NHOu4tmX9aFBlSkfq7-mDAHPyKK8wnHcCAHEtQO8XPXAI_dg7fquthMCTejys02UYd6UJ969eepXuIYQHA2Alf46dxKDEXNLxksG9YaIOU15NvlhSW8hYy07OVGhsxAx2BJAnApRugFRjyErrq__K47o4VMHd8DT2O674kPWJ_s1TkZ7AD49gMFq1xsOWsXe3XYS9LYL6x8gl1np_TMUDDKhHdfL51lfBbd39pYRFNIeDJQg2myAU9UDrI"/>
+</div>
+<div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-[#FFD700] text-[#8B7500] text-sm font-bold px-3 py-0.5 rounded-full shadow-sm border-2 border-white dark:border-gray-800">
+                                #1
+                            </div>
+</div>
+<div class="text-center mt-1">
+<h3 class="font-bold text-base text-text-main dark:text-white leading-tight line-clamp-2">Lasaña de la Abuela</h3>
+<p class="text-xs text-text-secondary dark:text-gray-400">@chef_maria</p>
+<p class="text-sm text-primary font-bold mt-0.5">5.0 <span class="text-[10px]">★</span></p>
+</div>
+</div>
+<!-- Rank 3 -->
+<div class="flex flex-col items-center w-1/3 group cursor-pointer">
+<div class="relative mb-2">
+<div class="w-20 h-20 rounded-full border-4 border-[#CD7F32] p-0.5 shadow-lg bg-white dark:bg-gray-800 overflow-hidden transform group-hover:scale-105 transition-transform duration-300">
+<img alt="Risotto" class="w-full h-full object-cover rounded-full" data-alt="Creamy mushroom risotto in a bowl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRKW_xOk9ARZAC6IopyVxThgAcYXNGIh979XjzjO0HnPTzGzE1EYID8NGA4E1_hUkSU4T7GbWPZ-P-2U6eWNY8f5ykCgDOaDofQvr89fhUSElQIogMePamXdpPZ-NSU1wAR-yu2qNJyHePxuyH0E8HtD3102RNjajdJEADkapiqLqrattdtMpfwI3lZ0qCZH5UDSOCH8SsK_4VEZL37BGoA0tAzPNfmUl3l5e_slF4GHMCE0gjQNLxkm0IPLwOnrmprVvA21riwB4"/>
+</div>
+<div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-[#CD7F32] text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-sm border border-white dark:border-gray-800">
+                                #3
+                            </div>
+</div>
+<div class="text-center mt-2">
+<h3 class="font-bold text-sm text-text-main dark:text-white leading-tight line-clamp-2">Risotto de Setas</h3>
+<p class="text-xs text-primary font-bold mt-0.5">4.8 <span class="text-[10px]">★</span></p>
+</div>
+</div>
+</div>
+</section>
+<!-- List (Rank 4+) -->
+<section class="flex flex-col bg-white dark:bg-gray-900 rounded-t-[2.5rem] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] min-h-[500px]">
+<div class="px-6 py-6">
+<h3 class="text-lg font-bold text-text-main dark:text-white mb-4">Mejores Clasificados</h3>
+<div class="flex flex-col gap-4">
+<!-- Rank 4 -->
+<div class="flex items-center gap-4 p-3 rounded-2xl bg-background-light dark:bg-gray-800 hover:bg-primary-light/50 dark:hover:bg-gray-700 transition-colors cursor-pointer group">
+<div class="w-6 text-center font-bold text-text-secondary dark:text-gray-500 text-lg group-hover:text-primary">4</div>
+<div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 shadow-sm">
+<img alt="Curry" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" data-alt="Spicy chicken curry in a bowl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU8b_dpJdgHf8-ALFHEKWRCT6L244mUFWJzC5CVTrHSovL0ofAzwYHpo8P8TnC_ydXsmsIDM1aoBewTi_-KoZ1BoayOCsRiV24Vi6SWy-mSCTdNVIxzFsfE_bf2ouPeGNnu1FxP24VjEZfZ6bln4CeUUiY2KwtBJd_bqGS6jvVk9-McYEbcX_m7qszXWTkwfCc7b5DLN7OnKj3RuUB5x87OjoaujdY5Kw7xGO7C3Dn1qs6yWsVXSfJDpRIKv9KJuVBilAacqMIXPQ"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-base font-bold text-text-main dark:text-white truncate">Pollo al Curry</h4>
+<p class="text-xs text-text-secondary dark:text-gray-400 truncate">@carlos_cooks</p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<div class="flex items-center gap-1 bg-white dark:bg-gray-900 px-2 py-1 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-text-main dark:text-white">4.8</span>
+</div>
+<span class="text-[10px] text-text-secondary dark:text-gray-500">120 votos</span>
+</div>
+</div>
+<!-- Rank 5 -->
+<div class="flex items-center gap-4 p-3 rounded-2xl bg-background-light dark:bg-gray-800 hover:bg-primary-light/50 dark:hover:bg-gray-700 transition-colors cursor-pointer group">
+<div class="w-6 text-center font-bold text-text-secondary dark:text-gray-500 text-lg group-hover:text-primary">5</div>
+<div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 shadow-sm">
+<img alt="Ensalada" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" data-alt="Colorful healthy salad bowl with avocado" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoIgspI0gqomLHrbsdB2atL6Dlr2qJLTPEtPyiPqm2roigxwlHLyov0dVT38sX56VIrdV2B8Xb71AqHJSngvHSg6K0hd1hZVtfqMW_xDpRtazzWwzoD3xiNa3qlS04zOyf4M_du3Mq1u6Hmq5HZnfuqNz0176R84X1fMJDKdcEChOb1YYmP06B_ZK8Xkpgief-C5XhosdTW9KnICAeERzrN8rBskaAl7KNC2l1KCt_8YbgHQVcLP8KKHvURhrXz1NrpA4pvRxk9QU"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-base font-bold text-text-main dark:text-white truncate">Super Bowl Vegano</h4>
+<p class="text-xs text-text-secondary dark:text-gray-400 truncate">@green_life</p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<div class="flex items-center gap-1 bg-white dark:bg-gray-900 px-2 py-1 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-text-main dark:text-white">4.7</span>
+</div>
+<span class="text-[10px] text-text-secondary dark:text-gray-500">98 votos</span>
+</div>
+</div>
+<!-- Rank 6 -->
+<div class="flex items-center gap-4 p-3 rounded-2xl bg-background-light dark:bg-gray-800 hover:bg-primary-light/50 dark:hover:bg-gray-700 transition-colors cursor-pointer group">
+<div class="w-6 text-center font-bold text-text-secondary dark:text-gray-500 text-lg group-hover:text-primary">6</div>
+<div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 shadow-sm">
+<img alt="Pastel" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" data-alt="Chocolate cake slice on a plate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVG9jgbU08M_dkVSsXOZGKFye73OsowJ1xVhokT1ps97rNSWZ8Gg3cZgmict2lSlfdzBsoQ8v-oUjOs8WRa8cTAjibWNA9xP-RG5h8IhYZlErMaVcHUD6HIgqNTNQ3USatkxeYSLn7rWgfmQfZvpHKr-h0YELJqaTcR91-0gGRwYV8qABShUGgCAIZ5dbgKnVvf2dGleU92yL51w07uIVlG5zz2UGZ4-s1rx8ZV60YpIDjIuYFY6t-vNGXWsBn635Vm54cPiY5fgo"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-base font-bold text-text-main dark:text-white truncate">Volcán de Chocolate</h4>
+<p class="text-xs text-text-secondary dark:text-gray-400 truncate">@sweet_dreams</p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<div class="flex items-center gap-1 bg-white dark:bg-gray-900 px-2 py-1 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-text-main dark:text-white">4.7</span>
+</div>
+<span class="text-[10px] text-text-secondary dark:text-gray-500">85 votos</span>
+</div>
+</div>
+<!-- Rank 7 -->
+<div class="flex items-center gap-4 p-3 rounded-2xl bg-background-light dark:bg-gray-800 hover:bg-primary-light/50 dark:hover:bg-gray-700 transition-colors cursor-pointer group">
+<div class="w-6 text-center font-bold text-text-secondary dark:text-gray-500 text-lg group-hover:text-primary">7</div>
+<div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 shadow-sm">
+<img alt="Pasta" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" data-alt="Bowl of fresh pasta with vegetables" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGza5dq0NJgeqLhXZZTG0ob80YhJGkXE8-d2qbzLgxkPybk-WIA_Rurj_mjqaK-WZXXx4qkmDLlV8_VwCBMsWVw9lCPgtj_6k0tRTM0Gc0ZrKHCnbvA6HsP_SfLZ7yt2CBsnfqNhFA5XDL8kJ2EDte1xyo3V2IlPC51Q6MLpHhbTZ9Q5sa6foM8cJWio1AgbDwRSSGY4SMrMvJjDO3wLccMwOy9WfktZBmkqN_JPOnjbl-mHJOWeIWihrx8IakyvpQPP5x2r3ibX0"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-base font-bold text-text-main dark:text-white truncate">Pasta Primavera</h4>
+<p class="text-xs text-text-secondary dark:text-gray-400 truncate">@pasta_lover</p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<div class="flex items-center gap-1 bg-white dark:bg-gray-900 px-2 py-1 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-text-main dark:text-white">4.6</span>
+</div>
+<span class="text-[10px] text-text-secondary dark:text-gray-500">76 votos</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 w-full max-w-md bg-white dark:bg-background-dark border-t border-gray-100 dark:border-gray-800 pb-5 pt-3 px-6 z-30">
+<div class="flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 text-text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-medium">Explorar</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<div class="bg-primary/10 p-1.5 rounded-xl">
+<span class="material-symbols-outlined fill-current" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+</div>
+<span class="text-[10px] font-bold">Top</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Perfil</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

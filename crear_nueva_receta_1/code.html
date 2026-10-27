@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Crear Nueva Receta</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2a65a",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221910",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2d241b",
+                        "input-light": "#f4f2f0",
+                        "input-dark": "#362c23",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Hide scrollbar for cleaner mobile look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#181411] dark:text-gray-100 font-display min-h-screen flex flex-col items-center overflow-x-hidden selection:bg-primary/30">
+<div class="w-full max-w-md flex flex-col min-h-screen relative pb-28">
+<!-- Top App Bar -->
+<header class="flex items-center justify-between p-4 bg-background-light dark:bg-background-dark sticky top-0 z-20 backdrop-blur-lg bg-opacity-90 dark:bg-opacity-90 border-b border-gray-100 dark:border-white/5">
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-[#181411] dark:text-white">
+<span class="material-symbols-outlined" style="font-size: 24px;">close</span>
+</button>
+<h2 class="text-[#181411] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Crear Receta</h2>
+<button class="flex h-10 px-3 items-center justify-center rounded-full text-primary font-bold text-sm hover:bg-primary/10 transition-colors">
+                Guardar
+            </button>
+</header>
+<!-- Main Content -->
+<main class="flex flex-col gap-6 px-4 pt-2">
+<!-- Media Upload Section -->
+<section>
+<div class="relative w-full aspect-[4/3] rounded-xl bg-input-light dark:bg-input-dark border-2 border-dashed border-[#e6e0db] dark:border-white/10 flex flex-col items-center justify-center gap-3 cursor-pointer group hover:border-primary/50 transition-all overflow-hidden shadow-inner">
+<!-- Placeholder Content -->
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/5 dark:to-black/20 pointer-events-none"></div>
+<div class="size-16 rounded-full bg-white dark:bg-surface-dark shadow-sm flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300 z-10">
+<span class="material-symbols-outlined filled" style="font-size: 32px;">add_a_photo</span>
+</div>
+<div class="flex flex-col items-center z-10">
+<p class="text-[#181411] dark:text-white font-semibold">Foto de portada</p>
+<p class="text-[#897561] dark:text-gray-400 text-sm">o arrastra un video aquí</p>
+</div>
+</div>
+</section>
+<!-- Basic Info Section -->
+<section class="flex flex-col gap-4">
+<label class="flex flex-col gap-2">
+<span class="text-[#181411] dark:text-gray-200 text-base font-medium leading-normal ml-1">Título de la receta</span>
+<input class="w-full rounded-xl text-[#181411] dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-input-light dark:bg-input-dark h-14 placeholder:text-[#897561] dark:placeholder:text-gray-500 px-4 text-lg font-medium shadow-sm transition-all" placeholder="Ej. Pasta Carbonara"/>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-[#181411] dark:text-gray-200 text-base font-medium leading-normal ml-1">Descripción breve</span>
+<textarea class="w-full rounded-xl text-[#181411] dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-input-light dark:bg-input-dark min-h-[120px] placeholder:text-[#897561] dark:placeholder:text-gray-500 p-4 text-base leading-relaxed resize-none shadow-sm transition-all" placeholder="Cuéntanos la historia de este plato, tips secretos o por qué te encanta..."></textarea>
+</label>
+</section>
+<!-- Details: Time & Difficulty -->
+<section class="grid grid-cols-2 gap-4">
+<label class="flex flex-col gap-2">
+<span class="text-[#181411] dark:text-gray-200 text-base font-medium ml-1">Tiempo (min)</span>
+<div class="relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#897561] dark:text-gray-400 material-symbols-outlined">schedule</span>
+<input class="w-full rounded-xl text-[#181411] dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-input-light dark:bg-input-dark h-14 pl-12 pr-4 text-base font-medium shadow-sm" placeholder="45" type="number"/>
+</div>
+</label>
+<div class="flex flex-col gap-2">
+<span class="text-[#181411] dark:text-gray-200 text-base font-medium ml-1">Dificultad</span>
+<!-- Segmented Control for Difficulty -->
+<div class="flex p-1 bg-input-light dark:bg-input-dark rounded-xl h-14 items-center relative">
+<!-- Active Indicator (Simulated with button styles for this layout) -->
+<button class="flex-1 h-full rounded-lg bg-white dark:bg-surface-dark shadow-sm text-primary font-bold text-sm transition-all flex items-center justify-center">
+                            Fácil
+                        </button>
+<button class="flex-1 h-full rounded-lg text-[#897561] dark:text-gray-400 font-medium text-sm hover:bg-white/50 dark:hover:bg-white/5 transition-all flex items-center justify-center">
+                            Media
+                        </button>
+<button class="flex-1 h-full rounded-lg text-[#897561] dark:text-gray-400 font-medium text-sm hover:bg-white/50 dark:hover:bg-white/5 transition-all flex items-center justify-center">
+                            Difícil
+                        </button>
+</div>
+</div>
+</section>
+<hr class="border-gray-200 dark:border-white/10 my-2"/>
+<!-- Ingredients List -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="text-[#181411] dark:text-white text-xl font-bold tracking-tight">Ingredientes</h3>
+<span class="text-xs font-semibold bg-primary/10 text-primary px-2 py-1 rounded-md">2 items</span>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Item 1 -->
+<div class="flex items-center gap-2 group">
+<div class="text-[#d1cdc7] dark:text-gray-600 cursor-move hover:text-primary transition-colors">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<input class="flex-1 h-12 rounded-lg bg-input-light dark:bg-input-dark border-none focus:ring-1 focus:ring-primary text-[#181411] dark:text-white px-4 text-base font-medium shadow-sm" type="text" value="200g Espaguetis"/>
+<button class="size-10 flex items-center justify-center rounded-full text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+</button>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-2 group">
+<div class="text-[#d1cdc7] dark:text-gray-600 cursor-move hover:text-primary transition-colors">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<input class="flex-1 h-12 rounded-lg bg-input-light dark:bg-input-dark border-none focus:ring-1 focus:ring-primary text-[#181411] dark:text-white px-4 text-base font-medium shadow-sm" type="text" value="3 Huevos grandes"/>
+<button class="size-10 flex items-center justify-center rounded-full text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+</button>
+</div>
+</div>
+<button class="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-primary/40 bg-primary/5 py-3 text-primary font-bold hover:bg-primary/10 transition-colors mt-2">
+<span class="material-symbols-outlined" style="font-size: 20px;">add_circle</span>
+                    Agregar Ingrediente
+                </button>
+</section>
+<hr class="border-gray-200 dark:border-white/10 my-2"/>
+<!-- Preparation Steps -->
+<section class="flex flex-col gap-4">
+<h3 class="text-[#181411] dark:text-white text-xl font-bold tracking-tight">Pasos de preparación</h3>
+<div class="flex flex-col gap-4">
+<!-- Step 1 -->
+<div class="flex gap-3">
+<div class="flex flex-col items-center gap-1">
+<div class="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-white font-bold text-sm shadow-md shadow-primary/20">1</div>
+<div class="w-0.5 flex-1 bg-gray-200 dark:bg-gray-700 my-1 rounded-full"></div>
+</div>
+<div class="flex-1 pb-4">
+<textarea class="w-full rounded-xl bg-input-light dark:bg-input-dark border-none focus:ring-1 focus:ring-primary text-[#181411] dark:text-white p-3 text-base min-h-[80px] resize-none shadow-sm" placeholder="Describe el paso..."></textarea>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex gap-3">
+<div class="flex flex-col items-center gap-1">
+<div class="flex size-8 shrink-0 items-center justify-center rounded-full bg-input-light dark:bg-gray-700 text-[#897561] dark:text-gray-300 font-bold text-sm border border-gray-200 dark:border-transparent">2</div>
+</div>
+<div class="flex-1">
+<textarea class="w-full rounded-xl bg-input-light dark:bg-input-dark border-none focus:ring-1 focus:ring-primary text-[#181411] dark:text-white p-3 text-base min-h-[80px] resize-none shadow-sm" placeholder="Siguiente paso..."></textarea>
+</div>
+</div>
+</div>
+<button class="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#897561]/30 bg-gray-50 dark:bg-white/5 py-3 text-[#181411] dark:text-gray-300 font-bold hover:bg-gray-100 dark:hover:bg-white/10 transition-colors mt-2">
+<span class="material-symbols-outlined" style="font-size: 20px;">add</span>
+                    Agregar Paso
+                </button>
+</section>
+<!-- Extra padding for scroll -->
+<div class="h-8"></div>
+</main>
+<!-- Sticky Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background-light via-background-light to-transparent dark:from-background-dark dark:via-background-dark pt-8 pointer-events-none flex justify-center z-30">
+<div class="w-full max-w-md pointer-events-auto flex gap-3">
+<button class="flex-1 h-14 bg-primary hover:bg-[#d98c42] active:scale-[0.98] text-white rounded-full font-bold text-lg shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2">
+<span>Publicar Receta</span>
+<span class="material-symbols-outlined filled">check_circle</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

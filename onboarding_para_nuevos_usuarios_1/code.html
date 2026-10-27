@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onboarding - Cooking App</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e9a663",
+                        "primary-dark": "#d68b45",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#211911",
+                        "text-main": "#171411",
+                        "text-sub": "#877564",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-screen w-full flex-col overflow-hidden max-w-md mx-auto shadow-2xl bg-white dark:bg-background-dark">
+<!-- Top Bar: Skip Button -->
+<div class="flex items-center justify-end px-6 pt-12 pb-2 z-10 shrink-0">
+<button class="flex items-center justify-center p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="text-text-sub dark:text-gray-400 text-sm font-bold tracking-wide">Omitir</span>
+</button>
+</div>
+<!-- Carousel Content -->
+<!-- Using snap-x for native swipe behavior -->
+<div class="flex-1 flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar [&amp;::-webkit-scrollbar]:hidden w-full">
+<!-- Slide 1: Discovery -->
+<div class="min-w-full snap-center flex flex-col items-center justify-start pt-4 px-6 gap-8">
+<div class="w-full aspect-[4/5] max-h-[50vh] rounded-3xl overflow-hidden shadow-lg relative bg-[#fff5eb] dark:bg-[#2f251d] flex items-center justify-center group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105" data-alt="Healthy colorful salad bowl with fresh ingredients overhead view" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCTqhLWX6Ar8zXitPj4v40Ep_Wd2bumDx8fXBg7m2g96yTWKxUc3iRt52M-dRUgMywQ5tS4m9I54rCvtfM0_Qvn9ulFJB8rotCYIZTWi3f1vXlzfaRQzQhmAjE9CkGn3n3xL6GkNYMAR9urlljYJYG2Tc2EZTv7-kCe18VrlnQ9dpfob3rm7S2jWrAWfcwxaYBCGnVjTxhg3WHFvxdyQF5UaQNM9yPVnCNx5A7VPtaS5JNPQr64agfsnbJ48EVb98wX2fslCaPYm3s");'>
+</div>
+<!-- Overlay gradient for better text visibility if needed, though we have text below -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-20"></div>
+</div>
+<div class="flex flex-col items-center text-center space-y-3 max-w-xs animate-fade-in-up">
+<div class="p-3 bg-primary/20 rounded-full mb-1 text-primary">
+<span class="material-symbols-outlined text-3xl">search</span>
+</div>
+<h2 class="text-text-main dark:text-white text-2xl md:text-3xl font-bold leading-tight">
+                        Descubre tu próxima cena
+                    </h2>
+<p class="text-text-sub dark:text-gray-400 text-base font-medium leading-relaxed">
+                        Explora miles de recetas deliciosas perfectas para cualquier ocasión especial o diaria.
+                    </p>
+</div>
+</div>
+<!-- Slide 2: Sharing -->
+<div class="min-w-full snap-center flex flex-col items-center justify-start pt-4 px-6 gap-8">
+<div class="w-full aspect-[4/5] max-h-[50vh] rounded-3xl overflow-hidden shadow-lg relative bg-[#fff5eb] dark:bg-[#2f251d]">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Person taking a photo of food with a smartphone on a wooden table" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBa4cQR-DqOx-FtGlqRApck6VirxwTHFefn5iVoDGeNjeFMoLkftxhebtZiOCxZOBbjw2oshRyVnBUL31NCI3QOJr8ODrowiRO3TyOCrxepeAxfjB_iWDpNWfku0RNu5wal4xqp9qYp40vFaCVEWuZ3JyORBETL66B33_xqQZRjrT7NaP3eJhD8NcPaipc1EfbQ6Su8hio8Rd4zGqbxsyYOtMiT2Uzw5Eku4cRIrJ8mmViCKWYPtGnLziFJOPdZRhb0kZeGywJttVw");'>
+</div>
+</div>
+<div class="flex flex-col items-center text-center space-y-3 max-w-xs">
+<div class="p-3 bg-primary/20 rounded-full mb-1 text-primary">
+<span class="material-symbols-outlined text-3xl">add_a_photo</span>
+</div>
+<h2 class="text-text-main dark:text-white text-2xl md:text-3xl font-bold leading-tight">
+                        Comparte tu talento
+                    </h2>
+<p class="text-text-sub dark:text-gray-400 text-base font-medium leading-relaxed">
+                        Sube tus propias creaciones, inspira a otros y guarda tus recetas favoritas en tu perfil.
+                    </p>
+</div>
+</div>
+<!-- Slide 3: Community -->
+<div class="min-w-full snap-center flex flex-col items-center justify-start pt-4 px-6 gap-8">
+<div class="w-full aspect-[4/5] max-h-[50vh] rounded-3xl overflow-hidden shadow-lg relative bg-[#fff5eb] dark:bg-[#2f251d]">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Group of friends toasting with wine glasses at a dinner party" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCXNpf21yCe5HkbbyvzX7DkIxgp7shtmhn1LRMfhx5FBiXiqOFiI73udUmoQNyZyE5V4uxON8Ep68pwunbPOgAKltdqZj6iz1TmR9l4p4mdAatmE2YMFtIVyGk2u8EdmBxF7pHntdhCoQkdfQxDcXQZeOog5iB9nbuXjCevVxEqiA1Mo4VzwXTfTzG6WoxUaze7eHoeuA380-xYWoKz-w4-KhQCq56iXnr_5sVnZM76xBLjGDWa-vfOqsGQ5hc5kADTinY2P0MRH1U");'>
+</div>
+</div>
+<div class="flex flex-col items-center text-center space-y-3 max-w-xs">
+<div class="p-3 bg-primary/20 rounded-full mb-1 text-primary">
+<span class="material-symbols-outlined text-3xl">favorite</span>
+</div>
+<h2 class="text-text-main dark:text-white text-2xl md:text-3xl font-bold leading-tight">
+                        Conecta con foodies
+                    </h2>
+<p class="text-text-sub dark:text-gray-400 text-base font-medium leading-relaxed">
+                        Comenta, da like y sigue a cocineros apasionados que te inspiren cada día.
+                    </p>
+</div>
+</div>
+<!-- Slide 4: Achievements -->
+<div class="min-w-full snap-center flex flex-col items-center justify-start pt-4 px-6 gap-8">
+<div class="w-full aspect-[4/5] max-h-[50vh] rounded-3xl overflow-hidden shadow-lg relative bg-[#fff5eb] dark:bg-[#2f251d]">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Professional chef plating a dish with precision in a kitchen" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBQo8whn1izvDp_r88JHhYeFkaYiyhlI8E9GtLhOfRMYvdio6WEsJsBnRLCm4eS7Tvrw8nxPpI8QaW69qRhKE9cplG5dnM0ZFtkDnr6XMplamgRgCzzv7i6_JwsKFwyhbO3QXpeAx3jdT7um_eFtayEx7kYYsAJgZW7FCaE0q5cKErB66tfLdZSCksZlfnSVRB_jCRFgSzW_peLyxqAQhDUzD3PSGuLdATmbY2YPNfrFJcCAVkbPeO-X9EyPtCpw7aFdEXKqDiyWW8");'>
+</div>
+</div>
+<div class="flex flex-col items-center text-center space-y-3 max-w-xs">
+<div class="p-3 bg-primary/20 rounded-full mb-1 text-primary">
+<span class="material-symbols-outlined text-3xl">military_tech</span>
+</div>
+<h2 class="text-text-main dark:text-white text-2xl md:text-3xl font-bold leading-tight">
+                        Desbloquea logros
+                    </h2>
+<p class="text-text-sub dark:text-gray-400 text-base font-medium leading-relaxed">
+                        Gana insignias exclusivas mientras cocinas y te conviertes en un verdadero Master Chef.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Footer Controls -->
+<div class="flex flex-col items-center w-full px-6 pb-10 pt-4 gap-6 shrink-0 bg-transparent">
+<!-- Page Indicators -->
+<div class="flex flex-row items-center justify-center gap-2">
+<div class="h-2 w-6 rounded-full bg-primary transition-all duration-300"></div>
+<div class="h-2 w-2 rounded-full bg-[#e5e0dc] dark:bg-gray-700 transition-all duration-300"></div>
+<div class="h-2 w-2 rounded-full bg-[#e5e0dc] dark:bg-gray-700 transition-all duration-300"></div>
+<div class="h-2 w-2 rounded-full bg-[#e5e0dc] dark:bg-gray-700 transition-all duration-300"></div>
+</div>
+<!-- Single Button -->
+<button class="w-full cursor-pointer flex items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-primary hover:bg-primary-dark active:scale-[0.98] transition-all duration-200 text-[#171411] text-lg font-bold shadow-[0_4px_14px_0_rgba(233,166,99,0.39)]">
+<span class="truncate">Siguiente</span>
+<span class="material-symbols-outlined ml-2 text-xl font-bold">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

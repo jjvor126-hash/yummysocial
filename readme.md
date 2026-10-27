@@ -1,0 +1,1 @@
+Esta trata de una red social, una app web responsive para ser vista en celular, como instagram, donde las personas podran publicar platos de comida, votar por los mismos, interactuar con otras personas, poner recetas y dificultades, ganar puntos dentro de la misma red 

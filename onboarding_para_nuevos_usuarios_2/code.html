@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Recetas Guardadas - Cooking App</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e9a663",
+                        "primary-dark": "#d68b45",
+                        "primary-light": "#fdf3e7",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#211911",
+                        "text-main": "#171411",
+                        "text-sub": "#877564",
+                        "card-white": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-screen w-full flex-col overflow-hidden max-w-md mx-auto shadow-2xl bg-background-light dark:bg-background-dark">
+<header class="flex items-center justify-between px-6 pt-12 pb-4 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md sticky top-0 z-30">
+<button class="flex items-center justify-center p-2 -ml-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-text-main dark:text-white">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold text-text-main dark:text-white tracking-tight">Guardadas</h1>
+<button class="flex items-center justify-center p-2 -mr-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors relative">
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background-light dark:border-background-dark"></span>
+<span class="material-symbols-outlined text-text-main dark:text-white">notifications</span>
+</button>
+</header>
+<main class="flex-1 overflow-y-auto no-scrollbar w-full pb-24">
+<div class="px-6 mb-6">
+<div class="relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</span>
+<input class="w-full bg-white dark:bg-[#2f251d] border-none rounded-2xl py-4 pl-12 pr-4 text-text-main dark:text-white placeholder:text-text-sub/70 shadow-sm focus:ring-2 focus:ring-primary/50 transition-all text-sm font-medium" placeholder="Buscar en mis recetas..." type="text"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-text-sub hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">tune</span>
+</button>
+</div>
+</div>
+<div class="flex gap-3 px-6 overflow-x-auto no-scrollbar mb-8 snap-x">
+<button class="snap-start shrink-0 px-5 py-2.5 rounded-full bg-primary text-white font-bold text-sm shadow-[0_4px_10px_0_rgba(233,166,99,0.4)] transition-transform active:scale-95">
+                Todas
+            </button>
+<button class="snap-start shrink-0 px-5 py-2.5 rounded-full bg-white dark:bg-[#2f251d] text-text-sub dark:text-gray-300 font-bold text-sm border border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                Cenas
+            </button>
+<button class="snap-start shrink-0 px-5 py-2.5 rounded-full bg-white dark:bg-[#2f251d] text-text-sub dark:text-gray-300 font-bold text-sm border border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                Desayunos
+            </button>
+<button class="snap-start shrink-0 px-5 py-2.5 rounded-full bg-white dark:bg-[#2f251d] text-text-sub dark:text-gray-300 font-bold text-sm border border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                Postres
+            </button>
+<button class="snap-start shrink-0 px-5 py-2.5 rounded-full bg-white dark:bg-[#2f251d] text-text-sub dark:text-gray-300 font-bold text-sm border border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                Vegano
+            </button>
+</div>
+<div class="grid grid-cols-2 gap-4 px-6">
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 dark:bg-gray-800 shadow-md">
+<img alt="Healthy bowl" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0XIborDlfOWQxgPcLV4Xoh7n82FBf5MmX5Ob1s8sj1URMrCPKiHOugGUV1piafxxmYOa-LbG8rmpFS4aXxlD83O9mMLQgYurPDUkjhmQEtqkIrHcmH6bG_HigJ9SEaZaHUikrLLxR8Qzs5q7lHAH4w5ibBcWLgc-txE0H6PpYLu3QFDnc7cg7jDj0_-CEQNSPS5uktAb7Yfzymrhtpde8JLPIjkn-JC3IdcdDVTpG4OR-S8S9VCxZvwj7g0X3psEgR_VCJIhfBCQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px] fill-current">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 right-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/90 backdrop-blur-sm text-[10px] font-bold text-white mb-1">
+                            20 min
+                        </span>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight mb-1 text-base">Bowl de Quinoa y Aguacate</h3>
+<div class="flex items-center gap-2">
+<img alt="User" class="w-5 h-5 rounded-full object-cover border border-white dark:border-gray-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4tlwkPdnI1x8DjcTHfrl4-AFQJrhD6oVE2rmbMZzVQQ8aiSnzSD-pqGb5eaBikt1wawFv9WIkECXO60Fd1GbLRml6e_Q9AdEsEhN-Xh2McK0PrLjIbw1jwYYpOXqq9vzBKvUXKNVsYo0vmca5ei-OiTJmzO9OHISvVDwTQ65msJ8AdrE1GDHyp8iHRynMFxl2ps1kJy3IIWJI6Ns3vXdTHM_oqJ5skCoBWIln9M4PWqPR2UtrOh3uJWubxaQzKQ34hXaTVyznOUs"/>
+<span class="text-xs text-text-sub dark:text-gray-400 font-medium truncate">Ana García</span>
+</div>
+</div>
+</div>
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 dark:bg-gray-800 shadow-md">
+<img alt="Chicken Dish" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxBc_Y66xli7It7lpBtykyBPTIKHrXJ-D2DGb4Ln3nzccex8-yEer3GBx71iWoIE3t37boNE3YxIH8gQb89yx83vXmAUFr8eQYVUYxdxwQa0aaXTezS1peVlocXFRi3lszgS-YZS4FgwGFm7lbkORG5rZXNsCpRNdY1PlB1Ke2U_fm2f-AmmSHzjJy8w7o2dLXrtegB-Ttwwz6U4Cy2OuzsoVQg37hA49clbAAp47hKC1z6KpDn0RcqdPEsRRD4IvzvqbLg8icY0A"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px] fill-current">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 right-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-black/40 backdrop-blur-sm text-[10px] font-bold text-white mb-1">
+                            45 min
+                        </span>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight mb-1 text-base">Pollo Asado al Romero</h3>
+<div class="flex items-center gap-2">
+<img alt="User" class="w-5 h-5 rounded-full object-cover border border-white dark:border-gray-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7Ubk7a1dte3Rkl1KZbiidbmMQHRE4qG0YFz1BI1CwAMwLFX64aOCK-xm6JvfKNd1iFADS2rSycXegragX6yAtDO3fYoyxEMlONS0bG9Lt7TjwwqnlO8laVKrLxOIf4yiEVWWLC4b6WemfQ36JdGLqV4dXpzcJcCjgjagd7p2fRr4F5RXdQ1W6VmdRAwz0yGFh_OA9Yl84Lsj2lVeyTqo8sutQM24IJ7hHarG-7Kh73n5FOgdpGHlhF5mHxM9NAwkXjKwUF84LXe8"/>
+<span class="text-xs text-text-sub dark:text-gray-400 font-medium truncate">Carlos Chef</span>
+</div>
+</div>
+</div>
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 dark:bg-gray-800 shadow-md">
+<img alt="Pizza" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1zETVbeBm9qJD7YW_nDgqcnO-kMm5mBKJya7Z6wqpiuuovCQnb7uEFKs80lDjhLJyguVVeeSsH50TfidZR4VpDFDiANC3ir5hm2k6cxomULiFE9ZfcE6AyX1l3kH9-HexAeCO299491Ym3nIUS9QQJjlA_uSrjh9D0LtqgKoUrGMQgI4VO-IwK8FyRtajfLq89bs8uX4FTvxyTfxRbxli401mfwIJDwEAY6XAtAvji7JxNJHAe2VUY8KN2Z5wzEuBg3yMYhJyN_E"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px] fill-current">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 right-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-black/40 backdrop-blur-sm text-[10px] font-bold text-white mb-1">
+                            30 min
+                        </span>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight mb-1 text-base">Pizza Margarita Casera</h3>
+<div class="flex items-center gap-2">
+<img alt="User" class="w-5 h-5 rounded-full object-cover border border-white dark:border-gray-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYxUqNUdUaKwlTioEwgtB8y2PaUSr4dQOFg1wnzLV0kAfqmqzkwOalgnHPXKe-TYzqdordhwxetkb5i2NuKaVMUvQnfr2o0OjBO1eTwV0Pq9TL0jWj40hFk2WXNOC5KJtC2DwQwHZH9z3CPlYSSlJfILn0pgo9HOz8791Q3NikcXhExItL28L2OWmyFyasnwTgN7hI7R-i4ZSJr8x07zpf9TP9eGdH-cdkBsn58qgraBVO-kMHdScVK8LsJYwzVAzm_Eq3ZGOVhSI"/>
+<span class="text-xs text-text-sub dark:text-gray-400 font-medium truncate">Lucía M.</span>
+</div>
+</div>
+</div>
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 dark:bg-gray-800 shadow-md">
+<img alt="Soup" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV-ewj4YOAiV4icDl-uKeYrJiM__RDqTHBqbVmyOg3dtPPFrHDwx26SrY8tyMTERGCArV02X0LDRarP4-ZYdCCgAsadhTgfQQ96YbPyYRx8rE71t2PlKengjtTNiNUU8FXz9zPYF5I8JmIV2LiRE_rnTIP70OniSx5-vVBJun31oJca3uPP6hlp0QHATIxUk5lc0vP7mCHadeIFEmJGES4AVFBwlXNv7FljMxQTtfWSgLUQ11aLnp8qevXxvZdIJo9vmfk1J4F0qc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px] fill-current">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 right-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-black/40 backdrop-blur-sm text-[10px] font-bold text-white mb-1">
+                            15 min
+                        </span>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight mb-1 text-base">Crema de Calabaza</h3>
+<div class="flex items-center gap-2">
+<img alt="User" class="w-5 h-5 rounded-full object-cover border border-white dark:border-gray-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA34ez7cNMgv7w04jy4KgpWKosybwcSdVI-iVa8CR_pVx0BcZdfW9dkURRNdIv63iqnmpC3Q3UTYZqszh2PBrZ_kMqHlezwRckRU8HTiX8r3HHfKCSwvAU63VA3q4yA7XCU5Dx3DusGI_LMaJZP84-5gyX5VJuTimcVaCvamCr01Wx18k4hpKGka_6tqUsgcBs8Z9g_u8a9IPL08cba3sbmeCBHH2NfMu-xwGt6R3SBL6AY2t8HApedukU8LwqhogjbA_X6e0y6bRE"/>
+<span class="text-xs text-text-sub dark:text-gray-400 font-medium truncate">Elena Cocina</span>
+</div>
+</div>
+</div>
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 dark:bg-gray-800 shadow-md">
+<img alt="Sandwich" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNXTK4P2Zl-CeCn6yuqWwJAKf46B3Ubftem6GHMQYIMOPvClCdzBg43nK065R070QTJ0W4o_dKL8J9D_RR4x9e1U7CiKW0P1msQBpXiC51RdFsIZeDIYR_AzZIzKFmcHJzipbPXFvf0DkEmRiask_LIh4kl7ESZqWLEQvaiF_9NlPjdFUvm-JWZPRxdV80Zl-kkS_kxdBhGxNampLCp35z2tAh8m3wJospYEIuoevtSq-jKVY96i6Wbja4gHxAH-Oyccuv4bTGDfk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px] fill-current">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 right-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-black/40 backdrop-blur-sm text-[10px] font-bold text-white mb-1">
+                            10 min
+                        </span>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight mb-1 text-base">Tostada de Huevo Poché</h3>
+<div class="flex items-center gap-2">
+<img alt="User" class="w-5 h-5 rounded-full object-cover border border-white dark:border-gray-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJypqHkwuR55acXgXzvSpBn73dbdGv0w65H4NiUi2UeMS_K_NJ2RhaZHi9zFD6VirOOFDCv4KBPMf2S7gx3hydKqQxlMB03jn3rfOBcQT6GUNA6V3Z8skdnOId5OWxfK3BrpXQOgPw1PH5Td0MaVgeLsJ4DfjltFoFhHXaLyAbcFas9MaHb6cjKcZnbA_40lLRUL5fbp0fQj3mn0hC7h00vZZuSyQSI3xjlNPVPgrETXPFJSu6XozOE_XS5VUvP8DdH9GdbF4_Yg8"/>
+<span class="text-xs text-text-sub dark:text-gray-400 font-medium truncate">David Foodie</span>
+</div>
+</div>
+</div>
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 dark:bg-gray-800 shadow-md">
+<img alt="Pasta" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWtuYTGrA7WMV0Ej-3mQNnMvUHrUccEErEBMaQgX0L3vnWmRYu4TMotAamHsFxxRZ-RhWpIR4OQcSNpccc9Apk6TFeD_Cn97To_-TZWqfwvaPwBDx1pBjhC2OlCuH5P3RUzt-b5GI5lx5DFmY4XT2VZXy2H9BkoAhCYUoGWXreVJCPyMXPFLdVRwprYNmESU51qNQONBxjddf473UkPXZ1VwvHzYeTw1x7Vx-k04HiOdmXTOKbvzndVqM-cPjf23xaj-PcL6wfjOU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px] fill-current">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 right-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-black/40 backdrop-blur-sm text-[10px] font-bold text-white mb-1">
+                            55 min
+                        </span>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight mb-1 text-base">Pasta con Espinacas</h3>
+<div class="flex items-center gap-2">
+<img alt="User" class="w-5 h-5 rounded-full object-cover border border-white dark:border-gray-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIoAT63VltIKqONtIJb-cmMFMxwD7Onj3J8AjxihyRD6l1vwqQKe5pydT-u-o6kXkYXSio0CnhlzQKUi5rdhK9YkpBI8pJQCzUDYCHqNqsIeIGrEveuxy6dvO0fw80aOygTOX3fna8opHaro0RV0SpV5N0nuax6E7u8MCN1Dr-vlwF8la-Kucp6e5hQiw95-gViG52him8-x1QJEcJsHHqaGN1y2ZrPQUzWl1XDILkqPfrhN8oEK1Lg3zrvNp-X_W3yeAWWyUPe-0"/>
+<span class="text-xs text-text-sub dark:text-gray-400 font-medium truncate">Maria P.</span>
+</div>
+</div>
+</div>
+</div>
+<div class="h-8"></div>
+</main>
+<nav class="absolute bottom-0 w-full bg-white dark:bg-background-dark border-t border-gray-100 dark:border-white/5 px-6 pb-8 pt-4 flex justify-between items-end z-30">
+<button class="flex flex-col items-center gap-1 text-text-sub hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-[28px] group-hover:-translate-y-0.5 transition-transform">home</span>
+<span class="text-[10px] font-bold">Inicio</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-text-sub hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-[28px] group-hover:-translate-y-0.5 transition-transform">search</span>
+<span class="text-[10px] font-bold">Explorar</span>
+</button>
+<button class="flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white shadow-[0_4px_14px_0_rgba(233,166,99,0.5)] -mt-8 hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary transition-colors group">
+<span class="material-symbols-outlined text-[28px] fill-1 group-hover:-translate-y-0.5 transition-transform">bookmark</span>
+<span class="text-[10px] font-bold">Guardadas</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-text-sub hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-[28px] group-hover:-translate-y-0.5 transition-transform">person</span>
+<span class="text-[10px] font-bold">Perfil</span>
+</button>
+</nav>
+</div>
+
+</body></html>
