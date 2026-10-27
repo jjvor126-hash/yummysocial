@@ -15,7 +15,7 @@ export const seedUsers: User[] = [
     followers: 128,
     following: 74,
     stars: 850,
-    level: 'Aprendiz',
+    level: 'Cocinero',
     followingIds: ['u-maria', 'u-italian'],
   },
   {
@@ -28,7 +28,7 @@ export const seedUsers: User[] = [
     followers: 12_400,
     following: 320,
     stars: 3_500,
-    level: 'Maestra del Menú',
+    level: 'Gurú Gastronómico',
     followingIds: [],
   },
   {
@@ -41,7 +41,7 @@ export const seedUsers: User[] = [
     followers: 8_900,
     following: 180,
     stars: 2_900,
-    level: 'Chef',
+    level: 'Maestro del Menú',
     followingIds: [],
   },
   {
@@ -54,7 +54,7 @@ export const seedUsers: User[] = [
     followers: 21_300,
     following: 410,
     stars: 4_200,
-    level: 'Maestro del Menú',
+    level: 'Gurú Gastronómico',
     followingIds: [],
   },
   {
@@ -67,7 +67,7 @@ export const seedUsers: User[] = [
     followers: 6_100,
     following: 230,
     stars: 2_100,
-    level: 'Chef',
+    level: 'Maestro del Menú',
     followingIds: [],
   },
   {
@@ -80,7 +80,7 @@ export const seedUsers: User[] = [
     followers: 9_700,
     following: 150,
     stars: 3_100,
-    level: 'Chef',
+    level: 'Maestro del Menú',
     followingIds: [],
   },
   {
@@ -93,7 +93,7 @@ export const seedUsers: User[] = [
     followers: 4_800,
     following: 290,
     stars: 1_700,
-    level: 'Cocinera',
+    level: 'Cocinero',
     followingIds: [],
   },
   {
@@ -106,7 +106,7 @@ export const seedUsers: User[] = [
     followers: 3_900,
     following: 120,
     stars: 1_250,
-    level: 'Cocinero',
+    level: 'Chef',
     followingIds: [],
   },
 ]

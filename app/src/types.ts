@@ -59,6 +59,27 @@ export type Comment = {
   likedByMe: boolean
 }
 
+export type RecipeInput = {
+  title: string
+  description: string
+  image: string
+  timeMinutes: number
+  difficulty: Difficulty
+  servings: number
+  calories: number
+  tags: string[]
+  ingredients: Array<Omit<Ingredient, 'id'>>
+  steps: Array<Omit<RecipeStep, 'id'>>
+}
+
+export type ProfileInput = {
+  name: string
+  username: string
+  bio: string
+  location: string
+  avatar: string
+}
+
 export type NotificationType = 'like' | 'comment' | 'follow' | 'mention' | 'system'
 
 export type AppNotification = {

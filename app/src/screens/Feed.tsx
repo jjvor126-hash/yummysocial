@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { IconButton } from '../components/IconButton'
-import { shareRecipe } from '../lib/share'
+import { Toast } from '../components/Toast'
+import { useToast } from '../lib/useToast'
+import { shareLink } from '../lib/share'
 import { formatCount, timeAgo } from '../lib/time'
 import { useAppStore, useCurrentUser, useUnreadNotifications } from '../store/useAppStore'
 import type { Recipe, User } from '../types'
@@ -14,7 +16,7 @@ export function Feed() {
   const unreadCount = useUnreadNotifications()
   const toggleLike = useAppStore((state) => state.toggleLike)
   const toggleSave = useAppStore((state) => state.toggleSave)
-  const [toast, setToast] = useState<string | null>(null)
+  const { message: toast, showToast } = useToast()
 
   const feed = useMemo(
     () =>
@@ -34,15 +36,14 @@ export function Feed() {
   }
 
   async function handleShare(recipe: Recipe) {
-    const result = await shareRecipe({
+    const result = await shareLink({
       title: recipe.title,
       text: recipe.description,
       path: `/recipe/${recipe.id}`,
     })
     if (result !== 'copied') return
 
-    setToast('Enlace copiado al portapapeles')
-    window.setTimeout(() => setToast(null), 2000)
+    showToast('Enlace copiado al portapapeles')
   }
 
   return (
@@ -235,14 +236,7 @@ export function Feed() {
         </Link>
       </div>
 
-      {toast ? (
-        <div
-          role="status"
-          className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white shadow-lg dark:bg-white dark:text-ink"
-        >
-          {toast}
-        </div>
-      ) : null}
+      <Toast message={toast} />
     </div>
   )
 }

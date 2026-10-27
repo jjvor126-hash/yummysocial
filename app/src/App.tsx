@@ -3,9 +3,11 @@ import { AppShell } from './components/AppShell'
 import { BottomNav } from './components/BottomNav'
 import { Placeholder } from './components/Placeholder'
 import { ScrollToTop } from './components/ScrollToTop'
+import { CreateRecipe } from './screens/CreateRecipe'
 import { Feed } from './screens/Feed'
 import { NotFound } from './screens/NotFound'
 import { Onboarding } from './screens/Onboarding'
+import { Profile } from './screens/Profile'
 import { RecipeDetail } from './screens/RecipeDetail'
 import { Settings } from './screens/Settings'
 import { Welcome } from './screens/Welcome'
@@ -92,32 +94,10 @@ export default function App() {
                 />
               }
             />
-            <Route
-              path="/profile"
-              element={
-                <Placeholder
-                  title="Mi perfil"
-                  description="Tus recetas, historias destacadas, seguidores y logros culinarios."
-                  icon="person"
-                  phase="Fase 3"
-                />
-              }
-            />
+            <Route path="/profile" element={<Profile />} />
           </Route>
 
-          <Route
-            path="/create"
-            element={
-              <Placeholder
-                standalone
-                backTo="/feed"
-                title="Crear receta"
-                description="Añade foto, ingredientes y pasos para publicar tu receta."
-                icon="add_circle"
-                phase="Fase 3"
-              />
-            }
-          />
+          <Route path="/create" element={<CreateRecipe />} />
 
           <Route path="/recipe/:id" element={<RecipeDetail />} />
 

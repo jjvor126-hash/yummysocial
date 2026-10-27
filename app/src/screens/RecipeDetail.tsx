@@ -1,9 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
+import { Toast } from '../components/Toast'
+import { useToast } from '../lib/useToast'
 import { SECRET_STAR_COST } from '../lib/constants'
-import { shareRecipe } from '../lib/share'
+import { shareLink } from '../lib/share'
 import { formatCount, timeAgo } from '../lib/time'
 import { useAppStore, useCurrentUser } from '../store/useAppStore'
 import type { Comment, Recipe, User } from '../types'
@@ -99,14 +101,8 @@ export function RecipeDetail() {
   const [doneSteps, setDoneSteps] = useState<Set<string>>(() => new Set())
   const [showAllComments, setShowAllComments] = useState(false)
   const [composerText, setComposerText] = useState('')
-  const [toast, setToast] = useState<string | null>(null)
+  const { message: toast, showToast } = useToast()
   const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (!toast) return
-    const timer = window.setTimeout(() => setToast(null), 2200)
-    return () => window.clearTimeout(timer)
-  }, [toast])
 
   const recipeComments = useMemo(
     () =>
@@ -140,18 +136,18 @@ export function RecipeDetail() {
   }
 
   async function handleShare(target: Recipe) {
-    const result = await shareRecipe({
+    const result = await shareLink({
       title: target.title,
       text: target.description,
       path: `/recipe/${target.id}`,
     })
-    if (result === 'copied') setToast('Enlace copiado al portapapeles')
+    if (result === 'copied') showToast('Enlace copiado al portapapeles')
   }
 
   function handleUnlock(target: Recipe) {
     if (!canUnlock) return
     unlockSecrets(target.id)
-    setToast('Contenido secreto desbloqueado')
+    showToast('Contenido secreto desbloqueado')
   }
 
   function toggleIngredient(ingredientId: string) {
@@ -244,13 +240,26 @@ export function RecipeDetail() {
             </p>
           </div>
           <div className="flex shrink-0 flex-col items-center rounded-2xl border border-primary/10 bg-white px-3 py-2 shadow-sm dark:border-white/10 dark:bg-white/5">
-            <div className="flex items-center gap-1 text-primary">
-              <span className="text-lg font-extrabold leading-none">{recipe.rating.toFixed(1)}</span>
-              <Icon name="star" filled className="text-[16px]" />
-            </div>
-            <span className="mt-1 text-[10px] font-medium text-muted dark:text-gray-400">
-              {formatCount(recipe.ratingCount)} reseñas
-            </span>
+            {recipe.ratingCount > 0 ? (
+              <>
+                <div className="flex items-center gap-1 text-primary">
+                  <span className="text-lg font-extrabold leading-none">
+                    {recipe.rating.toFixed(1)}
+                  </span>
+                  <Icon name="star" filled className="text-[16px]" />
+                </div>
+                <span className="mt-1 text-[10px] font-medium text-muted dark:text-gray-400">
+                  {formatCount(recipe.ratingCount)} reseñas
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-sm font-extrabold leading-none text-primary">Nuevo</span>
+                <span className="mt-1 text-[10px] font-medium text-muted dark:text-gray-400">
+                  Sin reseñas
+                </span>
+              </>
+            )}
           </div>
         </div>
 
@@ -313,7 +322,7 @@ export function RecipeDetail() {
           <StatCard
             icon="local_fire_department"
             label="Calorías"
-            value={formatCount(recipe.calories)}
+            value={recipe.calories > 0 ? formatCount(recipe.calories) : '—'}
             tone="amber"
           />
           <StatCard
@@ -330,7 +339,8 @@ export function RecipeDetail() {
               Ingredientes
             </h2>
             <span className="text-sm text-muted dark:text-gray-400">
-              {recipe.ingredients.length} items
+              {recipe.ingredients.length}{' '}
+              {recipe.ingredients.length === 1 ? 'ítem' : 'ítems'}
             </span>
           </div>
 
@@ -591,14 +601,7 @@ export function RecipeDetail() {
         </section>
       </div>
 
-      {toast ? (
-        <div
-          role="status"
-          className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white shadow-lg dark:bg-white dark:text-ink"
-        >
-          {toast}
-        </div>
-      ) : null}
+      <Toast message={toast} />
 
       <form
         onSubmit={handleSubmit}

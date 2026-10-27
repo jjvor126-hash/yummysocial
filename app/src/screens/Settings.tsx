@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Icon } from '../components/Icon'
+import { clearDraft } from '../lib/draft'
 import { toggleTheme } from '../lib/theme'
 import { useAppStore, useCurrentUser } from '../store/useAppStore'
 
@@ -53,9 +54,10 @@ export function Settings() {
 
   function handleReset() {
     const confirmed = window.confirm(
-      '¿Restablecer los datos de demostración? Se perderán tus likes, comentarios y recetas guardadas.',
+      '¿Restablecer los datos de demostración? Se perderán tus likes, comentarios, recetas guardadas, recetas creadas y los cambios de perfil.',
     )
     if (!confirmed) return
+    clearDraft()
     resetDemoData()
     navigate('/welcome', { replace: true })
   }

@@ -9,7 +9,7 @@ export type ShareResult = 'shared' | 'copied' | 'cancelled'
 /**
  * Comparte con la Web Share API y, si no está disponible, copia el enlace.
  */
-export async function shareRecipe({ title, text, path }: SharePayload): Promise<ShareResult> {
+export async function shareLink({ title, text, path }: SharePayload): Promise<ShareResult> {
   const url = `${window.location.origin}${path}`
 
   try {

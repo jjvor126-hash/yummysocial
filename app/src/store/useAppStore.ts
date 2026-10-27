@@ -8,7 +8,7 @@ import {
   seedUsers,
 } from '../data/seed'
 import { SECRET_STAR_COST } from '../lib/constants'
-import type { AppNotification, Comment, Recipe, User } from '../types'
+import type { AppNotification, Comment, ProfileInput, Recipe, RecipeInput, User } from '../types'
 
 type AppState = {
   users: User[]
@@ -24,6 +24,8 @@ type AppState = {
   toggleLike: (recipeId: string) => void
   toggleSave: (recipeId: string) => void
   addComment: (recipeId: string, text: string) => void
+  addRecipe: (input: RecipeInput) => string
+  updateProfile: (input: ProfileInput) => void
   toggleFollow: (userId: string) => void
   unlockSecrets: (recipeId: string) => void
   markNotificationRead: (id: string) => void
@@ -104,16 +106,75 @@ export const useAppStore = create<AppState>()(
         set((state) => {
           if (!state.currentUserId) return state
 
+          const current = state.users.find((user) => user.id === state.currentUserId)
+          if (!current) return state
+
+          const wasFollowing = current.followingIds.includes(userId)
+
+          return {
+            users: state.users.map((user) => {
+              if (user.id === state.currentUserId) {
+                return {
+                  ...user,
+                  followingIds: wasFollowing
+                    ? user.followingIds.filter((id) => id !== userId)
+                    : [...user.followingIds, userId],
+                  following: Math.max(0, user.following + (wasFollowing ? -1 : 1)),
+                }
+              }
+
+              if (user.id === userId) {
+                return {
+                  ...user,
+                  followers: Math.max(0, user.followers + (wasFollowing ? -1 : 1)),
+                }
+              }
+
+              return user
+            }),
+          }
+        }),
+
+      addRecipe: (input) => {
+        const id = `r-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
+
+        set((state) => {
+          if (!state.currentUserId) return state
+
+          const recipe: Recipe = {
+            ...input,
+            id,
+            authorId: state.currentUserId,
+            ingredients: input.ingredients.map((ingredient, index) => ({
+              ...ingredient,
+              id: `${id}-i${index + 1}`,
+            })),
+            steps: input.steps.map((step, index) => ({
+              ...step,
+              id: `${id}-s${index + 1}`,
+            })),
+            likes: 0,
+            commentCount: 0,
+            likedByMe: false,
+            savedByMe: false,
+            rating: 0,
+            ratingCount: 0,
+            createdAt: new Date().toISOString(),
+          }
+
+          return { recipes: [recipe, ...state.recipes] }
+        })
+
+        return id
+      },
+
+      updateProfile: (input) =>
+        set((state) => {
+          if (!state.currentUserId) return state
+
           return {
             users: state.users.map((user) =>
-              user.id === state.currentUserId
-                ? {
-                    ...user,
-                    followingIds: user.followingIds.includes(userId)
-                      ? user.followingIds.filter((id) => id !== userId)
-                      : [...user.followingIds, userId],
-                  }
-                : user,
+              user.id === state.currentUserId ? { ...user, ...input } : user,
             ),
           }
         }),
@@ -151,27 +212,44 @@ export const useAppStore = create<AppState>()(
       version: 1,
       merge: (persistedState, currentState) => {
         const persisted = (persistedState ?? {}) as Partial<AppState>
+        const seedRecipeIds = new Set(currentState.recipes.map((recipe) => recipe.id))
+        const createdRecipes = (persisted.recipes ?? []).filter(
+          (recipe) => !seedRecipeIds.has(recipe.id),
+        )
 
         return {
           ...currentState,
           ...persisted,
           users: currentState.users.map((user) => {
             const previous = persisted.users?.find((item) => item.id === user.id)
-            return previous
-              ? { ...user, followingIds: previous.followingIds ?? user.followingIds }
-              : user
+            if (!previous) return user
+
+            return {
+              ...user,
+              name: previous.name ?? user.name,
+              username: previous.username ?? user.username,
+              avatar: previous.avatar ?? user.avatar,
+              bio: previous.bio ?? user.bio,
+              location: previous.location ?? user.location,
+              followingIds: previous.followingIds ?? user.followingIds,
+              followers: previous.followers ?? user.followers,
+              following: previous.following ?? user.following,
+            }
           }),
-          recipes: currentState.recipes.map((recipe) => {
-            const previous = persisted.recipes?.find((item) => item.id === recipe.id)
-            return previous
-              ? {
-                  ...recipe,
-                  likes: previous.likes ?? recipe.likes,
-                  likedByMe: previous.likedByMe ?? recipe.likedByMe,
-                  savedByMe: previous.savedByMe ?? recipe.savedByMe,
-                }
-              : recipe
-          }),
+          recipes: [
+            ...currentState.recipes.map((recipe) => {
+              const previous = persisted.recipes?.find((item) => item.id === recipe.id)
+              return previous
+                ? {
+                    ...recipe,
+                    likes: previous.likes ?? recipe.likes,
+                    likedByMe: previous.likedByMe ?? recipe.likedByMe,
+                    savedByMe: previous.savedByMe ?? recipe.savedByMe,
+                  }
+                : recipe
+            }),
+            ...createdRecipes,
+          ],
           comments: persisted.comments ?? currentState.comments,
           notifications: persisted.notifications ?? currentState.notifications,
           unlockedSecrets: persisted.unlockedSecrets ?? currentState.unlockedSecrets,
