@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { IconButton } from '../components/IconButton'
+import { shareRecipe } from '../lib/share'
 import { formatCount, timeAgo } from '../lib/time'
 import { useAppStore, useCurrentUser, useUnreadNotifications } from '../store/useAppStore'
 import type { Recipe, User } from '../types'
@@ -33,18 +34,15 @@ export function Feed() {
   }
 
   async function handleShare(recipe: Recipe) {
-    const url = `${window.location.origin}/recipe/${recipe.id}`
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: recipe.title, text: recipe.description, url })
-        return
-      }
-      await navigator.clipboard.writeText(url)
-      setToast('Enlace copiado al portapapeles')
-      window.setTimeout(() => setToast(null), 2000)
-    } catch {
-      /* El usuario canceló o el navegador no permite compartir */
-    }
+    const result = await shareRecipe({
+      title: recipe.title,
+      text: recipe.description,
+      path: `/recipe/${recipe.id}`,
+    })
+    if (result !== 'copied') return
+
+    setToast('Enlace copiado al portapapeles')
+    window.setTimeout(() => setToast(null), 2000)
   }
 
   return (

@@ -25,7 +25,7 @@ src/
   App.tsx                 rutas principales y protección de sesión
   index.css               Tailwind + tokens de diseño (@theme)
   components/             AppShell, BottomNav, Icon, IconButton, Placeholder
-  screens/                Welcome, Onboarding, Feed, Settings, NotFound
+  screens/                Welcome, Onboarding, Feed, RecipeDetail, Settings, NotFound
   store/useAppStore.ts    estado global (Zustand + persist)
   data/seed.ts            usuarios, recetas, comentarios y notificaciones demo
   data/images.json        manifiesto de imágenes descargadas de los mockups
@@ -38,8 +38,9 @@ public/img/               imágenes locales (servidas en /img/...)
 ## Sesión y datos demo
 
 - No hay backend ni autenticación real: los botones de la bienvenida inician sesión con el usuario demo `Jesse` (`u-jesse`).
-- El estado se guarda en `localStorage` bajo la clave `yummysocial:store` (likes, guardados, comentarios, seguidos y notificaciones).
+- El estado se guarda en `localStorage` bajo la clave `yummysocial:store` (likes, guardados, comentarios, seguidos, desbloqueos y notificaciones).
 - El onboarding son 4 pantallas deslizables; se puede omitir. Al terminar se entra al feed.
+- El detalle de receta incluye ingredientes y pasos marcables, comentarios y contenido secreto que se desbloquea con 50 estrellas.
 - En **Ajustes** se puede cambiar el tema, cerrar sesión o restablecer los datos demo.
 - Las rutas privadas redirigen a `/welcome` sin sesión y a `/onboarding` si falta completar el onboarding.
 

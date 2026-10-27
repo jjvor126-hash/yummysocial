@@ -36,8 +36,8 @@ npm run lint       # oxlint
 ## Demo data, session and routing guards
 
 - `src/types.ts` defines `User`, `Recipe`, `Comment` and `AppNotification`. `src/data/seed.ts` holds the demo users, 8 recipes, comments and notifications; the demo account is `u-jesse` (`DEMO_USER_ID`).
-- `src/store/useAppStore.ts` is the single Zustand store, persisted under `yummysocial:store` (version 1). It exposes `login`, `logout`, `completeOnboarding`, `toggleLike`, `toggleSave`, `addComment`, `toggleFollow`, notification actions and `resetDemoData`. Helpers: `useCurrentUser()`, `useUnreadNotifications()`.
-- The custom persist `merge` keeps seed content authoritative while restoring the user's likes, saves, comments, follows and session. When adding fields, update `merge` too.
+- `src/store/useAppStore.ts` is the single Zustand store, persisted under `yummysocial:store` (version 1). It exposes `login`, `logout`, `completeOnboarding`, `toggleLike`, `toggleSave`, `addComment`, `toggleFollow`, `unlockSecrets`, notification actions and `resetDemoData`. Helpers: `useCurrentUser()`, `useUnreadNotifications()`. The secret ingredient/step of a recipe unlocks when the user has at least `SECRET_STAR_COST` (50) stars; unlocked recipe ids live in `unlockedSecrets`.
+- The custom persist `merge` keeps seed content authoritative while restoring the user's likes, saves, comments, follows, secret unlocks and session. When adding fields, update `merge` too.
 - Route guards live in `src/App.tsx`: `HomeRedirect` (`/`), `WelcomeRoute` (no session only), `OnboardingRoute` (session without onboarding) and `Protected` (requires session + completed onboarding, wraps tab routes, create/detail/notifications/settings).
 - The welcome buttons call `login()` and go to `/onboarding` (or `/feed` if already onboarded). Onboarding has 4 swipeable slides and can be skipped; Settings handles theme, logout and `resetDemoData`.
 

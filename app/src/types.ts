@@ -4,6 +4,7 @@ export type Ingredient = {
   id: string
   name: string
   amount: string
+  secret?: boolean
 }
 
 export type RecipeStep = {
@@ -20,6 +21,10 @@ export type Recipe = {
   image: string
   timeMinutes: number
   difficulty: Difficulty
+  servings: number
+  calories: number
+  rating: number
+  ratingCount: number
   tags: string[]
   ingredients: Ingredient[]
   steps: RecipeStep[]

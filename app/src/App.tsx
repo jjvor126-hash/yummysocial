@@ -6,6 +6,7 @@ import { ScrollToTop } from './components/ScrollToTop'
 import { Feed } from './screens/Feed'
 import { NotFound } from './screens/NotFound'
 import { Onboarding } from './screens/Onboarding'
+import { RecipeDetail } from './screens/RecipeDetail'
 import { Settings } from './screens/Settings'
 import { Welcome } from './screens/Welcome'
 import { useAppStore } from './store/useAppStore'
@@ -118,19 +119,7 @@ export default function App() {
             }
           />
 
-          <Route
-            path="/recipe/:id"
-            element={
-              <Placeholder
-                standalone
-                backTo="/feed"
-                title="Detalle de receta"
-                description="Ingredientes, preparación, dificultad y comentarios de la comunidad."
-                icon="restaurant"
-                phase="Fase 2"
-              />
-            }
-          />
+          <Route path="/recipe/:id" element={<RecipeDetail />} />
 
           <Route
             path="/notifications"

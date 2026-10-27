@@ -7,6 +7,7 @@ import {
   seedRecipes,
   seedUsers,
 } from '../data/seed'
+import { SECRET_STAR_COST } from '../lib/constants'
 import type { AppNotification, Comment, Recipe, User } from '../types'
 
 type AppState = {
@@ -14,6 +15,7 @@ type AppState = {
   recipes: Recipe[]
   comments: Comment[]
   notifications: AppNotification[]
+  unlockedSecrets: string[]
   currentUserId: string | null
   hasOnboarded: boolean
   login: () => void
@@ -23,6 +25,7 @@ type AppState = {
   toggleSave: (recipeId: string) => void
   addComment: (recipeId: string, text: string) => void
   toggleFollow: (userId: string) => void
+  unlockSecrets: (recipeId: string) => void
   markNotificationRead: (id: string) => void
   markAllNotificationsRead: () => void
   resetDemoData: () => void
@@ -33,6 +36,7 @@ const initialState = {
   recipes: seedRecipes,
   comments: seedComments,
   notifications: seedNotifications,
+  unlockedSecrets: [] as string[],
   currentUserId: null as string | null,
   hasOnboarded: false,
 }
@@ -114,6 +118,17 @@ export const useAppStore = create<AppState>()(
           }
         }),
 
+      unlockSecrets: (recipeId) =>
+        set((state) => {
+          if (!state.currentUserId) return state
+          if (state.unlockedSecrets.includes(recipeId)) return state
+
+          const user = state.users.find((item) => item.id === state.currentUserId)
+          if (!user || user.stars < SECRET_STAR_COST) return state
+
+          return { unlockedSecrets: [...state.unlockedSecrets, recipeId] }
+        }),
+
       markNotificationRead: (id) =>
         set((state) => ({
           notifications: state.notifications.map((notification) =>
@@ -159,6 +174,7 @@ export const useAppStore = create<AppState>()(
           }),
           comments: persisted.comments ?? currentState.comments,
           notifications: persisted.notifications ?? currentState.notifications,
+          unlockedSecrets: persisted.unlockedSecrets ?? currentState.unlockedSecrets,
         }
       },
     },
