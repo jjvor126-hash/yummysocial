@@ -4,6 +4,7 @@ import { BottomNav } from './components/BottomNav'
 import { ScrollToTop } from './components/ScrollToTop'
 import { CreateRecipe } from './screens/CreateRecipe'
 import { Feed } from './screens/Feed'
+import { Leaderboard } from './screens/Leaderboard'
 import { NotFound } from './screens/NotFound'
 import { Notifications } from './screens/Notifications'
 import { Onboarding } from './screens/Onboarding'
@@ -12,6 +13,7 @@ import { RecipeDetail } from './screens/RecipeDetail'
 import { Saved } from './screens/Saved'
 import { Search } from './screens/Search'
 import { Settings } from './screens/Settings'
+import { TopDishes } from './screens/TopDishes'
 import { Welcome } from './screens/Welcome'
 import { useAppStore } from './store/useAppStore'
 
@@ -84,6 +86,10 @@ export default function App() {
           <Route path="/recipe/:id" element={<RecipeDetail />} />
 
           <Route path="/notifications" element={<Notifications />} />
+
+          <Route path="/leaderboard" element={<Leaderboard />} />
+
+          <Route path="/top-dishes" element={<TopDishes />} />
 
           <Route path="/settings" element={<Settings />} />
         </Route>

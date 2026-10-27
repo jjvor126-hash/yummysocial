@@ -24,8 +24,8 @@ Para probar desde el móvil en la misma red WiFi: `npm run dev -- --host` y abre
 src/
   App.tsx                 rutas principales y protección de sesión
   index.css               Tailwind + tokens de diseño (@theme)
-  components/             AppShell, BottomNav, Icon, IconButton, RecipeCard, SearchField, FilterChip, EmptyState, EditProfileSheet, Toast
-  screens/                Welcome, Onboarding, Feed, Search, Saved, Notifications, Profile, CreateRecipe, RecipeDetail, Settings, NotFound
+  components/             AppShell, BottomNav, Icon, IconButton, RecipeCard, SearchField, FilterChip, SegmentedControl, RankingTabs, EmptyState, EditProfileSheet, Toast
+  screens/                Welcome, Onboarding, Feed, Search, Saved, Notifications, Leaderboard, TopDishes, Profile, CreateRecipe, RecipeDetail, Settings, NotFound
   store/useAppStore.ts    estado global (Zustand + persist)
   data/seed.ts            usuarios, recetas, comentarios y notificaciones demo
   data/images.json        manifiesto de imágenes descargadas de los mockups
@@ -33,6 +33,7 @@ src/
   lib/theme.ts            modo claro/oscuro persistido
   lib/time.ts             fechas relativas y formato de números
   lib/recipeFilters.ts    búsqueda, filtros por tiempo/dificultad/etiqueta y orden
+  lib/rankings.ts         clasificación de chefs y platos, con métricas y filtros
   lib/notifications.ts    textos, filtros y agrupación por día de notificaciones
   lib/ranks.ts            rangos por estrellas y progreso de nivel
   lib/draft.ts            borrador de receta persistido en localStorage
@@ -49,6 +50,8 @@ public/img/               imágenes locales (servidas en /img/...)
 - **Explorar** busca por título, descripción, etiquetas, autor o ingredientes (sin distinguir acentos) y filtra por tiempo, dificultad y etiqueta; el orden puede ser recientes, populares o mejor valoradas.
 - **Guardadas** arranca con 3 recetas de la demo, permite buscar y filtrar lo guardado, ordenarlo por fecha de guardado, valoración o popularidad y quitar recetas desde la propia tarjeta.
 - **Notificaciones** agrupa por día, distingue leídas y sin leer, filtra por menciones o sistema y permite seguir al autor desde los avisos de nuevos seguidores. La campana de las cabeceras muestra el número pendiente.
+- **Clasificación** (`/leaderboard`) ordena a los chefs por estrellas, tendencias de los últimos 7 días o seguidores, con podio, lista completa y una barra fija con la posición del usuario. Se abre desde el icono del feed o desde la tarjeta de nivel del perfil.
+- **Ranking de sabor** (`/top-dishes`) ordena las recetas valoradas por nota, número de reseñas o popularidad, con filtros de categoría y dificultad y acceso al detalle de cada plato. Las recetas nuevas sin reseñas no aparecen.
 - En **Mi perfil** se editan nombre, usuario, biografía, ubicación y avatar; las estadísticas, la tarjeta de nivel y las pestañas Recetas/Guardadas usan datos reales. Las historias destacadas muestran el aviso "Próximamente".
 - **Crear receta** permite subir o comprimir una portada, usar una foto de ejemplo, añadir ingredientes y pasos secretos y guardar un borrador (`yummysocial:recipe-draft`) antes de publicar.
 - El detalle de receta incluye ingredientes y pasos marcables, comentarios y contenido secreto que se desbloquea con 50 estrellas.

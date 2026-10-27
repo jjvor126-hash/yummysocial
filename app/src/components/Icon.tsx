@@ -8,7 +8,9 @@ export function Icon({ name, className = '', filled = false }: IconProps) {
   return (
     <span
       aria-hidden="true"
-      className={`material-symbols-outlined leading-none ${filled ? 'icon-filled' : ''} ${className}`}
+      className={`material-symbols-outlined max-w-[1em] overflow-hidden leading-none ${
+        filled ? 'icon-filled' : ''
+      } ${className}`}
     >
       {name}
     </span>

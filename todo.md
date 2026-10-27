@@ -1,8 +1,8 @@
 # YummySocial — Seguimiento de fases
 
 Última actualización: 26 de octubre de 2026
-Estado: **Fase 4 completada** · commit `f72c8da`
-Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 390 px en claro/oscuro ✅
+Estado: **Fase 5 completada** · commit `b1338f6`
+Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 390 y 360 px en claro/oscuro ✅
 
 ## Resumen
 
@@ -13,7 +13,7 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 | 2. Detalle de receta | ✅ Completada | Receta, comentarios, contenido secreto y compartir |
 | 3. Perfil y crear receta | ✅ Completada | Perfil editable, niveles, guardadas y creación con borrador |
 | 4. Explorar, guardadas y notificaciones | ✅ Completada | Buscador con filtros, pantalla de guardadas y bandeja de notificaciones |
-| 5. Clasificación y platos destacados | ⏳ Pendiente | Ranking de chefs y platos mejor valorados |
+| 5. Clasificación y platos destacados | ✅ Completada | Ranking de chefs, platos mejor valorados y accesos |
 | 6. Historias | ⏳ Pendiente | Selector, editor, publicación y visualización de historias |
 | 7. Pulido y calidad | ⏳ Pendiente | Perfiles de otros usuarios, accesibilidad, casos límite y cierre |
 
@@ -124,17 +124,32 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 - [x] Verificado con build, lint y Playwright a 390 px en claro/oscuro.
 - [x] Documentación actualizada y commit de la fase.
 
-## Fase 5 — Clasificación y platos destacados ⏳
+## Fase 5 — Clasificación y platos destacados ✅
 
-- [ ] **Tabla de clasificación de chefs (`/leaderboard`)**
-  - [ ] Ranking por estrellas con posición, avatar, nivel y recetas.
-  - [ ] Destacar la posición del usuario actual.
-  - [ ] Acceso desde el feed o el perfil.
-- [ ] **Platos más estrellados (`/top-dishes`)**
-  - [ ] Ranking de recetas por valoración y número de reseñas.
-  - [ ] Filtros por categoría o dificultad.
-  - [ ] Navegación al detalle de cada receta.
-- [ ] Enlaces de navegación y estados vacíos.
+### Clasificación de chefs (`/leaderboard`)
+
+- [x] Ranking por estrellas con posición, avatar, nivel y número de recetas.
+- [x] Podio top 3 con corona, anillo y medalla de posición; lista del 4.º en adelante.
+- [x] Orden por estrellas, tendencias (likes recibidos en los últimos 7 días) y seguidores.
+- [x] Posición del usuario actual resaltada y barra fija **Tú** cuando queda fuera del podio.
+- [x] Pestañas **Chefs / Platos** y enlace al perfil desde la barra del usuario.
+
+### Platos más estrellados (`/top-dishes`)
+
+- [x] Ranking por valoración y número de reseñas; las recetas sin reseñas quedan fuera.
+- [x] Podio top 3 y lista del 4.º en adelante con miniatura, autor, nota y reseñas.
+- [x] Orden por mejor valoradas, más votadas y populares.
+- [x] Filtros por categoría y dificultad, contador, limpiar filtros y estados vacíos.
+- [x] Navegación al detalle de cada receta.
+
+### Navegación, datos y calidad
+
+- [x] Icono de clasificación en la cabecera del feed y CTA en la tarjeta de nivel del perfil.
+- [x] `lib/rankings.ts` centraliza métricas, orden y filtros; sin campos nuevos en el store.
+- [x] `SegmentedControl`, `RankingTabs` y `EmptyState` reutilizados.
+- [x] Modo oscuro, accesibilidad básica y comprobación a 360 y 390 px.
+- [x] `npm run build`, `npm run lint` y Playwright en claro/oscuro sin errores de consola.
+- [x] Documentación actualizada y commit de la fase.
 
 ## Fase 6 — Historias ⏳
 
@@ -161,8 +176,10 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 ## Notas de seguimiento
 
 - No hay backend, tests automatizados ni CI: la verificación es `npm run build`, `npm run lint` y Playwright manual a 390 px.
-- Las capturas de la última verificación están en `C:\Users\Jesse\AppData\Local\Temp\pw\phase4`.
+- Las capturas de la última verificación están en `C:\Users\Jesse\AppData\Local\Temp\pw\phase5`.
 - Los mockups de la raíz son la referencia visual y no deben modificarse salvo que la tarea sea sobre ellos.
-- Ya no quedan pantallas placeholder: las tres rutas de la Fase 4 están implementadas.
+- Ya no quedan pantallas placeholder: las cinco rutas de las fases 4 y 5 están implementadas.
 - Las notificaciones de nuevos seguidores marcan leída y permiten seguir, pero todavía no abren un perfil público (Fase 7).
-- Fuera de ruta todavía: tabla de clasificación, platos más estrellados e historias.
+- La barra inferior mantiene cinco accesos (Inicio, Explorar, Crear, Guardadas, Perfil); la clasificación se abre desde el feed y el perfil, y las pestañas Chefs/Platos la conectan con el ranking de platos.
+- El ranking de platos solo incluye recetas con al menos una reseña; las recetas creadas desde la app no aparecerán hasta que exista una acción para valorarlas.
+- Fuera de ruta todavía: historias (Fase 6).

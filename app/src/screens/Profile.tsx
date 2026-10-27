@@ -201,6 +201,17 @@ export function Profile() {
               ) : null}
             </div>
           </div>
+
+          <Link
+            to="/leaderboard"
+            className="relative mt-3 flex items-center justify-between gap-2 rounded-xl border border-primary/20 bg-white/80 px-3 py-2.5 text-xs font-bold text-primary shadow-sm transition-colors hover:bg-white dark:bg-white/10 dark:hover:bg-white/15"
+          >
+            <span className="flex items-center gap-1.5">
+              <Icon name="leaderboard" className="text-[17px]" />
+              Ver clasificación de chefs
+            </span>
+            <Icon name="arrow_forward" className="text-[16px]" />
+          </Link>
         </section>
       </div>
 

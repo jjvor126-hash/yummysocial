@@ -50,17 +50,26 @@ export function Feed() {
     <div className="flex flex-col">
       <header className="sticky top-0 z-30 border-b border-line bg-surface/90 backdrop-blur-md dark:border-white/10 dark:bg-surface-dark/90">
         <div className="flex items-center justify-between px-4 py-3">
-          <Link to="/feed" className="flex items-center gap-2" aria-label="YummySocial, inicio">
-            <span className="flex size-9 items-center justify-center rounded-full bg-primary text-white">
+          <Link
+            to="/feed"
+            className="flex min-w-0 items-center gap-2"
+            aria-label="YummySocial, inicio"
+          >
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-white">
               <Icon name="lunch_dining" className="text-[20px]" />
             </span>
-            <span className="text-xl font-extrabold tracking-tight">
+            <span className="truncate text-xl font-extrabold tracking-tight">
               Yummy<span className="text-primary">Social</span>
             </span>
           </Link>
 
-          <div className="flex items-center gap-1">
+          <div className="flex shrink-0 items-center gap-1">
             <IconButton to="/search" icon="search" label="Buscar recetas" />
+            <IconButton
+              to="/leaderboard"
+              icon="leaderboard"
+              label="Clasificación de chefs"
+            />
             <IconButton
               to="/notifications"
               icon="notifications"
