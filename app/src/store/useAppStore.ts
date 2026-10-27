@@ -69,7 +69,11 @@ export const useAppStore = create<AppState>()(
         set((state) => ({
           recipes: state.recipes.map((recipe) =>
             recipe.id === recipeId
-              ? { ...recipe, savedByMe: !recipe.savedByMe }
+              ? {
+                  ...recipe,
+                  savedByMe: !recipe.savedByMe,
+                  savedAt: recipe.savedByMe ? undefined : new Date().toISOString(),
+                }
               : recipe,
           ),
         })),
@@ -245,13 +249,19 @@ export const useAppStore = create<AppState>()(
                     likes: previous.likes ?? recipe.likes,
                     likedByMe: previous.likedByMe ?? recipe.likedByMe,
                     savedByMe: previous.savedByMe ?? recipe.savedByMe,
+                    savedAt: previous.savedAt ?? recipe.savedAt,
                   }
                 : recipe
             }),
             ...createdRecipes,
           ],
           comments: persisted.comments ?? currentState.comments,
-          notifications: persisted.notifications ?? currentState.notifications,
+          notifications: currentState.notifications.map((notification) => {
+            const previous = persisted.notifications?.find(
+              (item) => item.id === notification.id,
+            )
+            return previous ? { ...notification, read: previous.read } : notification
+          }),
           unlockedSecrets: persisted.unlockedSecrets ?? currentState.unlockedSecrets,
         }
       },

@@ -282,7 +282,8 @@ export const seedRecipes: Recipe[] = [
     likes: 3_420,
     commentCount: 124,
     likedByMe: false,
-    savedByMe: false,
+    savedByMe: true,
+    savedAt: hoursAgo(1),
     createdAt: hoursAgo(10),
   },
   {
@@ -361,7 +362,8 @@ export const seedRecipes: Recipe[] = [
     likes: 1_540,
     commentCount: 45,
     likedByMe: false,
-    savedByMe: false,
+    savedByMe: true,
+    savedAt: hoursAgo(12),
     createdAt: hoursAgo(28),
   },
   {
@@ -398,7 +400,8 @@ export const seedRecipes: Recipe[] = [
     likes: 780,
     commentCount: 18,
     likedByMe: false,
-    savedByMe: false,
+    savedByMe: true,
+    savedAt: hoursAgo(30),
     createdAt: hoursAgo(32),
   },
   {
@@ -569,6 +572,7 @@ export const seedNotifications: AppNotification[] = [
     type: 'comment',
     userId: 'u-diego',
     recipeId: 'pasta-alfredo',
+    message: '¡Se ve delicioso! ¿Cuánto queso le pusiste? 😋',
     createdAt: hoursAgo(1),
     read: false,
   },

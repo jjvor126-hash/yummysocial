@@ -1,14 +1,16 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/AppShell'
 import { BottomNav } from './components/BottomNav'
-import { Placeholder } from './components/Placeholder'
 import { ScrollToTop } from './components/ScrollToTop'
 import { CreateRecipe } from './screens/CreateRecipe'
 import { Feed } from './screens/Feed'
 import { NotFound } from './screens/NotFound'
+import { Notifications } from './screens/Notifications'
 import { Onboarding } from './screens/Onboarding'
 import { Profile } from './screens/Profile'
 import { RecipeDetail } from './screens/RecipeDetail'
+import { Saved } from './screens/Saved'
+import { Search } from './screens/Search'
 import { Settings } from './screens/Settings'
 import { Welcome } from './screens/Welcome'
 import { useAppStore } from './store/useAppStore'
@@ -72,28 +74,8 @@ export default function App() {
         <Route element={<Protected />}>
           <Route element={<TabLayout />}>
             <Route path="/feed" element={<Feed />} />
-            <Route
-              path="/search"
-              element={
-                <Placeholder
-                  title="Explorar"
-                  description="Busca recetas por nombre, tiempo de preparación o dificultad."
-                  icon="search"
-                  phase="Fase 4"
-                />
-              }
-            />
-            <Route
-              path="/saved"
-              element={
-                <Placeholder
-                  title="Guardadas"
-                  description="Tus recetas favoritas, organizadas por categoría."
-                  icon="bookmark"
-                  phase="Fase 4"
-                />
-              }
-            />
+            <Route path="/search" element={<Search />} />
+            <Route path="/saved" element={<Saved />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
 
@@ -101,19 +83,7 @@ export default function App() {
 
           <Route path="/recipe/:id" element={<RecipeDetail />} />
 
-          <Route
-            path="/notifications"
-            element={
-              <Placeholder
-                standalone
-                backTo="/feed"
-                title="Notificaciones"
-                description="Likes, comentarios, seguidores y novedades de la app."
-                icon="notifications"
-                phase="Fase 4"
-              />
-            }
-          />
+          <Route path="/notifications" element={<Notifications />} />
 
           <Route path="/settings" element={<Settings />} />
         </Route>

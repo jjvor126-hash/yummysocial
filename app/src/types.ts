@@ -32,6 +32,7 @@ export type Recipe = {
   commentCount: number
   likedByMe: boolean
   savedByMe: boolean
+  savedAt?: string
   createdAt: string
 }
 
