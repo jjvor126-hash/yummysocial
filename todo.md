@@ -1,7 +1,7 @@
 # YummySocial — Seguimiento de fases
 
 Última actualización: 26 de octubre de 2026
-Estado: **Fase 3 completada** · commit `8193f26`
+Estado: **Fase 4 completada** · commit `f72c8da`
 Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 390 px en claro/oscuro ✅
 
 ## Resumen
@@ -12,7 +12,7 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 | 1. Datos demo y sesión | ✅ Completada | Seed, login demo, onboarding, feed y ajustes |
 | 2. Detalle de receta | ✅ Completada | Receta, comentarios, contenido secreto y compartir |
 | 3. Perfil y crear receta | ✅ Completada | Perfil editable, niveles, guardadas y creación con borrador |
-| 4. Explorar, guardadas y notificaciones | ⏳ Pendiente | Buscador con filtros, pantalla de guardadas y bandeja de notificaciones |
+| 4. Explorar, guardadas y notificaciones | ✅ Completada | Buscador con filtros, pantalla de guardadas y bandeja de notificaciones |
 | 5. Clasificación y platos destacados | ⏳ Pendiente | Ranking de chefs y platos mejor valorados |
 | 6. Historias | ⏳ Pendiente | Selector, editor, publicación y visualización de historias |
 | 7. Pulido y calidad | ⏳ Pendiente | Perfiles de otros usuarios, accesibilidad, casos límite y cierre |
@@ -86,23 +86,43 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 
 ---
 
-## Fase 4 — Explorar, guardadas y notificaciones ⏳
+## Fase 4 — Explorar, guardadas y notificaciones ✅
 
-- [ ] **Explorar/buscar (`/search`)**
-  - [ ] Buscador por título, descripción, etiqueta o autor.
-  - [ ] Filtros por dificultad, tiempo máximo y etiquetas.
-  - [ ] Orden por recientes, populares y mejor valoradas.
-  - [ ] Grid de resultados con `RecipeCard` y estado sin resultados.
-- [ ] **Guardadas (`/saved`)**
-  - [ ] Listado de recetas con `savedByMe`.
-  - [ ] Filtros/orden y acción de quitar de guardadas.
-  - [ ] Estado vacío con acceso al feed.
-- [ ] **Notificaciones (`/notifications`)**
-  - [ ] Listado por tipo: like, comentario, seguidor, mención y sistema.
-  - [ ] Estados leído/no leído y “marcar todas como leídas”.
-  - [ ] Enlaces a la receta o al perfil correspondiente.
-  - [ ] Sincronizar el badge de la campana.
-- [ ] Verificar con build, lint y Playwright a 390 px en claro/oscuro.
+### Explorar (`/search`)
+
+- [x] Buscador por título, descripción, etiqueta, autor e ingredientes, sin distinguir acentos.
+- [x] Chips en línea para tiempo (`< 30`, `30–60`, `> 60`), dificultad y etiquetas derivadas de las recetas.
+- [x] Orden por recientes, populares y mejor valoradas.
+- [x] Grid de resultados con `RecipeCard`, contador accesible y estado sin resultados.
+- [x] Botón de limpiar filtros y campana con badge.
+
+### Guardadas (`/saved`)
+
+- [x] Listado de recetas con `savedByMe`; la demo arranca con 3 guardadas.
+- [x] Búsqueda dentro de guardadas, filtros por etiqueta y orden por fecha de guardado, valoración o popularidad.
+- [x] `savedAt` en el modelo y en el `merge` para ordenar y persistir.
+- [x] Quitar de guardadas desde la tarjeta con aviso y actualización inmediata.
+- [x] Estado vacío con acceso a Explorar y estado sin resultados para los filtros.
+
+### Notificaciones (`/notifications`)
+
+- [x] Agrupación por día: Hoy, Ayer, Esta semana y Anteriores.
+- [x] Filtros Todas, Sin leer, Menciones y Sistema.
+- [x] Filas con avatar, insignia por tipo, miniatura, tinte y barra de no leída.
+- [x] Mensajes en español para like, comentario, seguidor, mención y sistema; cita del comentario cuando existe.
+- [x] Abrir like/comentario/mención marca leída y navega a la receta.
+- [x] Botón Seguir/Siguiendo en avisos de nuevos seguidores con `toggleFollow`.
+- [x] “Marcar todo”, estados “Estás al día” y badge sincronizado en feed, explorar, guardadas y perfil.
+- [x] El `merge` conserva el estado leído de las notificaciones del seed.
+
+### Compartido y calidad
+
+- [x] `SearchField`, `FilterChip` y `EmptyState` reutilizables.
+- [x] `lib/recipeFilters.ts` y `lib/notifications.ts` con la lógica fuera de las pantallas.
+- [x] `RecipeCard` acepta `onRemove` sin anidar controles interactivos.
+- [x] Rutas reales en `App.tsx` y retirada de `Placeholder`.
+- [x] Verificado con build, lint y Playwright a 390 px en claro/oscuro.
+- [x] Documentación actualizada y commit de la fase.
 
 ## Fase 5 — Clasificación y platos destacados ⏳
 
@@ -141,7 +161,8 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 ## Notas de seguimiento
 
 - No hay backend, tests automatizados ni CI: la verificación es `npm run build`, `npm run lint` y Playwright manual a 390 px.
-- Las capturas de la última verificación están en `C:\Users\Jesse\AppData\Local\Temp\pw\phase3`.
+- Las capturas de la última verificación están en `C:\Users\Jesse\AppData\Local\Temp\pw\phase4`.
 - Los mockups de la raíz son la referencia visual y no deben modificarse salvo que la tarea sea sobre ellos.
-- Quedan como placeholders: `/search`, `/saved` y `/notifications`.
+- Ya no quedan pantallas placeholder: las tres rutas de la Fase 4 están implementadas.
+- Las notificaciones de nuevos seguidores marcan leída y permiten seguir, pero todavía no abren un perfil público (Fase 7).
 - Fuera de ruta todavía: tabla de clasificación, platos más estrellados e historias.
