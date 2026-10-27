@@ -1,7 +1,7 @@
 # YummySocial — Seguimiento de fases
 
 Última actualización: 26 de octubre de 2026
-Estado: **Fase 5 completada** · commit `b1338f6`
+Estado: **Fase 5 completada** · commit `6926d58`
 Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 390 y 360 px en claro/oscuro ✅
 
 ## Resumen
