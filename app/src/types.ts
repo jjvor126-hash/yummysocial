@@ -81,6 +81,44 @@ export type ProfileInput = {
   avatar: string
 }
 
+export type StoryAudience = 'todos' | 'amigos'
+
+export type Story = {
+  id: string
+  authorId: string
+  image: string
+  caption: string
+  tags: string[]
+  overlayText: string
+  textColor: string
+  stickers: string[]
+  location?: string
+  durationHours: 12 | 24
+  audience: StoryAudience
+  createdAt: string
+  expiresAt: string
+}
+
+export type StoryHighlight = {
+  id: string
+  userId: string
+  label: string
+  storyId: string
+  image: string
+}
+
+export type StoryInput = {
+  image: string
+  caption: string
+  tags: string[]
+  overlayText: string
+  textColor: string
+  stickers: string[]
+  location?: string
+  durationHours: 12 | 24
+  audience: StoryAudience
+}
+
 export type NotificationType = 'like' | 'comment' | 'follow' | 'mention' | 'system'
 
 export type AppNotification = {

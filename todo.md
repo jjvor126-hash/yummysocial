@@ -1,7 +1,7 @@
 # YummySocial — Seguimiento de fases
 
-Última actualización: 26 de octubre de 2026
-Estado: **Fase 5 completada** · commit `6926d58`
+Última actualización: 27 de octubre de 2026
+Estado: **Fase 6 completada**
 Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 390 y 360 px en claro/oscuro ✅
 
 ## Resumen
@@ -14,7 +14,7 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 | 3. Perfil y crear receta | ✅ Completada | Perfil editable, niveles, guardadas y creación con borrador |
 | 4. Explorar, guardadas y notificaciones | ✅ Completada | Buscador con filtros, pantalla de guardadas y bandeja de notificaciones |
 | 5. Clasificación y platos destacados | ✅ Completada | Ranking de chefs, platos mejor valorados y accesos |
-| 6. Historias | ⏳ Pendiente | Selector, editor, publicación y visualización de historias |
+| 6. Historias | ✅ Completada | Selector, editor, publicación, visor, destacados y tira del feed |
 | 7. Pulido y calidad | ⏳ Pendiente | Perfiles de otros usuarios, accesibilidad, casos límite y cierre |
 
 ---
@@ -151,15 +151,37 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 - [x] `npm run build`, `npm run lint` y Playwright en claro/oscuro sin errores de consola.
 - [x] Documentación actualizada y commit de la fase.
 
-## Fase 6 — Historias ⏳
+## Fase 6 — Historias ✅
 
-- [ ] Modelo de datos `Story` y persistencia en el store.
-- [ ] Selector de media (`selector_de_media_historia`).
-- [ ] Editor de historia: imagen, texto, stickers y ajustes visuales.
-- [ ] Configuración de publicación: título, categoría y audiencia.
-- [ ] Historias destacadas reales en el perfil (sustituir “Próximamente”).
-- [ ] Anillos de historias en el feed y visor con progreso y estado “visto”.
-- [ ] Eliminación y caducidad de historias.
+### Datos y estado
+
+- [x] Tipos `Story`, `StoryHighlight`, `StoryInput` y borrador `StoryDraft`.
+- [x] 11 historias y 4 destacados en el seed, con caducidad relativa a la carga.
+- [x] Acciones `addStory`, `deleteStory`, `markStoryViewed`, `addHighlight`, `removeHighlight`.
+- [x] `viewedStories`, `hiddenStories` y `hiddenHighlights`; el `merge` descarta caducadas y respeta los borrados.
+- [x] Persistencia version 2 con migración desde la v1.
+
+### Creación
+
+- [x] `/stories/new`: cámara, galería y seis fotos de ejemplo; compresión a 1440 px.
+- [x] `/stories/new/editor`: lienzo 9:16, texto, seis colores, hasta seis stickers, deshacer y borrador `yummysocial:story-draft`.
+- [x] `/stories/new/publish`: descripción de 120 caracteres, etiquetas, duración 12/24 h, audiencia, ubicación y validaciones.
+- [x] Publicación que abre el visor propio y limpia el borrador.
+
+### Visor y perfil
+
+- [x] `/stories/:userId`: progreso segmentado, 5 s por historia (7 s con texto), pausa al mantener, tap, deslizar y teclado.
+- [x] Marcado como vistas, salto entre autores y estado vacío para historias caducadas o privadas.
+- [x] Menú para añadir, cambiar o quitar destacados y eliminar la historia propia.
+- [x] Tira del feed con anillos vistos/no vistos y “Tu historia”.
+- [x] Destacados reales en el perfil; “Nueva” abre el selector.
+- [x] Ajustes limpia también el borrador de historia.
+
+### Calidad
+
+- [x] `lib/stories.ts`, `lib/storyDraft.ts` y `lib/storyLayout.ts`; `StoryRing` y `StoryProgress` reutilizables.
+- [x] `npm run build`, `npm run lint` y Playwright a 390 y 360 px en claro/oscuro sin errores de consola.
+- [x] Verificados caducidad, audiencia, borrado persistente y recarga.
 
 ## Fase 7 — Pulido y calidad ⏳
 
@@ -176,10 +198,12 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 ## Notas de seguimiento
 
 - No hay backend, tests automatizados ni CI: la verificación es `npm run build`, `npm run lint` y Playwright manual a 390 px.
-- Las capturas de la última verificación están en `C:\Users\Jesse\AppData\Local\Temp\pw\phase5`.
+- Las capturas de la última verificación están en `C:\Users\Jesse\AppData\Local\Temp\pw\phase6`.
 - Los mockups de la raíz son la referencia visual y no deben modificarse salvo que la tarea sea sobre ellos.
-- Ya no quedan pantallas placeholder: las cinco rutas de las fases 4 y 5 están implementadas.
+- Ya no quedan pantallas placeholder: las rutas de las fases 4, 5 y 6 están implementadas.
 - Las notificaciones de nuevos seguidores marcan leída y permiten seguir, pero todavía no abren un perfil público (Fase 7).
 - La barra inferior mantiene cinco accesos (Inicio, Explorar, Crear, Guardadas, Perfil); la clasificación se abre desde el feed y el perfil, y las pestañas Chefs/Platos la conectan con el ranking de platos.
 - El ranking de platos solo incluye recetas con al menos una reseña; las recetas creadas desde la app no aparecerán hasta que exista una acción para valorarlas.
-- Fuera de ruta todavía: historias (Fase 6).
+- Las historias del seed usan marcas de tiempo relativas a la carga para que la demo nunca arranque caducada; las creadas por el usuario caducan a las 12 o 24 h y el `merge` las descarta.
+- En escritorio la cámara cae al selector de archivos. El editor de historias es intencionadamente simple: texto, color y stickers, sin dibujo libre ni arrastre.
+- Fuera de ruta todavía: perfiles públicos de otros usuarios y likes en comentarios (Fase 7).

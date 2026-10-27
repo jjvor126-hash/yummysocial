@@ -13,6 +13,10 @@ import { RecipeDetail } from './screens/RecipeDetail'
 import { Saved } from './screens/Saved'
 import { Search } from './screens/Search'
 import { Settings } from './screens/Settings'
+import { StoryEditor } from './screens/StoryEditor'
+import { StoryMediaPicker } from './screens/StoryMediaPicker'
+import { StoryPublish } from './screens/StoryPublish'
+import { StoryViewer } from './screens/StoryViewer'
 import { TopDishes } from './screens/TopDishes'
 import { Welcome } from './screens/Welcome'
 import { useAppStore } from './store/useAppStore'
@@ -82,6 +86,11 @@ export default function App() {
           </Route>
 
           <Route path="/create" element={<CreateRecipe />} />
+
+          <Route path="/stories/new" element={<StoryMediaPicker />} />
+          <Route path="/stories/new/editor" element={<StoryEditor />} />
+          <Route path="/stories/new/publish" element={<StoryPublish />} />
+          <Route path="/stories/:userId" element={<StoryViewer />} />
 
           <Route path="/recipe/:id" element={<RecipeDetail />} />
 

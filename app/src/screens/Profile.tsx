@@ -4,22 +4,17 @@ import { EditProfileSheet } from '../components/EditProfileSheet'
 import { Icon } from '../components/Icon'
 import { IconButton } from '../components/IconButton'
 import { RecipeCard } from '../components/RecipeCard'
+import { StoryRing } from '../components/StoryRing'
 import { Toast } from '../components/Toast'
 import { useToast } from '../lib/useToast'
 import { getRank } from '../lib/ranks'
 import { shareLink } from '../lib/share'
+import { isStoryActive } from '../lib/stories'
 import { formatCount } from '../lib/time'
 import { useAppStore, useCurrentUser, useUnreadNotifications } from '../store/useAppStore'
 import type { Recipe } from '../types'
 
 type Tab = 'recipes' | 'saved'
-
-const HISTORY_HIGHLIGHTS = [
-  { label: 'Pasta', image: '/img/mi-perfil-con-historias-02.jpg' },
-  { label: 'Ensaladas', image: '/img/mi-perfil-con-historias-03.jpg' },
-  { label: 'Postres', image: '/img/mi-perfil-con-historias-04.jpg' },
-  { label: 'Tips', image: '/img/mi-perfil-con-historias-05.jpg' },
-]
 
 function byNewest(a: Recipe, b: Recipe) {
   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -28,6 +23,8 @@ function byNewest(a: Recipe, b: Recipe) {
 export function Profile() {
   const user = useCurrentUser()
   const recipes = useAppStore((state) => state.recipes)
+  const stories = useAppStore((state) => state.stories)
+  const highlights = useAppStore((state) => state.highlights)
   const unreadCount = useUnreadNotifications()
   const [tab, setTab] = useState<Tab>('recipes')
   const [sheetOpen, setSheetOpen] = useState(false)
@@ -43,6 +40,11 @@ export function Profile() {
     [recipes],
   )
 
+  const myHighlights = useMemo(
+    () => highlights.filter((highlight) => highlight.userId === user?.id),
+    [highlights, user?.id],
+  )
+
   if (!user) return null
 
   const rank = getRank(user.stars)
@@ -56,10 +58,6 @@ export function Profile() {
     })
 
     if (result === 'copied') showToast('Enlace del perfil copiado')
-  }
-
-  function handleStory() {
-    showToast('Próximamente: historias destacadas')
   }
 
   return (
@@ -222,36 +220,57 @@ export function Profile() {
         </div>
 
         <div className="no-scrollbar flex gap-4 overflow-x-auto px-4 pb-2">
-          <button
-            type="button"
-            onClick={handleStory}
+          <Link
+            to="/stories/new"
+            aria-label="Crear historia"
             className="flex w-[72px] shrink-0 flex-col items-center gap-2"
           >
             <span className="flex size-[72px] items-center justify-center rounded-full border-2 border-dashed border-primary/50 bg-primary-soft transition-transform active:scale-95 dark:bg-primary/10">
               <Icon name="add" className="text-[30px] text-primary" />
             </span>
             <span className="text-xs font-medium">Nueva</span>
-          </button>
+          </Link>
 
-          {HISTORY_HIGHLIGHTS.map((story) => (
-            <button
-              key={story.label}
-              type="button"
-              onClick={handleStory}
-              className="flex w-[72px] shrink-0 flex-col items-center gap-2"
-            >
-              <span className="rounded-full bg-gradient-to-tr from-primary to-yellow-300 p-[2px] transition-transform active:scale-95">
-                <span className="block rounded-full border-2 border-surface dark:border-surface-dark">
-                  <img
-                    src={story.image}
-                    alt=""
-                    className="size-16 rounded-full object-cover opacity-90"
+          {myHighlights.map((highlight) => {
+            const active = stories.some(
+              (story) => story.id === highlight.storyId && isStoryActive(story),
+            )
+
+            if (!active) {
+              return (
+                <button
+                  key={highlight.id}
+                  type="button"
+                  onClick={() => showToast('Esa historia ya caducó')}
+                  aria-label={`Destacado ${highlight.label} caducado`}
+                  className="text-left"
+                >
+                  <StoryRing
+                    avatar={highlight.image}
+                    label={highlight.label}
+                    variant="seen"
+                    className="w-[72px]"
                   />
-                </span>
-              </span>
-              <span className="text-xs font-medium">{story.label}</span>
-            </button>
-          ))}
+                </button>
+              )
+            }
+
+            return (
+              <Link
+                key={highlight.id}
+                to={`/stories/${user.id}?s=${highlight.storyId}`}
+                state={{ from: '/profile' }}
+                aria-label={`Ver destacado ${highlight.label}`}
+              >
+                <StoryRing
+                  avatar={highlight.image}
+                  label={highlight.label}
+                  variant="gradient"
+                  className="w-[72px]"
+                />
+              </Link>
+            )
+          })}
         </div>
       </section>
 

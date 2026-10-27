@@ -2,9 +2,11 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { IconButton } from '../components/IconButton'
+import { StoryRing } from '../components/StoryRing'
 import { Toast } from '../components/Toast'
 import { useToast } from '../lib/useToast'
 import { shareLink } from '../lib/share'
+import { groupStoriesByAuthor } from '../lib/stories'
 import { formatCount, timeAgo } from '../lib/time'
 import { useAppStore, useCurrentUser, useUnreadNotifications } from '../store/useAppStore'
 import type { Recipe, User } from '../types'
@@ -12,6 +14,8 @@ import type { Recipe, User } from '../types'
 export function Feed() {
   const recipes = useAppStore((state) => state.recipes)
   const users = useAppStore((state) => state.users)
+  const storyList = useAppStore((state) => state.stories)
+  const viewedStories = useAppStore((state) => state.viewedStories)
   const currentUser = useCurrentUser()
   const unreadCount = useUnreadNotifications()
   const toggleLike = useAppStore((state) => state.toggleLike)
@@ -26,10 +30,14 @@ export function Feed() {
     [recipes],
   )
 
-  const stories = useMemo(() => {
-    const others = users.filter((user) => user.id !== currentUser?.id).slice(0, 7)
-    return currentUser ? [currentUser, ...others] : others
-  }, [users, currentUser])
+  const storyGroups = useMemo(
+    () => groupStoriesByAuthor(storyList, users, currentUser, viewedStories),
+    [storyList, users, currentUser, viewedStories],
+  )
+
+  const myStories = currentUser
+    ? storyGroups.find((group) => group.author.id === currentUser.id)
+    : undefined
 
   function getUser(userId: string): User | undefined {
     return users.find((user) => user.id === userId)
@@ -86,35 +94,54 @@ export function Feed() {
 
       <section aria-label="Historias" className="border-b border-line px-4 py-3 dark:border-white/10">
         <div className="no-scrollbar flex gap-4 overflow-x-auto pb-1">
-          {stories.map((story, index) => {
-            const mine = index === 0 && story.id === currentUser?.id
-            return (
+          {currentUser ? (
+            myStories ? (
               <Link
-                key={story.id}
-                to="/profile"
-                className="flex w-[68px] shrink-0 flex-col items-center gap-1.5"
+                to={`/stories/${currentUser.id}?s=${myStories.stories[myStories.stories.length - 1].id}`}
+                state={{ from: '/feed' }}
+                aria-label="Ver tu historia"
               >
-                <span
-                  className={
-                    mine
-                      ? 'rounded-full border-2 border-dashed border-primary p-[3px]'
-                      : 'rounded-full bg-linear-to-tr from-primary via-orange-300 to-yellow-200 p-[2px]'
-                  }
-                >
-                  <span className="block rounded-full bg-surface p-[2px] dark:bg-surface-dark">
-                    <img
-                      src={story.avatar}
-                      alt=""
-                      className="size-16 rounded-full object-cover"
-                    />
-                  </span>
-                </span>
-                <span className="w-full truncate text-center text-[11px] font-medium">
-                  {mine ? 'Tu historia' : story.name}
-                </span>
+                <StoryRing
+                  avatar={myStories.stories[myStories.stories.length - 1].image}
+                  label="Tu historia"
+                  variant="gradient"
+                />
+              </Link>
+            ) : (
+              <Link to="/stories/new" aria-label="Crear tu primera historia">
+                <StoryRing
+                  avatar={currentUser.avatar}
+                  label="Tu historia"
+                  variant="empty"
+                  withPlus
+                />
               </Link>
             )
-          })}
+          ) : null}
+
+          {storyGroups
+            .filter((group) => group.author.id !== currentUser?.id)
+            .map((group) => {
+              const unseenStory = group.stories.find(
+                (story) => !viewedStories.includes(story.id),
+              )
+              const target = unseenStory ?? group.stories[0]
+
+              return (
+                <Link
+                  key={group.author.id}
+                  to={`/stories/${group.author.id}?s=${target.id}`}
+                  state={{ from: '/feed' }}
+                  aria-label={`Ver historias de ${group.author.name}`}
+                >
+                  <StoryRing
+                    avatar={group.author.avatar}
+                    label={group.author.name}
+                    variant={group.unseen ? 'gradient' : 'seen'}
+                  />
+                </Link>
+              )
+            })}
         </div>
       </section>
 

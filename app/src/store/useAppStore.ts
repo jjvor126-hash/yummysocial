@@ -3,18 +3,36 @@ import { persist } from 'zustand/middleware'
 import {
   DEMO_USER_ID,
   seedComments,
+  seedHighlights,
   seedNotifications,
   seedRecipes,
+  seedStories,
   seedUsers,
 } from '../data/seed'
 import { SECRET_STAR_COST } from '../lib/constants'
-import type { AppNotification, Comment, ProfileInput, Recipe, RecipeInput, User } from '../types'
+import { isStoryActive } from '../lib/stories'
+import type {
+  AppNotification,
+  Comment,
+  ProfileInput,
+  Recipe,
+  RecipeInput,
+  Story,
+  StoryHighlight,
+  StoryInput,
+  User,
+} from '../types'
 
 type AppState = {
   users: User[]
   recipes: Recipe[]
   comments: Comment[]
   notifications: AppNotification[]
+  stories: Story[]
+  highlights: StoryHighlight[]
+  viewedStories: string[]
+  hiddenStories: string[]
+  hiddenHighlights: string[]
   unlockedSecrets: string[]
   currentUserId: string | null
   hasOnboarded: boolean
@@ -27,6 +45,11 @@ type AppState = {
   addRecipe: (input: RecipeInput) => string
   updateProfile: (input: ProfileInput) => void
   toggleFollow: (userId: string) => void
+  addStory: (input: StoryInput) => string
+  deleteStory: (storyId: string) => void
+  markStoryViewed: (storyId: string) => void
+  addHighlight: (storyId: string, label: string) => void
+  removeHighlight: (highlightId: string) => void
   unlockSecrets: (recipeId: string) => void
   markNotificationRead: (id: string) => void
   markAllNotificationsRead: () => void
@@ -38,6 +61,11 @@ const initialState = {
   recipes: seedRecipes,
   comments: seedComments,
   notifications: seedNotifications,
+  stories: seedStories,
+  highlights: seedHighlights,
+  viewedStories: [] as string[],
+  hiddenStories: [] as string[],
+  hiddenHighlights: [] as string[],
   unlockedSecrets: [] as string[],
   currentUserId: null as string | null,
   hasOnboarded: false,
@@ -183,6 +211,110 @@ export const useAppStore = create<AppState>()(
           }
         }),
 
+      addStory: (input) => {
+        const id = `s-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
+        const now = Date.now()
+
+        set((state) => {
+          if (!state.currentUserId) return state
+
+          const story: Story = {
+            ...input,
+            id,
+            authorId: state.currentUserId,
+            location: input.location?.trim() || undefined,
+            createdAt: new Date(now).toISOString(),
+            expiresAt: new Date(now + input.durationHours * 3_600_000).toISOString(),
+          }
+
+          return { stories: [story, ...state.stories] }
+        })
+
+        return id
+      },
+
+      deleteStory: (storyId) =>
+        set((state) => {
+          const target = state.stories.find(
+            (story) =>
+              story.id === storyId && story.authorId === state.currentUserId,
+          )
+          if (!target) return state
+
+          const removedHighlights = state.highlights.filter(
+            (highlight) =>
+              highlight.storyId === storyId &&
+              highlight.userId === state.currentUserId,
+          )
+
+          return {
+            stories: state.stories.filter((story) => story.id !== storyId),
+            highlights: state.highlights.filter(
+              (highlight) =>
+                !removedHighlights.some((item) => item.id === highlight.id),
+            ),
+            viewedStories: state.viewedStories.filter((id) => id !== storyId),
+            hiddenStories: [...new Set([...state.hiddenStories, storyId])],
+            hiddenHighlights: [
+              ...new Set([
+                ...state.hiddenHighlights,
+                ...removedHighlights.map((highlight) => highlight.id),
+              ]),
+            ],
+          }
+        }),
+
+      markStoryViewed: (storyId) =>
+        set((state) =>
+          state.viewedStories.includes(storyId)
+            ? state
+            : { viewedStories: [...state.viewedStories, storyId] },
+        ),
+
+      addHighlight: (storyId, label) =>
+        set((state) => {
+          if (!state.currentUserId) return state
+
+          const story = state.stories.find(
+            (item) => item.id === storyId && item.authorId === state.currentUserId,
+          )
+          const cleanLabel = label.trim().slice(0, 18)
+          if (!story || !cleanLabel) return state
+
+          const existing = state.highlights.find(
+            (highlight) =>
+              highlight.storyId === storyId &&
+              highlight.userId === state.currentUserId,
+          )
+          const highlight: StoryHighlight = {
+            id: existing?.id ?? `h-${Date.now()}`,
+            userId: state.currentUserId,
+            label: cleanLabel,
+            storyId,
+            image: story.image,
+          }
+
+          return {
+            highlights: existing
+              ? state.highlights.map((item) =>
+                  item.id === existing.id ? highlight : item,
+                )
+              : [...state.highlights, highlight],
+          }
+        }),
+
+      removeHighlight: (highlightId) =>
+        set((state) => ({
+          highlights: state.highlights.filter(
+            (highlight) =>
+              !(
+                highlight.id === highlightId &&
+                highlight.userId === state.currentUserId
+              ),
+          ),
+          hiddenHighlights: [...new Set([...state.hiddenHighlights, highlightId])],
+        })),
+
       unlockSecrets: (recipeId) =>
         set((state) => {
           if (!state.currentUserId) return state
@@ -213,12 +345,52 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'yummysocial:store',
-      version: 1,
+      version: 2,
+      migrate: (persistedState) => {
+        const persisted = (persistedState ?? {}) as Partial<AppState>
+        return {
+          stories: [],
+          highlights: [],
+          viewedStories: [],
+          hiddenStories: [],
+          hiddenHighlights: [],
+          ...persisted,
+        } as AppState
+      },
       merge: (persistedState, currentState) => {
         const persisted = (persistedState ?? {}) as Partial<AppState>
         const seedRecipeIds = new Set(currentState.recipes.map((recipe) => recipe.id))
         const createdRecipes = (persisted.recipes ?? []).filter(
           (recipe) => !seedRecipeIds.has(recipe.id),
+        )
+        const seedStoryIds = new Set(currentState.stories.map((story) => story.id))
+        const hiddenStories = new Set(persisted.hiddenStories ?? [])
+        const seedStories = currentState.stories.filter(
+          (story) => !hiddenStories.has(story.id),
+        )
+        const createdStories = (persisted.stories ?? []).filter(
+          (story) =>
+            !seedStoryIds.has(story.id) &&
+            !hiddenStories.has(story.id) &&
+            isStoryActive(story),
+        )
+        const storyIds = new Set([
+          ...seedStories.map((story) => story.id),
+          ...createdStories.map((story) => story.id),
+        ])
+        const hiddenHighlights = new Set(persisted.hiddenHighlights ?? [])
+        const seedHighlightIds = new Set(
+          currentState.highlights.map((highlight) => highlight.id),
+        )
+        const seedHighlights = currentState.highlights.filter(
+          (highlight) =>
+            !hiddenHighlights.has(highlight.id) && storyIds.has(highlight.storyId),
+        )
+        const createdHighlights = (persisted.highlights ?? []).filter(
+          (highlight) =>
+            !seedHighlightIds.has(highlight.id) &&
+            !hiddenHighlights.has(highlight.id) &&
+            storyIds.has(highlight.storyId),
         )
 
         return {
@@ -256,6 +428,13 @@ export const useAppStore = create<AppState>()(
             ...createdRecipes,
           ],
           comments: persisted.comments ?? currentState.comments,
+          stories: [...seedStories, ...createdStories],
+          highlights: [...seedHighlights, ...createdHighlights],
+          viewedStories: (persisted.viewedStories ?? []).filter((id) =>
+            storyIds.has(id),
+          ),
+          hiddenStories: [...hiddenStories],
+          hiddenHighlights: [...hiddenHighlights],
           notifications: currentState.notifications.map((notification) => {
             const previous = persisted.notifications?.find(
               (item) => item.id === notification.id,
