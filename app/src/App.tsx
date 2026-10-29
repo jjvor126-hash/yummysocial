@@ -9,6 +9,7 @@ import { NotFound } from './screens/NotFound'
 import { Notifications } from './screens/Notifications'
 import { Onboarding } from './screens/Onboarding'
 import { Profile } from './screens/Profile'
+import { PublicProfile } from './screens/PublicProfile'
 import { RecipeDetail } from './screens/RecipeDetail'
 import { Saved } from './screens/Saved'
 import { Search } from './screens/Search'
@@ -84,6 +85,8 @@ export default function App() {
             <Route path="/saved" element={<Saved />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
+
+          <Route path="/u/:username" element={<PublicProfile />} />
 
           <Route path="/create" element={<CreateRecipe />} />
 

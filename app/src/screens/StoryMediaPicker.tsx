@@ -52,7 +52,7 @@ export function StoryMediaPicker() {
 
     setReading(true)
     try {
-      const image = await readImageFile(file, 1440)
+      const image = await readImageFile(file, { maxSize: 1440, maxBytes: 650_000 })
       startWithImage(image)
     } catch (error) {
       showToast(error instanceof Error ? error.message : 'No se pudo procesar la imagen')

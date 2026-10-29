@@ -12,6 +12,7 @@ import {
   groupNotificationsByDay,
 } from '../lib/notifications'
 import type { NotificationDetails, NotificationFilter } from '../lib/notifications'
+import { profilePath } from '../lib/profiles'
 import { timeAgo } from '../lib/time'
 import { useToast } from '../lib/useToast'
 import { useAppStore, useCurrentUser } from '../store/useAppStore'
@@ -68,7 +69,16 @@ export function Notifications() {
 
   function openNotification(notification: AppNotification) {
     if (!notification.read) markNotificationRead(notification.id)
-    if (notification.recipeId) navigate(`/recipe/${notification.recipeId}`)
+
+    if (notification.recipeId) {
+      navigate(`/recipe/${notification.recipeId}`)
+      return
+    }
+
+    if (notification.type === 'follow' && notification.userId) {
+      const actor = users.find((user) => user.id === notification.userId)
+      if (actor) navigate(profilePath(actor))
+    }
   }
 
   function handleFollow(user: User) {
@@ -234,6 +244,20 @@ function NotificationRow({
 }) {
   const meta = NOTIFICATION_META[notification.type]
   const unread = !notification.read
+  const avatar = (
+    <span className="relative block shrink-0">
+      <img
+        src={details.actor?.avatar ?? FALLBACK_AVATAR}
+        alt=""
+        className="size-12 rounded-full border border-line object-cover dark:border-white/10"
+      />
+      <span
+        className={`absolute -bottom-1 -right-1 flex size-5 items-center justify-center rounded-full border-2 border-surface dark:border-surface-dark ${meta.badgeClass}`}
+      >
+        <Icon name={meta.icon} className="text-[11px]" filled />
+      </span>
+    </span>
+  )
 
   return (
     <div
@@ -248,24 +272,23 @@ function NotificationRow({
         />
       ) : null}
 
+      {details.actor ? (
+        <Link
+          to={profilePath(details.actor)}
+          aria-label={`Ver el perfil de ${details.actor.name}`}
+          className="ml-4 self-center rounded-full transition-opacity hover:opacity-80"
+        >
+          {avatar}
+        </Link>
+      ) : (
+        <span className="ml-4 self-center">{avatar}</span>
+      )}
+
       <button
         type="button"
         onClick={onOpen}
-        className="flex min-w-0 flex-1 items-center gap-3 py-3.5 pl-4 pr-2 text-left transition-colors hover:bg-black/[0.03] dark:hover:bg-white/5"
+        className="flex min-w-0 flex-1 items-center gap-3 py-3.5 pl-3 pr-2 text-left transition-colors hover:bg-black/[0.03] dark:hover:bg-white/5"
       >
-        <span className="relative shrink-0">
-          <img
-            src={details.actor?.avatar ?? FALLBACK_AVATAR}
-            alt=""
-            className="size-12 rounded-full border border-line object-cover dark:border-white/10"
-          />
-          <span
-            className={`absolute -bottom-1 -right-1 flex size-5 items-center justify-center rounded-full border-2 border-surface dark:border-surface-dark ${meta.badgeClass}`}
-          >
-            <Icon name={meta.icon} className="text-[11px]" filled />
-          </span>
-        </span>
-
         <span className="min-w-0 flex-1">
           <span className="block text-sm leading-snug">
             <span className="font-bold">{details.actor?.name ?? 'Alguien'}</span>{' '}

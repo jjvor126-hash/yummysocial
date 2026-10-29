@@ -6,6 +6,7 @@ import { FilterChip } from '../components/FilterChip'
 import { Icon } from '../components/Icon'
 import { RankingTabs } from '../components/RankingTabs'
 import { SegmentedControl } from '../components/SegmentedControl'
+import { profilePath } from '../lib/profiles'
 import { DIFFICULTY_FILTERS } from '../lib/recipeFilters'
 import {
   DISH_SORT_OPTIONS,
@@ -231,11 +232,11 @@ function DishPodium({ entries }: { entries: DishRankingEntry[] }) {
       {entries.map((entry) => (
         <li
           key={entry.recipe.id}
-          className={`w-1/3 ${PODIUM_ORDER[entry.position] ?? ''}`}
+          className={`flex w-1/3 flex-col items-center ${PODIUM_ORDER[entry.position] ?? ''}`}
         >
           <Link
             to={`/recipe/${entry.recipe.id}`}
-            className="group flex flex-col items-center rounded-2xl outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary"
+            className="group flex w-full flex-col items-center rounded-2xl outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary"
           >
             {entry.position === 1 ? (
               <Icon
@@ -273,14 +274,26 @@ function DishPodium({ entries }: { entries: DishRankingEntry[] }) {
             >
               {entry.recipe.title}
             </p>
-            <p className="w-full truncate text-center text-[10px] text-muted dark:text-gray-400">
-              @{entry.author?.username ?? 'yummysocial'}
-            </p>
-            <p className="mt-0.5 flex items-center gap-0.5 text-sm font-bold text-primary">
-              {entry.recipe.rating.toFixed(1)}
-              <Icon name="star" filled className="text-[13px]" />
-            </p>
           </Link>
+
+          {entry.author ? (
+            <Link
+              to={profilePath(entry.author)}
+              aria-label={`Ver el perfil de ${entry.author.name}`}
+              className="mt-0.5 w-full truncate text-center text-[10px] text-muted transition-colors hover:text-primary dark:text-gray-400"
+            >
+              @{entry.author.username}
+            </Link>
+          ) : (
+            <p className="mt-0.5 w-full truncate text-center text-[10px] text-muted dark:text-gray-400">
+              @yummysocial
+            </p>
+          )}
+
+          <p className="flex items-center gap-0.5 text-sm font-bold text-primary">
+            {entry.recipe.rating.toFixed(1)}
+            <Icon name="star" filled className="text-[13px]" />
+          </p>
         </li>
       ))}
     </ol>
@@ -289,14 +302,15 @@ function DishPodium({ entries }: { entries: DishRankingEntry[] }) {
 
 function DishRow({ entry }: { entry: DishRankingEntry }) {
   return (
-    <li>
+    <li className="flex items-center gap-3 rounded-2xl bg-white/80 p-3 shadow-sm ring-1 ring-line transition-colors hover:bg-primary-soft/60 dark:bg-white/5 dark:ring-white/10 dark:hover:bg-white/10">
+      <span className="w-6 shrink-0 text-center text-sm font-bold text-muted dark:text-gray-500">
+        {entry.position}
+      </span>
+
       <Link
         to={`/recipe/${entry.recipe.id}`}
-        className="group flex items-center gap-3 rounded-2xl bg-white/80 p-3 shadow-sm ring-1 ring-line transition-colors hover:bg-primary-soft/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary dark:bg-white/5 dark:ring-white/10 dark:hover:bg-white/10"
+        className="group flex min-w-0 flex-1 items-center gap-3 rounded-xl outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary"
       >
-        <span className="w-6 shrink-0 text-center text-sm font-bold text-muted dark:text-gray-500">
-          {entry.position}
-        </span>
         <img
           src={entry.recipe.image}
           alt={entry.recipe.title}
@@ -305,23 +319,34 @@ function DishRow({ entry }: { entry: DishRankingEntry }) {
         />
         <div className="min-w-0 flex-1">
           <p className="line-clamp-2 text-sm font-bold leading-tight">{entry.recipe.title}</p>
-          <p className="truncate text-xs text-muted dark:text-gray-400">
-            @{entry.author?.username ?? 'yummysocial'}
-          </p>
           <p className="mt-0.5 truncate text-[10px] text-muted dark:text-gray-500">
             {entry.recipe.difficulty} · {entry.recipe.timeMinutes} min
           </p>
         </div>
-        <div className="shrink-0 text-right">
-          <div className="inline-flex items-center gap-1 rounded-lg bg-primary-soft px-2 py-1 text-xs font-bold text-primary dark:bg-primary/10">
-            <Icon name="star" filled className="text-[14px]" />
-            {entry.recipe.rating.toFixed(1)}
-          </div>
-          <p className="mt-1 text-[10px] text-muted dark:text-gray-500">
-            {formatCount(entry.recipe.ratingCount)} reseñas
-          </p>
-        </div>
       </Link>
+
+      <div className="flex min-w-0 shrink-0 flex-col items-end">
+        {entry.author ? (
+          <Link
+            to={profilePath(entry.author)}
+            aria-label={`Ver el perfil de ${entry.author.name}`}
+            className="max-w-[110px] truncate text-xs text-muted transition-colors hover:text-primary dark:text-gray-400"
+          >
+            @{entry.author.username}
+          </Link>
+        ) : (
+          <span className="max-w-[110px] truncate text-xs text-muted dark:text-gray-400">
+            @yummysocial
+          </span>
+        )}
+        <div className="mt-1 inline-flex items-center gap-1 rounded-lg bg-primary-soft px-2 py-1 text-xs font-bold text-primary dark:bg-primary/10">
+          <Icon name="star" filled className="text-[14px]" />
+          {entry.recipe.rating.toFixed(1)}
+        </div>
+        <p className="mt-1 text-[10px] text-muted dark:text-gray-500">
+          {formatCount(entry.recipe.ratingCount)} reseñas
+        </p>
+      </div>
     </li>
   )
 }

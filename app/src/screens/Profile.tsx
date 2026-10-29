@@ -349,7 +349,9 @@ function ProfileStat({ value, label }: { value: string; label: string }) {
   return (
     <div className="flex flex-col items-center">
       <span className="text-lg font-bold leading-tight">{value}</span>
-      <span className="text-xs font-medium text-muted dark:text-gray-400">{label}</span>
+      <span className="text-[10px] font-medium text-muted min-[360px]:text-xs dark:text-gray-400">
+        {label}
+      </span>
     </div>
   )
 }

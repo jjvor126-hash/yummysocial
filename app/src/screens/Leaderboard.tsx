@@ -9,6 +9,7 @@ import {
   chefMetricMeta,
   chefRecipeLabel,
 } from '../lib/rankings'
+import { profilePath } from '../lib/profiles'
 import type { ChefRankingEntry, ChefSort } from '../lib/rankings'
 import { formatCount } from '../lib/time'
 import { useAppStore, useCurrentUser } from '../store/useAppStore'
@@ -180,61 +181,67 @@ function Podium({ entries, sort }: { entries: ChefRankingEntry[]; sort: ChefSort
         {entries.map((entry) => (
           <li
             key={entry.user.id}
-            className={`flex w-1/3 flex-col items-center ${PODIUM_ORDER[entry.position] ?? ''}`}
+            className={`w-1/3 ${PODIUM_ORDER[entry.position] ?? ''}`}
           >
-            {entry.position === 1 ? (
-              <Icon
-                name="workspace_premium"
-                filled
-                className="mb-1 text-[26px] text-primary"
-              />
-            ) : (
-              <span aria-hidden="true" className="mb-1 h-[26px]" />
-            )}
-
-            <div
-              className={`relative rounded-full border-[3px] bg-white p-1 dark:bg-card-dark ${
-                PODIUM_RING[entry.position] ?? ''
-              } ${PODIUM_SIZE[entry.position] ?? 'size-20'}`}
+            <Link
+              to={profilePath(entry.user)}
+              aria-label={`Ver el perfil de ${entry.user.name}`}
+              className="flex w-full flex-col items-center rounded-2xl outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary"
             >
-              <img
-                src={entry.user.avatar}
-                alt=""
-                className="size-full rounded-full object-cover"
-              />
-              <span
-                className={`absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full border-2 border-surface px-2 py-0.5 text-[11px] font-bold text-white dark:border-surface-dark ${
-                  PODIUM_BADGE[entry.position] ?? 'bg-primary'
+              {entry.position === 1 ? (
+                <Icon
+                  name="workspace_premium"
+                  filled
+                  className="mb-1 text-[26px] text-primary"
+                />
+              ) : (
+                <span aria-hidden="true" className="mb-1 h-[26px]" />
+              )}
+
+              <div
+                className={`relative rounded-full border-[3px] bg-white p-1 dark:bg-card-dark ${
+                  PODIUM_RING[entry.position] ?? ''
+                } ${PODIUM_SIZE[entry.position] ?? 'size-20'}`}
+              >
+                <img
+                  src={entry.user.avatar}
+                  alt=""
+                  className="size-full rounded-full object-cover"
+                />
+                <span
+                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full border-2 border-surface px-2 py-0.5 text-[11px] font-bold text-white dark:border-surface-dark ${
+                    PODIUM_BADGE[entry.position] ?? 'bg-primary'
+                  }`}
+                >
+                  {entry.position}
+                </span>
+              </div>
+
+              <p
+                className={`mt-3 w-full truncate text-center font-bold ${
+                  entry.position === 1 ? 'text-base' : 'text-sm'
                 }`}
               >
-                {entry.position}
-              </span>
-            </div>
+                {entry.user.name}
+              </p>
+              <p className="mt-0.5 w-full truncate text-center text-[10px] font-medium text-muted dark:text-gray-400">
+                {entry.rank.current.name}
+              </p>
+              <p className="w-full truncate text-center text-[10px] text-muted dark:text-gray-500">
+                {chefRecipeLabel(entry.recipeCount)}
+              </p>
 
-            <p
-              className={`mt-3 w-full truncate text-center font-bold ${
-                entry.position === 1 ? 'text-base' : 'text-sm'
-              }`}
-            >
-              {entry.user.name}
-            </p>
-            <p className="mt-0.5 w-full truncate text-center text-[10px] font-medium text-muted dark:text-gray-400">
-              {entry.rank.current.name}
-            </p>
-            <p className="w-full truncate text-center text-[10px] text-muted dark:text-gray-500">
-              {chefRecipeLabel(entry.recipeCount)}
-            </p>
+              <div className="mt-1 flex items-center gap-1 rounded-full bg-primary-soft px-2 py-0.5 text-xs font-bold text-primary dark:bg-primary/10">
+                <Icon name={meta.icon} className="text-[13px]" filled={meta.icon === 'star'} />
+                {formatCount(entry.metric)}
+              </div>
 
-            <div className="mt-1 flex items-center gap-1 rounded-full bg-primary-soft px-2 py-0.5 text-xs font-bold text-primary dark:bg-primary/10">
-              <Icon name={meta.icon} className="text-[13px]" filled={meta.icon === 'star'} />
-              {formatCount(entry.metric)}
-            </div>
-
-            {entry.isCurrentUser ? (
-              <span className="mt-1 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
-                Tú
-              </span>
-            ) : null}
+              {entry.isCurrentUser ? (
+                <span className="mt-1 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+                  Tú
+                </span>
+              ) : null}
+            </Link>
           </li>
         ))}
       </ol>
@@ -247,11 +254,13 @@ function ChefRow({ entry, sort }: { entry: ChefRankingEntry; sort: ChefSort }) {
 
   return (
     <li>
-      <div
-        className={`flex items-center gap-3 rounded-2xl px-2.5 py-2.5 ${
+      <Link
+        to={profilePath(entry.user)}
+        aria-label={`Ver el perfil de ${entry.user.name}`}
+        className={`flex items-center gap-3 rounded-2xl px-2.5 py-2.5 transition-colors ${
           entry.isCurrentUser
-            ? 'bg-primary/10 ring-1 ring-primary/30'
-            : 'bg-surface/80 dark:bg-white/5'
+            ? 'bg-primary/10 ring-1 ring-primary/30 hover:bg-primary/15'
+            : 'bg-surface/80 hover:bg-primary-soft/60 dark:bg-white/5 dark:hover:bg-white/10'
         }`}
       >
         <span className="w-6 shrink-0 text-center text-sm font-bold text-muted dark:text-gray-500">
@@ -284,7 +293,7 @@ function ChefRow({ entry, sort }: { entry: ChefRankingEntry; sort: ChefSort }) {
           </p>
           <p className="text-[10px] text-muted dark:text-gray-500">{meta.label}</p>
         </div>
-      </div>
+      </Link>
     </li>
   )
 }

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import {
   DEMO_USER_ID,
   seedComments,
@@ -10,6 +10,7 @@ import {
   seedUsers,
 } from '../data/seed'
 import { SECRET_STAR_COST } from '../lib/constants'
+import { safeStorage } from '../lib/storage'
 import { isStoryActive } from '../lib/stories'
 import type {
   AppNotification,
@@ -42,6 +43,7 @@ type AppState = {
   toggleLike: (recipeId: string) => void
   toggleSave: (recipeId: string) => void
   addComment: (recipeId: string, text: string) => void
+  toggleCommentLike: (commentId: string) => void
   addRecipe: (input: RecipeInput) => string
   updateProfile: (input: ProfileInput) => void
   toggleFollow: (userId: string) => void
@@ -133,6 +135,19 @@ export const useAppStore = create<AppState>()(
           }
         })
       },
+
+      toggleCommentLike: (commentId) =>
+        set((state) => ({
+          comments: state.comments.map((comment) =>
+            comment.id === commentId
+              ? {
+                  ...comment,
+                  likedByMe: !comment.likedByMe,
+                  likes: Math.max(0, comment.likes + (comment.likedByMe ? -1 : 1)),
+                }
+              : comment,
+          ),
+        })),
 
       toggleFollow: (userId) =>
         set((state) => {
@@ -346,6 +361,7 @@ export const useAppStore = create<AppState>()(
     {
       name: 'yummysocial:store',
       version: 2,
+      storage: createJSONStorage(() => safeStorage),
       migrate: (persistedState) => {
         const persisted = (persistedState ?? {}) as Partial<AppState>
         return {
@@ -427,7 +443,11 @@ export const useAppStore = create<AppState>()(
             }),
             ...createdRecipes,
           ],
-          comments: persisted.comments ?? currentState.comments,
+          comments: (persisted.comments ?? currentState.comments).map((comment) => ({
+            ...comment,
+            likes: comment.likes ?? 0,
+            likedByMe: comment.likedByMe ?? false,
+          })),
           stories: [...seedStories, ...createdStories],
           highlights: [...seedHighlights, ...createdHighlights],
           viewedStories: (persisted.viewedStories ?? []).filter((id) =>

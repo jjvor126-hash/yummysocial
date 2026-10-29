@@ -68,7 +68,7 @@ function EditProfileSheetContent({
     setReading(true)
     setError(null)
     try {
-      setAvatar(await readImageFile(file, 480))
+      setAvatar(await readImageFile(file, { maxSize: 480, maxBytes: 90_000 }))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'No se pudo cargar la imagen.')
     } finally {
@@ -165,12 +165,12 @@ function EditProfileSheetContent({
             />
 
             <div className="flex items-center gap-2">
-              {AVATAR_OPTIONS.map((option) => (
+              {AVATAR_OPTIONS.map((option, index) => (
                 <button
                   key={option}
                   type="button"
                   onClick={() => setAvatar(option)}
-                  aria-label="Usar este avatar"
+                  aria-label={`Usar avatar de ejemplo ${index + 1}`}
                   aria-pressed={avatar === option}
                   className={`overflow-hidden rounded-full border-2 transition-colors ${
                     avatar === option

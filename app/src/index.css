@@ -8,13 +8,15 @@
   --color-primary: #ee8c2b;
   --color-primary-soft: #fff2e5;
   --color-primary-dark: #d97706;
+  /* Variante de texto del naranja de marca: 4.8:1 sobre fondos claros. */
+  --color-primary-ink: #a85408;
 
   --color-surface: #f8f7f6;
   --color-surface-dark: #221910;
   --color-card-dark: #1a120b;
 
   --color-ink: #181411;
-  --color-muted: #897561;
+  --color-muted: #7d6a57;
   --color-line: #ece8e4;
 }
 
@@ -47,7 +49,35 @@
   ::selection {
     background-color: rgb(238 140 43 / 0.3);
   }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary-ink);
+    outline-offset: 2px;
+  }
+
+  .dark :focus-visible {
+    outline-color: var(--color-primary);
+  }
 }
+
+/*
+ * El naranja de marca no alcanza 4.5:1 como texto sobre fondos claros.
+ * En modo claro se usa una variante más oscura solo para texto; los rellenos
+ * (bg-primary) y el modo oscuro conservan el color original.
+ */
+:root:not(.dark) .text-primary {
+  color: var(--color-primary-ink);
+}
+
+:root:not(.dark) .hover\:text-primary:hover {
+  color: var(--color-primary-ink);
+}
+
+/* Mejora el contraste del texto secundario en modo oscuro. */
+.dark .dark\:text-gray-500 {
+  color: #9ca3af;
+}
+
 
 .no-scrollbar {
   -ms-overflow-style: none;

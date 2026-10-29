@@ -5,6 +5,7 @@ import { Icon } from '../components/Icon'
 import { Toast } from '../components/Toast'
 import { useToast } from '../lib/useToast'
 import { SECRET_STAR_COST } from '../lib/constants'
+import { profilePathFor } from '../lib/profiles'
 import { shareLink } from '../lib/share'
 import { formatCount, timeAgo } from '../lib/time'
 import { useAppStore, useCurrentUser } from '../store/useAppStore'
@@ -95,6 +96,7 @@ export function RecipeDetail() {
   const toggleLike = useAppStore((state) => state.toggleLike)
   const toggleFollow = useAppStore((state) => state.toggleFollow)
   const addComment = useAppStore((state) => state.addComment)
+  const toggleCommentLike = useAppStore((state) => state.toggleCommentLike)
   const unlockSecrets = useAppStore((state) => state.unlockSecrets)
 
   const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(() => new Set())
@@ -116,6 +118,7 @@ export function RecipeDetail() {
 
   const recipeId = recipe.id
   const author = users.find((user) => user.id === recipe.authorId)
+  const authorPath = author ? profilePathFor(author, currentUser?.id) : '/feed'
   const isMine = recipe.authorId === currentUser?.id
   const isFollowing = currentUser?.followingIds.includes(recipe.authorId) ?? false
   const stars = currentUser?.stars ?? 0
@@ -276,7 +279,7 @@ export function RecipeDetail() {
 
         <div className="mt-5 flex items-center gap-3">
           <Link
-            to="/profile"
+            to={authorPath}
             aria-label={`Ver el perfil de ${author?.name ?? 'el autor'}`}
             className="shrink-0"
           >
@@ -556,21 +559,34 @@ export function RecipeDetail() {
             ) : (
               visibleComments.map((comment: Comment) => {
                 const commentUser = findUser(comment.userId)
+                const commentAuthorPath = commentUser
+                  ? profilePathFor(commentUser, currentUser?.id)
+                  : '/feed'
+
                 return (
                   <article
                     key={comment.id}
                     className="flex gap-3 rounded-2xl bg-white p-4 shadow-sm dark:bg-white/5"
                   >
-                    <img
-                      src={commentUser?.avatar ?? '/img/detalle-de-receta-1-04.jpg'}
-                      alt=""
-                      className="size-10 shrink-0 rounded-full object-cover"
-                    />
+                    <Link
+                      to={commentAuthorPath}
+                      aria-label={`Ver el perfil de ${commentUser?.name ?? 'este cocinero'}`}
+                      className="shrink-0"
+                    >
+                      <img
+                        src={commentUser?.avatar ?? '/img/detalle-de-receta-1-04.jpg'}
+                        alt=""
+                        className="size-10 rounded-full object-cover"
+                      />
+                    </Link>
                     <div className="flex min-w-0 flex-1 flex-col gap-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="truncate text-sm font-bold">
+                        <Link
+                          to={commentAuthorPath}
+                          className="truncate text-sm font-bold transition-colors hover:text-primary"
+                        >
                           {commentUser?.name ?? 'Cocinero'}
-                        </p>
+                        </Link>
                         <span className="shrink-0 text-[11px] text-muted dark:text-gray-500">
                           {timeAgo(comment.createdAt)}
                         </span>
@@ -579,10 +595,28 @@ export function RecipeDetail() {
                         {comment.text}
                       </p>
                       <div className="mt-1 flex items-center gap-4">
-                        <span className="flex items-center gap-1 text-[11px] font-medium text-muted dark:text-gray-500">
-                          <Icon name="thumb_up" className="text-[15px]" />
+                        <button
+                          type="button"
+                          onClick={() => toggleCommentLike(comment.id)}
+                          aria-pressed={comment.likedByMe}
+                          aria-label={
+                            comment.likedByMe
+                              ? `Quitar me gusta al comentario de ${commentUser?.name ?? 'este cocinero'}`
+                              : `Dar me gusta al comentario de ${commentUser?.name ?? 'este cocinero'}`
+                          }
+                          className={`flex items-center gap-1 text-[11px] font-semibold transition-colors ${
+                            comment.likedByMe
+                              ? 'text-primary'
+                              : 'text-muted hover:text-primary dark:text-gray-400'
+                          }`}
+                        >
+                          <Icon
+                            name="thumb_up"
+                            className="text-[15px]"
+                            filled={comment.likedByMe}
+                          />
                           {formatCount(comment.likes)}
-                        </span>
+                        </button>
                         <button
                           type="button"
                           onClick={() => handleReply(commentUser?.username ?? '')}

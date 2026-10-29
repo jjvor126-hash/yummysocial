@@ -5,6 +5,7 @@ import { IconButton } from '../components/IconButton'
 import { StoryRing } from '../components/StoryRing'
 import { Toast } from '../components/Toast'
 import { useToast } from '../lib/useToast'
+import { profilePathFor } from '../lib/profiles'
 import { shareLink } from '../lib/share'
 import { groupStoriesByAuthor } from '../lib/stories'
 import { formatCount, timeAgo } from '../lib/time'
@@ -20,6 +21,7 @@ export function Feed() {
   const unreadCount = useUnreadNotifications()
   const toggleLike = useAppStore((state) => state.toggleLike)
   const toggleSave = useAppStore((state) => state.toggleSave)
+  const toggleFollow = useAppStore((state) => state.toggleFollow)
   const { message: toast, showToast } = useToast()
 
   const feed = useMemo(
@@ -54,6 +56,14 @@ export function Feed() {
     showToast('Enlace copiado al portapapeles')
   }
 
+  function handleFollow(author: User) {
+    const wasFollowing = currentUser?.followingIds.includes(author.id) ?? false
+    toggleFollow(author.id)
+    showToast(
+      wasFollowing ? `Dejaste de seguir a ${author.name}` : `Ahora sigues a ${author.name}`,
+    )
+  }
+
   return (
     <div className="flex flex-col">
       <header className="sticky top-0 z-30 border-b border-line bg-surface/90 backdrop-blur-md dark:border-white/10 dark:bg-surface-dark/90">
@@ -66,7 +76,7 @@ export function Feed() {
             <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-white">
               <Icon name="lunch_dining" className="text-[20px]" />
             </span>
-            <span className="truncate text-xl font-extrabold tracking-tight">
+            <span className="truncate text-lg font-extrabold tracking-tight min-[360px]:text-xl">
               Yummy<span className="text-primary">Social</span>
             </span>
           </Link>
@@ -148,30 +158,53 @@ export function Feed() {
       <div className="flex flex-col">
         {feed.map((recipe) => {
           const author = getUser(recipe.authorId)
+          const authorPath = author ? profilePathFor(author, currentUser?.id) : '/feed'
+          const following = author
+            ? (currentUser?.followingIds.includes(author.id) ?? false)
+            : false
+
           return (
             <article
               key={recipe.id}
               className="border-b border-line pb-4 dark:border-white/10"
             >
               <header className="flex items-center gap-3 px-4 py-3">
-                <img
-                  src={author?.avatar ?? '/img/tabla-de-clasificaci-n-chefs-1-08.jpg'}
-                  alt=""
-                  className="size-10 rounded-full object-cover ring-2 ring-primary/20"
-                />
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-bold">{author?.name ?? 'Cocinero'}</p>
-                  <p className="text-xs text-muted dark:text-gray-400">
+                <Link
+                  to={authorPath}
+                  aria-label={`Ver el perfil de ${author?.name ?? 'este cocinero'}`}
+                  className="shrink-0"
+                >
+                  <img
+                    src={author?.avatar ?? '/img/tabla-de-clasificaci-n-chefs-1-08.jpg'}
+                    alt=""
+                    className="size-10 rounded-full object-cover ring-2 ring-primary/20"
+                  />
+                </Link>
+                <div className="min-w-0 flex-1">
+                  <Link
+                    to={authorPath}
+                    className="block truncate text-sm font-bold transition-colors hover:text-primary"
+                  >
+                    {author?.name ?? 'Cocinero'}
+                  </Link>
+                  <p className="truncate text-xs text-muted dark:text-gray-400">
                     @{author?.username ?? 'yummysocial'} · {timeAgo(recipe.createdAt)}
                   </p>
                 </div>
-                <button
-                  type="button"
-                  aria-label="Más opciones"
-                  className="ml-auto flex size-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-black/5 dark:hover:bg-white/10"
-                >
-                  <Icon name="more_horiz" />
-                </button>
+                {author && author.id !== currentUser?.id ? (
+                  <button
+                    type="button"
+                    onClick={() => handleFollow(author)}
+                    aria-pressed={following}
+                    className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-bold transition-colors active:scale-95 ${
+                      following
+                        ? 'border border-line text-muted hover:bg-black/5 dark:border-white/15 dark:text-gray-300 dark:hover:bg-white/10'
+                        : 'bg-primary text-white shadow-sm shadow-primary/30'
+                    }`}
+                  >
+                    {following ? 'Siguiendo' : 'Seguir'}
+                  </button>
+                ) : null}
               </header>
 
               <Link to={`/recipe/${recipe.id}`} className="relative block">
@@ -236,7 +269,7 @@ export function Feed() {
                 </p>
                 <p className="text-sm leading-snug">
                   <Link
-                    to="/profile"
+                    to={authorPath}
                     className="font-bold hover:text-primary"
                   >
                     @{author?.username ?? 'yummysocial'}

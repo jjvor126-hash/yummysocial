@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent } from 'react'
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { StoryProgress } from '../components/StoryProgress'
 import { Toast } from '../components/Toast'
+import { profilePath } from '../lib/profiles'
 import {
   groupStoriesByAuthor,
   storiesForAuthor,
@@ -274,17 +275,23 @@ export function StoryViewer() {
             <StoryProgress count={list.length} activeIndex={index} progress={progress} />
 
             <div className="mt-3 flex items-center gap-3">
-              <img
-                src={author.avatar}
-                alt=""
-                className="size-9 rounded-full object-cover ring-2 ring-white/40"
-              />
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-bold">{author.name}</p>
-                <p className="truncate text-[11px] text-white/70">
-                  {timeAgo(story.createdAt)} · {storyTimeLeft(story)}
-                </p>
-              </div>
+              <Link
+                to={profilePath(author)}
+                aria-label={`Ver el perfil de ${author.name}`}
+                className="flex min-w-0 flex-1 items-center gap-3 rounded-full transition-opacity hover:opacity-85"
+              >
+                <img
+                  src={author.avatar}
+                  alt=""
+                  className="size-9 shrink-0 rounded-full object-cover ring-2 ring-white/40"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-bold">{author.name}</p>
+                  <p className="truncate text-[11px] text-white/70">
+                    {timeAgo(story.createdAt)} · {storyTimeLeft(story)}
+                  </p>
+                </div>
+              </Link>
               {isMine ? (
                 <button
                   type="button"
