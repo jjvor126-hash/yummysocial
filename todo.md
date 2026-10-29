@@ -1,8 +1,8 @@
 # YummySocial — Seguimiento de fases
 
-Última actualización: 27 de octubre de 2026
-Estado: **Fase 6 completada** · commit `a146b97`
-Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 390 y 360 px en claro/oscuro ✅
+Última actualización: 28 de octubre de 2026
+Estado: **Fase 7 completada** · commit `f091429`
+Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 320, 360, 390, 414 y 768 px en claro/oscuro ✅
 
 ## Resumen
 
@@ -15,7 +15,7 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 | 4. Explorar, guardadas y notificaciones | ✅ Completada | Buscador con filtros, pantalla de guardadas y bandeja de notificaciones |
 | 5. Clasificación y platos destacados | ✅ Completada | Ranking de chefs, platos mejor valorados y accesos |
 | 6. Historias | ✅ Completada | Selector, editor, publicación, visor, destacados y tira del feed |
-| 7. Pulido y calidad | ⏳ Pendiente | Perfiles de otros usuarios, accesibilidad, casos límite y cierre |
+| 7. Pulido y calidad | ✅ Completada | Perfiles públicos, likes en comentarios, accesibilidad, responsive, cuota y cierre |
 
 ---
 
@@ -183,27 +183,70 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 - [x] `npm run build`, `npm run lint` y Playwright a 390 y 360 px en claro/oscuro sin errores de consola.
 - [x] Verificados caducidad, audiencia, borrado persistente y recarga.
 
-## Fase 7 — Pulido y calidad ⏳
+## Fase 7 — Pulido y calidad ✅
 
-- [ ] Perfiles de otros usuarios (`/u/:username`) y navegación desde autores.
-- [ ] Seguir/dejar de seguir desde tarjetas y perfiles.
-- [ ] Dar me gusta a comentarios (hoy solo se muestra el contador).
-- [ ] Revisión de accesibilidad: foco, etiquetas, contraste y navegación por teclado.
-- [ ] Revisión responsive más allá de 390 px.
-- [ ] Manejo de cuota de `localStorage` al subir imágenes grandes.
-- [ ] Documentación final y cierre de fases.
+### Perfiles públicos (`/u/:username`)
+
+- [x] `lib/profiles.ts` con `profilePath`, `profilePathFor` y `findUserByUsername` (sin distinguir mayúsculas ni acentos).
+- [x] Pantalla `PublicProfile` con cabecera, avatar, estadísticas, bio, ubicación, tarjeta de nivel y destacados.
+- [x] Recetas del autor en grid y estado vacío; perfil inexistente con acceso a Explorar.
+- [x] El nombre propio redirige a `/profile`; el botón Volver usa el historial o cae al feed.
+- [x] Compartir perfil con `shareLink` y aviso al copiar.
+
+### Seguidores y autores
+
+- [x] Seguir/dejar de seguir desde el perfil público, con `aria-pressed` y aviso inmediato.
+- [x] Botón Seguir/Siguiendo en las tarjetas del feed, oculto en las recetas propias.
+- [x] Enlaces al perfil del autor desde feed, detalle, comentarios, clasificación, platos, notificaciones y visor de historias.
+- [x] Las notificaciones de tipo “empezó a seguirte” abren el perfil del autor.
+- [x] El seguimiento y sus contadores sobreviven a la recarga.
+
+### Me gusta en comentarios
+
+- [x] Acción `toggleCommentLike` en el store, con `likes` y `likedByMe` por comentario.
+- [x] Botón de pulgar con estado activo, contador y etiqueta accesible “Dar/Quitar me gusta”.
+- [x] El `merge` normaliza comentarios antiguos y conserva el like tras recargar.
+
+### Accesibilidad
+
+- [x] Enlace **Saltar al contenido** y foco visible global (`:focus-visible`) en claro y oscuro.
+- [x] `aria-live` en los avisos (`Toast`) y `role="alert"` en el aviso de almacenamiento.
+- [x] Etiquetas accesibles en avatares, botones de compartir, seguidores y avatares de ejemplo.
+- [x] Token `primary-ink` para texto naranja en modo claro (≥ 4.5:1) y `muted` más oscuro.
+- [x] Revisión de controles sin nombre accesible en feed, perfiles, detalle, notificaciones, clasificación, platos, explorar, guardadas y perfil.
+
+### Responsive
+
+- [x] Verificado a 320, 360, 390, 414 y 768 px sin desbordamiento horizontal.
+- [x] Marca del feed, etiquetas de estadísticas y nombres del ranking ajustados a 320 px.
+- [x] Podios y filas de ranking reordenados para mantener el enlace al perfil sin anidar controles.
+
+### Cuota y almacenamiento
+
+- [x] `lib/storage.ts` envuelve `localStorage` y avisa al fallar la lectura, escritura o borrado.
+- [x] `StorageNotice` muestra un aviso visible y descartable cuando la cuota está llena.
+- [x] `readImageFile` acepta `maxBytes` y reduce calidad y tamaño en varios intentos.
+- [x] Límites ajustados en avatar (480 px / 90 KB), portada (1200 px / 420 KB) e historias (1440 px / 650 KB).
+- [x] La app sigue funcionando en memoria si el navegador rechaza la escritura.
+
+### Cierre
+
+- [x] `npm run build`, `npm run lint` y Playwright sin errores de consola.
+- [x] Capturas de la verificación en `C:\Users\Jesse\AppData\Local\Temp\pw\phase7`.
+- [x] Documentación final actualizada (`todo.md`, `AGENTS.md`, `app/README.md`).
+- [x] Commit de la fase y cierre del proyecto.
 
 ---
 
 ## Notas de seguimiento
 
-- No hay backend, tests automatizados ni CI: la verificación es `npm run build`, `npm run lint` y Playwright manual a 390 px.
-- Las capturas de la última verificación están en `C:\Users\Jesse\AppData\Local\Temp\pw\phase6`.
+- No hay backend, tests automatizados ni CI: la verificación es `npm run build`, `npm run lint` y Playwright manual.
+- Las capturas de la última verificación están en `C:\Users\Jesse\AppData\Local\Temp\pw\phase7`.
 - Los mockups de la raíz son la referencia visual y no deben modificarse salvo que la tarea sea sobre ellos.
-- Ya no quedan pantallas placeholder: las rutas de las fases 4, 5 y 6 están implementadas.
-- Las notificaciones de nuevos seguidores marcan leída y permiten seguir, pero todavía no abren un perfil público (Fase 7).
+- Ya no quedan pantallas placeholder ni funcionalidades pendientes del alcance inicial: las siete fases están cerradas.
+- Los perfiles públicos viven en `/u/:username`; el usuario propio redirige a `/profile`. Los enlaces al autor están disponibles desde feed, detalle, comentarios, clasificación, platos, notificaciones y visor de historias.
 - La barra inferior mantiene cinco accesos (Inicio, Explorar, Crear, Guardadas, Perfil); la clasificación se abre desde el feed y el perfil, y las pestañas Chefs/Platos la conectan con el ranking de platos.
 - El ranking de platos solo incluye recetas con al menos una reseña; las recetas creadas desde la app no aparecerán hasta que exista una acción para valorarlas.
 - Las historias del seed usan marcas de tiempo relativas a la carga para que la demo nunca arranque caducada; las creadas por el usuario caducan a las 12 o 24 h y el `merge` las descarta.
 - En escritorio la cámara cae al selector de archivos. El editor de historias es intencionadamente simple: texto, color y stickers, sin dibujo libre ni arrastre.
-- Fuera de ruta todavía: perfiles públicos de otros usuarios y likes en comentarios (Fase 7).
+- El estado se guarda con un envoltorio seguro de `localStorage`: si la cuota se llena, aparece un aviso y la sesión continúa en memoria. `readImageFile` comprime las fotos por debajo de un límite de bytes antes de guardarlas.

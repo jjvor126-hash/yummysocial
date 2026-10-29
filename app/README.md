@@ -24,8 +24,8 @@ Para probar desde el móvil en la misma red WiFi: `npm run dev -- --host` y abre
 src/
   App.tsx                 rutas principales y protección de sesión
   index.css               Tailwind + tokens de diseño (@theme)
-  components/             AppShell, BottomNav, Icon, IconButton, RecipeCard, SearchField, FilterChip, SegmentedControl, RankingTabs, EmptyState, EditProfileSheet, StoryRing, StoryProgress, Toast
-  screens/                Welcome, Onboarding, Feed, Search, Saved, Notifications, Leaderboard, TopDishes, Profile, CreateRecipe, RecipeDetail, StoryMediaPicker, StoryEditor, StoryPublish, StoryViewer, Settings, NotFound
+  components/             AppShell, BottomNav, Icon, IconButton, RecipeCard, SearchField, FilterChip, SegmentedControl, RankingTabs, EmptyState, EditProfileSheet, StoryRing, StoryProgress, Toast, StorageNotice
+  screens/                Welcome, Onboarding, Feed, Search, Saved, Notifications, Leaderboard, TopDishes, Profile, PublicProfile, CreateRecipe, RecipeDetail, StoryMediaPicker, StoryEditor, StoryPublish, StoryViewer, Settings, NotFound
   store/useAppStore.ts    estado global (Zustand + persist)
   data/seed.ts            usuarios, recetas, comentarios, notificaciones e historias demo
   data/images.json        manifiesto de imágenes descargadas de los mockups
@@ -35,6 +35,8 @@ src/
   lib/recipeFilters.ts    búsqueda, filtros por tiempo/dificultad/etiqueta y orden
   lib/rankings.ts         clasificación de chefs y platos, con métricas y filtros
   lib/notifications.ts    textos, filtros y agrupación por día de notificaciones
+  lib/profiles.ts         rutas de perfil y búsqueda de usuarios por @usuario
+  lib/storage.ts          localStorage seguro y aviso de cuota llena
   lib/ranks.ts            rangos por estrellas y progreso de nivel
   lib/stories.ts          caducidad, visibilidad por audiencia, agrupación y orden de historias
   lib/storyLayout.ts      posiciones de los stickers sobre el lienzo 9:16
@@ -52,15 +54,20 @@ public/img/               imágenes locales (servidas en /img/...)
 - El onboarding son 4 pantallas deslizables; se puede omitir. Al terminar se entra al feed.
 - **Explorar** busca por título, descripción, etiquetas, autor o ingredientes (sin distinguir acentos) y filtra por tiempo, dificultad y etiqueta; el orden puede ser recientes, populares o mejor valoradas.
 - **Guardadas** arranca con 3 recetas de la demo, permite buscar y filtrar lo guardado, ordenarlo por fecha de guardado, valoración o popularidad y quitar recetas desde la propia tarjeta.
-- **Notificaciones** agrupa por día, distingue leídas y sin leer, filtra por menciones o sistema y permite seguir al autor desde los avisos de nuevos seguidores. La campana de las cabeceras muestra el número pendiente.
+- **Notificaciones** agrupa por día, distingue leídas y sin leer, filtra por menciones o sistema y permite seguir al autor desde los avisos de nuevos seguidores (o abrir su perfil). La campana de las cabeceras muestra el número pendiente.
+- **Perfiles públicos** (`/u/:username`) muestran el nivel, los destacados y las recetas de cada cocinero, con botones para seguir/dejar de seguir y compartir. Se llega tocando el nombre o el avatar del autor en el feed, el detalle, los comentarios, la clasificación, los platos, las notificaciones o las historias. El propio usuario redirige a **Mi perfil**.
+- **Me gusta en comentarios**: cada comentario del detalle tiene un pulgar con contador; el estado se guarda y se mantiene al recargar.
 - **Clasificación** (`/leaderboard`) ordena a los chefs por estrellas, tendencias de los últimos 7 días o seguidores, con podio, lista completa y una barra fija con la posición del usuario. Se abre desde el icono del feed o desde la tarjeta de nivel del perfil.
 - **Ranking de sabor** (`/top-dishes`) ordena las recetas valoradas por nota, número de reseñas o popularidad, con filtros de categoría y dificultad y acceso al detalle de cada plato. Las recetas nuevas sin reseñas no aparecen.
 - En **Mi perfil** se editan nombre, usuario, biografía, ubicación y avatar; las estadísticas, la tarjeta de nivel y las pestañas Recetas/Guardadas usan datos reales. Los destacados abren el visor de historias y **Nueva** inicia el flujo de creación.
 - **Historias** se crean desde `/stories/new`: cámara, galería o foto de ejemplo, editor 9:16 con texto, colores y stickers, y publicación con descripción, etiquetas, duración de 12/24 h, audiencia y ubicación. El visor avanza solo, se pausa al mantener pulsado, admite tap, deslizamiento y teclado, y las historias caducadas o privadas dejan de mostrarse.
 - **Crear receta** permite subir o comprimir una portada, usar una foto de ejemplo, añadir ingredientes y pasos secretos y guardar un borrador (`yummysocial:recipe-draft`) antes de publicar.
-- El detalle de receta incluye ingredientes y pasos marcables, comentarios y contenido secreto que se desbloquea con 50 estrellas.
+- El detalle de receta incluye ingredientes y pasos marcables, comentarios con me gusta y contenido secreto que se desbloquea con 50 estrellas.
 - En **Ajustes** se puede cambiar el tema, cerrar sesión o restablecer los datos demo.
 - Las rutas privadas redirigen a `/welcome` sin sesión y a `/onboarding` si falta completar el onboarding.
+- **Accesibilidad**: al pulsar Tab aparece **Saltar al contenido**, todos los controles tienen foco visible y nombre accesible, y los avisos se anuncian con `aria-live`. El texto naranja usa una variante más oscura en modo claro para mantener el contraste.
+- **Responsive**: la interfaz se adapta desde 320 px (móviles pequeños) hasta 768 px sin desbordamiento horizontal.
+- **Almacenamiento**: las imágenes se comprimen por debajo de un límite de tamaño. Si `localStorage` se llena, aparece un aviso descartable y la app sigue funcionando en memoria durante la sesión.
 
 ## Notas
 
