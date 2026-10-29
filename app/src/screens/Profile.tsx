@@ -4,12 +4,14 @@ import { EditProfileSheet } from '../components/EditProfileSheet'
 import { Icon } from '../components/Icon'
 import { IconButton } from '../components/IconButton'
 import { RecipeCard } from '../components/RecipeCard'
+import { StarGuideSheet } from '../components/StarGuide'
 import { StoryRing } from '../components/StoryRing'
 import { Toast } from '../components/Toast'
 import { useToast } from '../lib/useToast'
 import { getRank } from '../lib/ranks'
 import { shareLink } from '../lib/share'
 import { isStoryActive } from '../lib/stories'
+import { isSubscriptionActive, subscriptionEndLabel } from '../lib/subscription'
 import { formatCount } from '../lib/time'
 import { useAppStore, useCurrentUser, useUnreadNotifications } from '../store/useAppStore'
 import type { Recipe } from '../types'
@@ -25,9 +27,11 @@ export function Profile() {
   const recipes = useAppStore((state) => state.recipes)
   const stories = useAppStore((state) => state.stories)
   const highlights = useAppStore((state) => state.highlights)
+  const subscription = useAppStore((state) => state.subscription)
   const unreadCount = useUnreadNotifications()
   const [tab, setTab] = useState<Tab>('recipes')
   const [sheetOpen, setSheetOpen] = useState(false)
+  const [guideOpen, setGuideOpen] = useState(false)
   const { message: toast, showToast } = useToast()
 
   const myRecipes = useMemo(
@@ -48,6 +52,7 @@ export function Profile() {
   if (!user) return null
 
   const rank = getRank(user.stars)
+  const subscriptionActive = isSubscriptionActive(subscription)
   const visibleRecipes = tab === 'recipes' ? myRecipes : savedRecipes
 
   const handleShare = async () => {
@@ -111,7 +116,15 @@ export function Profile() {
         </div>
 
         <div className="mt-4 text-center">
-          <p className="text-xl font-bold leading-tight tracking-tight">{user.name}</p>
+          <div className="flex items-center justify-center gap-1.5">
+            <p className="text-xl font-bold leading-tight tracking-tight">{user.name}</p>
+            {subscriptionActive ? (
+              <span className="flex items-center gap-0.5 rounded-full bg-gradient-to-r from-[#7c3aed] to-[#c026d3] px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
+                <Icon name="verified" filled className="text-[12px]" />
+                Yummy+
+              </span>
+            ) : null}
+          </div>
           <p className="text-sm font-semibold text-primary">@{user.username}</p>
           {user.bio ? (
             <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted dark:text-gray-300">
@@ -143,6 +156,26 @@ export function Profile() {
             <Icon name="share" className="text-[20px]" />
           </button>
         </div>
+
+        <Link
+          to="/premium"
+          className="mt-3 flex items-center gap-3 rounded-xl border border-purple-200 bg-purple-50 px-3 py-2.5 transition-colors hover:bg-purple-100/70 dark:border-purple-500/30 dark:bg-purple-900/15 dark:hover:bg-purple-900/25"
+        >
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-purple-600 text-white">
+            <Icon name="workspace_premium" filled className="text-[18px]" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-xs font-bold text-purple-800 dark:text-purple-200">
+              {subscriptionActive ? 'Yummy+ activo' : 'Hazte Yummy+'}
+            </span>
+            <span className="block truncate text-[11px] text-purple-700/80 dark:text-purple-300">
+              {subscriptionActive
+                ? `Todos los secretos abiertos · hasta el ${subscriptionEndLabel(subscription)}`
+                : 'Abre todos los secretos sin esperar al nivel'}
+            </span>
+          </span>
+          <Icon name="chevron_right" className="text-purple-500 dark:text-purple-300" />
+        </Link>
 
         <section
           aria-label="Nivel"
@@ -200,9 +233,21 @@ export function Profile() {
             </div>
           </div>
 
+          <button
+            type="button"
+            onClick={() => setGuideOpen(true)}
+            className="relative mt-3 flex w-full items-center justify-between gap-2 rounded-xl border border-primary/20 bg-white/80 px-3 py-2.5 text-xs font-bold text-primary shadow-sm transition-colors hover:bg-white dark:bg-white/10 dark:hover:bg-white/15"
+          >
+            <span className="flex items-center gap-1.5">
+              <Icon name="stars" className="text-[17px]" />
+              Cómo ganar estrellas
+            </span>
+            <Icon name="arrow_forward" className="text-[16px]" />
+          </button>
+
           <Link
             to="/leaderboard"
-            className="relative mt-3 flex items-center justify-between gap-2 rounded-xl border border-primary/20 bg-white/80 px-3 py-2.5 text-xs font-bold text-primary shadow-sm transition-colors hover:bg-white dark:bg-white/10 dark:hover:bg-white/15"
+            className="relative mt-2 flex items-center justify-between gap-2 rounded-xl border border-primary/20 bg-white/80 px-3 py-2.5 text-xs font-bold text-primary shadow-sm transition-colors hover:bg-white dark:bg-white/10 dark:hover:bg-white/15"
           >
             <span className="flex items-center gap-1.5">
               <Icon name="leaderboard" className="text-[17px]" />
@@ -340,6 +385,7 @@ export function Profile() {
         onClose={() => setSheetOpen(false)}
         onSaved={showToast}
       />
+      <StarGuideSheet open={guideOpen} onClose={() => setGuideOpen(false)} />
       <Toast message={toast} />
     </div>
   )

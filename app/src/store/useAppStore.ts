@@ -11,7 +11,9 @@ import {
 } from '../data/seed'
 import { SECRET_STAR_COST } from '../lib/constants'
 import { safeStorage } from '../lib/storage'
+import { addStars, STAR_REWARDS } from '../lib/stars'
 import { isStoryActive } from '../lib/stories'
+import { planById } from '../lib/subscription'
 import type {
   AppNotification,
   Comment,
@@ -21,6 +23,8 @@ import type {
   Story,
   StoryHighlight,
   StoryInput,
+  Subscription,
+  SubscriptionPlan,
   User,
 } from '../types'
 
@@ -35,6 +39,7 @@ type AppState = {
   hiddenStories: string[]
   hiddenHighlights: string[]
   unlockedSecrets: string[]
+  subscription: Subscription | null
   currentUserId: string | null
   hasOnboarded: boolean
   login: () => void
@@ -53,6 +58,8 @@ type AppState = {
   addHighlight: (storyId: string, label: string) => void
   removeHighlight: (highlightId: string) => void
   unlockSecrets: (recipeId: string) => void
+  subscribe: (plan: SubscriptionPlan) => void
+  cancelSubscription: () => void
   markNotificationRead: (id: string) => void
   markAllNotificationsRead: () => void
   resetDemoData: () => void
@@ -69,6 +76,7 @@ const initialState = {
   hiddenStories: [] as string[],
   hiddenHighlights: [] as string[],
   unlockedSecrets: [] as string[],
+  subscription: null as Subscription | null,
   currentUserId: null as string | null,
   hasOnboarded: false,
 }
@@ -83,17 +91,33 @@ export const useAppStore = create<AppState>()(
       completeOnboarding: () => set({ hasOnboarded: true }),
 
       toggleLike: (recipeId) =>
-        set((state) => ({
-          recipes: state.recipes.map((recipe) =>
-            recipe.id === recipeId
-              ? {
-                  ...recipe,
-                  likedByMe: !recipe.likedByMe,
-                  likes: recipe.likes + (recipe.likedByMe ? -1 : 1),
-                }
-              : recipe,
-          ),
-        })),
+        set((state) => {
+          const target = state.recipes.find((recipe) => recipe.id === recipeId)
+          const shouldReward =
+            target &&
+            state.currentUserId &&
+            target.authorId !== state.currentUserId
+
+          return {
+            recipes: state.recipes.map((recipe) =>
+              recipe.id === recipeId
+                ? {
+                    ...recipe,
+                    likedByMe: !recipe.likedByMe,
+                    likes: recipe.likes + (recipe.likedByMe ? -1 : 1),
+                  }
+                : recipe,
+            ),
+            users:
+              target && shouldReward
+                ? addStars(
+                    state.users,
+                    target.authorId,
+                    target.likedByMe ? -STAR_REWARDS.likeReceived : STAR_REWARDS.likeReceived,
+                  )
+                : state.users,
+          }
+        }),
 
       toggleSave: (recipeId) =>
         set((state) => ({
@@ -115,6 +139,7 @@ export const useAppStore = create<AppState>()(
         set((state) => {
           if (!state.currentUserId) return state
 
+          const target = state.recipes.find((recipe) => recipe.id === recipeId)
           const comment: Comment = {
             id: `c-${Date.now()}`,
             recipeId,
@@ -125,8 +150,14 @@ export const useAppStore = create<AppState>()(
             likedByMe: false,
           }
 
+          let users = addStars(state.users, state.currentUserId, STAR_REWARDS.comment)
+          if (target && target.authorId !== state.currentUserId) {
+            users = addStars(users, target.authorId, STAR_REWARDS.commentReceived)
+          }
+
           return {
             comments: [comment, ...state.comments],
+            users,
             recipes: state.recipes.map((recipe) =>
               recipe.id === recipeId
                 ? { ...recipe, commentCount: recipe.commentCount + 1 }
@@ -159,26 +190,30 @@ export const useAppStore = create<AppState>()(
           const wasFollowing = current.followingIds.includes(userId)
 
           return {
-            users: state.users.map((user) => {
-              if (user.id === state.currentUserId) {
-                return {
-                  ...user,
-                  followingIds: wasFollowing
-                    ? user.followingIds.filter((id) => id !== userId)
-                    : [...user.followingIds, userId],
-                  following: Math.max(0, user.following + (wasFollowing ? -1 : 1)),
+            users: addStars(
+              state.users.map((user) => {
+                if (user.id === state.currentUserId) {
+                  return {
+                    ...user,
+                    followingIds: wasFollowing
+                      ? user.followingIds.filter((id) => id !== userId)
+                      : [...user.followingIds, userId],
+                    following: Math.max(0, user.following + (wasFollowing ? -1 : 1)),
+                  }
                 }
-              }
 
-              if (user.id === userId) {
-                return {
-                  ...user,
-                  followers: Math.max(0, user.followers + (wasFollowing ? -1 : 1)),
+                if (user.id === userId) {
+                  return {
+                    ...user,
+                    followers: Math.max(0, user.followers + (wasFollowing ? -1 : 1)),
+                  }
                 }
-              }
 
-              return user
-            }),
+                return user
+              }),
+              userId,
+              wasFollowing ? -STAR_REWARDS.followerReceived : STAR_REWARDS.followerReceived,
+            ),
           }
         }),
 
@@ -209,7 +244,10 @@ export const useAppStore = create<AppState>()(
             createdAt: new Date().toISOString(),
           }
 
-          return { recipes: [recipe, ...state.recipes] }
+          return {
+            recipes: [recipe, ...state.recipes],
+            users: addStars(state.users, state.currentUserId, STAR_REWARDS.recipe),
+          }
         })
 
         return id
@@ -242,7 +280,10 @@ export const useAppStore = create<AppState>()(
             expiresAt: new Date(now + input.durationHours * 3_600_000).toISOString(),
           }
 
-          return { stories: [story, ...state.stories] }
+          return {
+            stories: [story, ...state.stories],
+            users: addStars(state.users, state.currentUserId, STAR_REWARDS.story),
+          }
         })
 
         return id
@@ -341,6 +382,19 @@ export const useAppStore = create<AppState>()(
           return { unlockedSecrets: [...state.unlockedSecrets, recipeId] }
         }),
 
+      subscribe: (plan) =>
+        set(() => {
+          const now = Date.now()
+          const subscription: Subscription = {
+            plan,
+            startedAt: new Date(now).toISOString(),
+            renewsAt: new Date(now + planById(plan).days * 86_400_000).toISOString(),
+          }
+          return { subscription }
+        }),
+
+      cancelSubscription: () => set({ subscription: null }),
+
       markNotificationRead: (id) =>
         set((state) => ({
           notifications: state.notifications.map((notification) =>
@@ -360,7 +414,7 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'yummysocial:store',
-      version: 2,
+      version: 3,
       storage: createJSONStorage(() => safeStorage),
       migrate: (persistedState) => {
         const persisted = (persistedState ?? {}) as Partial<AppState>
@@ -370,6 +424,7 @@ export const useAppStore = create<AppState>()(
           viewedStories: [],
           hiddenStories: [],
           hiddenHighlights: [],
+          subscription: null,
           ...persisted,
         } as AppState
       },
@@ -426,6 +481,8 @@ export const useAppStore = create<AppState>()(
               followingIds: previous.followingIds ?? user.followingIds,
               followers: previous.followers ?? user.followers,
               following: previous.following ?? user.following,
+              stars: previous.stars ?? user.stars,
+              level: previous.level ?? user.level,
             }
           }),
           recipes: [
@@ -462,6 +519,7 @@ export const useAppStore = create<AppState>()(
             return previous ? { ...notification, read: previous.read } : notification
           }),
           unlockedSecrets: persisted.unlockedSecrets ?? currentState.unlockedSecrets,
+          subscription: persisted.subscription ?? null,
         }
       },
     },

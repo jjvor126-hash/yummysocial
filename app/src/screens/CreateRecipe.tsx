@@ -4,9 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { Toast } from '../components/Toast'
 import { useToast } from '../lib/useToast'
+import { DEFAULT_SECRET_LEVEL } from '../lib/constants'
 import { clearDraft, loadDraft, saveDraft } from '../lib/draft'
 import type { DraftIngredient, DraftStep } from '../lib/draft'
 import { readImageFile } from '../lib/image'
+import { RANKS } from '../lib/ranks'
+import { STAR_REWARDS } from '../lib/stars'
 import { useAppStore } from '../store/useAppStore'
 import type { Difficulty } from '../types'
 
@@ -34,11 +37,74 @@ function makeId() {
 }
 
 function blankIngredient(secret = false): DraftIngredient {
-  return { id: makeId(), amount: '', name: '', secret }
+  return {
+    id: makeId(),
+    amount: '',
+    name: '',
+    secret,
+    unlockLevel: DEFAULT_SECRET_LEVEL,
+    premiumOnly: false,
+  }
 }
 
 function blankStep(secret = false): DraftStep {
-  return { id: makeId(), text: '', secret }
+  return {
+    id: makeId(),
+    text: '',
+    secret,
+    unlockLevel: DEFAULT_SECRET_LEVEL,
+    premiumOnly: false,
+  }
+}
+
+function SecretLockFields({
+  level,
+  premiumOnly,
+  label,
+  onChange,
+}: {
+  level: number
+  premiumOnly: boolean
+  label: string
+  onChange: (patch: { unlockLevel?: number; premiumOnly?: boolean }) => void
+}) {
+  return (
+    <div
+      role="group"
+      aria-label={label}
+      className="mt-1.5 flex flex-wrap items-center gap-2 rounded-lg bg-white/80 px-2 py-1.5 dark:bg-black/20"
+    >
+      <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-purple-600 dark:text-purple-300">
+        <Icon name="military_tech" className="text-[14px]" />
+        Nivel
+        <select
+          value={level}
+          disabled={premiumOnly}
+          onChange={(event) =>
+            onChange({ unlockLevel: Number(event.target.value), premiumOnly: false })
+          }
+          aria-label={`${label}: nivel de rango necesario`}
+          className="rounded-md border border-purple-200 bg-white px-1.5 py-1 text-[11px] font-semibold normal-case tracking-normal text-purple-700 outline-none disabled:opacity-40 dark:border-purple-500/30 dark:bg-white/5 dark:text-purple-200"
+        >
+          {RANKS.map((rank, index) => (
+            <option key={rank.name} value={index + 1}>
+              {index + 1} · {rank.name}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className="ml-auto flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-purple-600 dark:text-purple-300">
+        <input
+          type="checkbox"
+          checked={premiumOnly}
+          onChange={(event) => onChange({ premiumOnly: event.target.checked })}
+          className="size-3.5 accent-purple-600"
+        />
+        Solo Yummy+
+      </label>
+    </div>
+  )
 }
 
 export function CreateRecipe() {
@@ -172,10 +238,17 @@ export function CreateRecipe() {
         amount: item.amount.trim(),
         name: item.name.trim(),
         secret: item.secret || undefined,
+        unlockLevel: item.secret ? item.unlockLevel : undefined,
+        premiumOnly: item.premiumOnly || undefined,
       }))
       .filter((item) => item.name)
     const cleanSteps = steps
-      .map((step) => ({ text: step.text.trim(), secret: step.secret || undefined }))
+      .map((step) => ({
+        text: step.text.trim(),
+        secret: step.secret || undefined,
+        unlockLevel: step.secret ? step.unlockLevel : undefined,
+        premiumOnly: step.premiumOnly || undefined,
+      }))
       .filter((step) => step.text)
 
     if (!cleanTitle) {
@@ -221,7 +294,10 @@ export function CreateRecipe() {
     })
 
     clearDraft()
-    navigate(`/recipe/${id}`, { replace: true })
+    navigate(`/recipe/${id}`, {
+      replace: true,
+      state: { notice: `Receta publicada · +${STAR_REWARDS.recipe} ★` },
+    })
   }
 
   return (
@@ -475,6 +551,11 @@ export function CreateRecipe() {
             </span>
           </div>
 
+          <p className="rounded-xl bg-purple-50 px-3 py-2 text-[11px] font-medium leading-relaxed text-purple-700 dark:bg-purple-500/10 dark:text-purple-200">
+            Marca con el candado los ingredientes o pasos que quieras ocultar. Se desbloquean al
+            alcanzar el nivel elegido o con una suscripción Yummy+.
+          </p>
+
           <div className="flex flex-col gap-2">
             {ingredients.map((ingredient) => (
               <div
@@ -520,9 +601,14 @@ export function CreateRecipe() {
 
                   <button
                     type="button"
-                    onClick={() =>
-                      updateIngredient(ingredient.id, { secret: !ingredient.secret })
-                    }
+                    onClick={() => {
+                      const secret = !ingredient.secret
+                      updateIngredient(ingredient.id, {
+                        secret,
+                        premiumOnly: secret ? ingredient.premiumOnly : false,
+                        unlockLevel: ingredient.unlockLevel || DEFAULT_SECRET_LEVEL,
+                      })
+                    }}
                     aria-label={
                       ingredient.secret ? 'Quitar ingrediente secreto' : 'Marcar como secreto'
                     }
@@ -549,6 +635,15 @@ export function CreateRecipe() {
                     <Icon name="delete" className="text-[18px]" />
                   </button>
                 </div>
+
+                {ingredient.secret ? (
+                  <SecretLockFields
+                    level={ingredient.unlockLevel}
+                    premiumOnly={ingredient.premiumOnly}
+                    label="Desbloqueo del ingrediente secreto"
+                    onChange={(patch) => updateIngredient(ingredient.id, patch)}
+                  />
+                ) : null}
               </div>
             ))}
           </div>
@@ -634,7 +729,14 @@ export function CreateRecipe() {
                   <div className="mt-1.5 flex items-center justify-end gap-1">
                     <button
                       type="button"
-                      onClick={() => updateStep(step.id, { secret: !step.secret })}
+                      onClick={() => {
+                        const secret = !step.secret
+                        updateStep(step.id, {
+                          secret,
+                          premiumOnly: secret ? step.premiumOnly : false,
+                          unlockLevel: step.unlockLevel || DEFAULT_SECRET_LEVEL,
+                        })
+                      }}
                       aria-label={step.secret ? 'Quitar paso secreto' : 'Marcar paso como secreto'}
                       aria-pressed={step.secret}
                       className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold transition-colors ${
@@ -660,6 +762,15 @@ export function CreateRecipe() {
                       <Icon name="delete" className="text-[17px]" />
                     </button>
                   </div>
+
+                  {step.secret ? (
+                    <SecretLockFields
+                      level={step.unlockLevel}
+                      premiumOnly={step.premiumOnly}
+                      label="Desbloqueo del paso secreto"
+                      onChange={(patch) => updateStep(step.id, patch)}
+                    />
+                  ) : null}
                 </div>
               </div>
             ))}

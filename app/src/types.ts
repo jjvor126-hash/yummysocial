@@ -5,12 +5,20 @@ export type Ingredient = {
   name: string
   amount: string
   secret?: boolean
+  /** Nivel de rango necesario para desbloquear el secreto (1–5). */
+  unlockLevel?: number
+  /** Solo se desbloquea con una suscripción Yummy+ activa. */
+  premiumOnly?: boolean
 }
 
 export type RecipeStep = {
   id: string
   text: string
   secret?: boolean
+  /** Nivel de rango necesario para desbloquear el secreto (1–5). */
+  unlockLevel?: number
+  /** Solo se desbloquea con una suscripción Yummy+ activa. */
+  premiumOnly?: boolean
 }
 
 export type Recipe = {
@@ -117,6 +125,14 @@ export type StoryInput = {
   location?: string
   durationHours: 12 | 24
   audience: StoryAudience
+}
+
+export type SubscriptionPlan = 'monthly' | 'annual'
+
+export type Subscription = {
+  plan: SubscriptionPlan
+  startedAt: string
+  renewsAt: string
 }
 
 export type NotificationType = 'like' | 'comment' | 'follow' | 'mention' | 'system'

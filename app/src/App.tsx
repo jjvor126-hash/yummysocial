@@ -8,6 +8,7 @@ import { Leaderboard } from './screens/Leaderboard'
 import { NotFound } from './screens/NotFound'
 import { Notifications } from './screens/Notifications'
 import { Onboarding } from './screens/Onboarding'
+import { Premium } from './screens/Premium'
 import { Profile } from './screens/Profile'
 import { PublicProfile } from './screens/PublicProfile'
 import { RecipeDetail } from './screens/RecipeDetail'
@@ -102,6 +103,8 @@ export default function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
 
           <Route path="/top-dishes" element={<TopDishes />} />
+
+          <Route path="/premium" element={<Premium />} />
 
           <Route path="/settings" element={<Settings />} />
         </Route>

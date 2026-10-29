@@ -1,7 +1,7 @@
 # YummySocial — Seguimiento de fases
 
-Última actualización: 28 de octubre de 2026
-Estado: **Fase 7 completada** · commit `f091429`
+Última actualización: 29 de octubre de 2026
+Estado: **Fase 8 completada** · commit `8d59f73`
 Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 320, 360, 390, 414 y 768 px en claro/oscuro ✅
 
 ## Resumen
@@ -16,6 +16,7 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 | 5. Clasificación y platos destacados | ✅ Completada | Ranking de chefs, platos mejor valorados y accesos |
 | 6. Historias | ✅ Completada | Selector, editor, publicación, visor, destacados y tira del feed |
 | 7. Pulido y calidad | ✅ Completada | Perfiles públicos, likes en comentarios, accesibilidad, responsive, cuota y cierre |
+| 8. Secretos por nivel y Yummy+ | ✅ Completada | Bloqueos por nivel, suscripción simulada, atajo de 50★ y estrellas por actividad |
 
 ---
 
@@ -238,15 +239,61 @@ Verificación actual: `npm run build` ✅ · `npm run lint` ✅ · Playwright a 
 
 ---
 
+## Fase 8 — Secretos por nivel y Yummy+ ✅
+
+### Modelo y acceso
+
+- [x] `Ingredient` y `RecipeStep` con `unlockLevel` (1–5), `premiumOnly` y el `secret` existente.
+- [x] `lib/secrets.ts`: autor siempre ve sus secretos; el resto se abre por nivel, por Yummy+ o con el atajo de 50★.
+- [x] Los secretos `premiumOnly` ignoran nivel y atajo; solo se abren con suscripción activa.
+- [x] Seed con un ingrediente de nivel 2, un paso de nivel 3, un ingrediente de nivel 4 y un paso solo Yummy+.
+- [x] `unlockSecrets` conserva el umbral de 50★ sin gastar estrellas, para que subir de nivel nunca re-bloquee contenido.
+
+### Estrellas por actividad
+
+- [x] `lib/stars.ts` con recompensas: receta +40, historia +10, comentario +5, me gusta recibido +2, comentario recibido +3 y seguidor +10.
+- [x] El store suma (y revierte) estrellas en `addRecipe`, `addStory`, `addComment`, `toggleLike` y `toggleFollow`, actualizando el rango.
+- [x] El `merge` conserva `stars` y `level` de todos los usuarios; la clasificación de chefs refleja el progreso.
+- [x] Aviso `+40 ★` al publicar y `+5 ★` al comentar.
+- [x] Hoja **Cómo ganar estrellas** desde la tarjeta de nivel y guía en `/premium`.
+
+### Suscripción Yummy+
+
+- [x] `lib/subscription.ts` con planes mensual (4,99 €, 30 días) y anual (39,99 €, 365 días) y estado activo por fecha.
+- [x] Estado `subscription` persistido y acciones `subscribe(plan)` / `cancelSubscription`.
+- [x] Pantalla `/premium`: beneficios, selector de plan, activación simulada, estado activo con fecha y cancelación.
+- [x] Accesos desde Ajustes, el banner del perfil, la insignia Yummy+ y los secretos bloqueados.
+- [x] Aviso explícito de demo sin cobro real; el reset borra la suscripción.
+
+### Publicación y visualización
+
+- [x] `SecretLockFields` en el editor: selector de nivel (1–5) y casilla **Solo Yummy+**, guardados en el borrador.
+- [x] El detalle muestra el nivel requerido, el rango, el progreso de estrellas y CTA de atajo o Yummy+.
+- [x] Resumen “X de Y secretos bloqueados/desbloqueados” e insignia del motivo (nivel, Yummy+, atajo, autor).
+- [x] Tarjetas del feed y `RecipeCard` con insignia del número de secretos.
+- [x] Perfil con insignia Yummy+ y banner de suscripción.
+
+### Calidad
+
+- [x] `npm run build` y `npm run lint` sin errores.
+- [x] Playwright: niveles, atajo 50★, suscripción y persistencia, cancelación, estrellas, reset y responsive 320–768 px en claro/oscuro.
+- [x] Capturas en `C:\Users\Jesse\AppData\Local\Temp\pw\phase8`.
+- [x] Documentación actualizada (`todo.md`, `AGENTS.md`, `app/README.md`).
+
+---
+
 ## Notas de seguimiento
 
 - No hay backend, tests automatizados ni CI: la verificación es `npm run build`, `npm run lint` y Playwright manual.
-- Las capturas de la última verificación están en `C:\Users\Jesse\AppData\Local\Temp\pw\phase7`.
+- Las capturas de la última verificación están en `C:\Users\Jesse\AppData\Local\Temp\pw\phase8`.
 - Los mockups de la raíz son la referencia visual y no deben modificarse salvo que la tarea sea sobre ellos.
-- Ya no quedan pantallas placeholder ni funcionalidades pendientes del alcance inicial: las siete fases están cerradas.
+- Ya no quedan pantallas placeholder ni funcionalidades pendientes del alcance inicial: las ocho fases están cerradas.
 - Los perfiles públicos viven en `/u/:username`; el usuario propio redirige a `/profile`. Los enlaces al autor están disponibles desde feed, detalle, comentarios, clasificación, platos, notificaciones y visor de historias.
 - La barra inferior mantiene cinco accesos (Inicio, Explorar, Crear, Guardadas, Perfil); la clasificación se abre desde el feed y el perfil, y las pestañas Chefs/Platos la conectan con el ranking de platos.
 - El ranking de platos solo incluye recetas con al menos una reseña; las recetas creadas desde la app no aparecerán hasta que exista una acción para valorarlas.
 - Las historias del seed usan marcas de tiempo relativas a la carga para que la demo nunca arranque caducada; las creadas por el usuario caducan a las 12 o 24 h y el `merge` las descarta.
 - En escritorio la cámara cae al selector de archivos. El editor de historias es intencionadamente simple: texto, color y stickers, sin dibujo libre ni arrastre.
 - El estado se guarda con un envoltorio seguro de `localStorage`: si la cuota se llena, aparece un aviso y la sesión continúa en memoria. `readImageFile` comprime las fotos por debajo de un límite de bytes antes de guardarlas.
+- Los secretos se abren con el nivel de rango, con Yummy+ o con el atajo de 50★; los marcados **Solo Yummy+** solo con suscripción. El autor siempre ve los secretos de sus propias recetas.
+- Yummy+ es una suscripción simulada (4,99 €/mes o 39,99 €/año) sin pasarela de pago: activar o cancelar solo cambia el estado local. El reset de la demo la elimina junto con las estrellas ganadas y los atajos.
+- Las estrellas ahora se ganan con actividad y se guardan por usuario; afectan al nivel y a la clasificación de chefs. El atajo de 50★ exige tener 50 estrellas pero no las descuenta.

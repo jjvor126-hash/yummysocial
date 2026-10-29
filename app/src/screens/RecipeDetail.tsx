@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
@@ -6,10 +6,14 @@ import { Toast } from '../components/Toast'
 import { useToast } from '../lib/useToast'
 import { SECRET_STAR_COST } from '../lib/constants'
 import { profilePathFor } from '../lib/profiles'
+import { getSecretAccess, isSecretItem } from '../lib/secrets'
+import type { SecretAccess } from '../lib/secrets'
 import { shareLink } from '../lib/share'
+import { STAR_REWARDS } from '../lib/stars'
+import { isSubscriptionActive } from '../lib/subscription'
 import { formatCount, timeAgo } from '../lib/time'
 import { useAppStore, useCurrentUser } from '../store/useAppStore'
-import type { Comment, Recipe, User } from '../types'
+import type { Comment, Ingredient, Recipe, RecipeStep, User } from '../types'
 
 type StatTone = 'primary' | 'green' | 'amber' | 'blue'
 
@@ -93,6 +97,7 @@ export function RecipeDetail() {
   const users = useAppStore((state) => state.users)
   const comments = useAppStore((state) => state.comments)
   const unlockedSecrets = useAppStore((state) => state.unlockedSecrets)
+  const subscription = useAppStore((state) => state.subscription)
   const toggleLike = useAppStore((state) => state.toggleLike)
   const toggleFollow = useAppStore((state) => state.toggleFollow)
   const addComment = useAppStore((state) => state.addComment)
@@ -105,6 +110,16 @@ export function RecipeDetail() {
   const [composerText, setComposerText] = useState('')
   const { message: toast, showToast } = useToast()
   const inputRef = useRef<HTMLInputElement>(null)
+  const noticeRef = useRef(
+    (location.state as { notice?: string } | null)?.notice ?? null,
+  )
+
+  useEffect(() => {
+    if (!noticeRef.current) return
+    showToast(noticeRef.current)
+    noticeRef.current = null
+    navigate(location.pathname, { replace: true, state: null })
+  }, [navigate, location.pathname, showToast])
 
   const recipeComments = useMemo(
     () =>
@@ -122,9 +137,38 @@ export function RecipeDetail() {
   const isMine = recipe.authorId === currentUser?.id
   const isFollowing = currentUser?.followingIds.includes(recipe.authorId) ?? false
   const stars = currentUser?.stars ?? 0
-  const canUnlock = stars >= SECRET_STAR_COST
-  const secretsUnlocked = unlockedSecrets.includes(recipe.id)
+  const subscriptionActive = isSubscriptionActive(subscription)
+  const canBuyShortcut = stars >= SECRET_STAR_COST
+  const recipeShortcut = unlockedSecrets.includes(recipe.id)
   const visibleComments = showAllComments ? recipeComments : recipeComments.slice(0, 3)
+
+  function accessFor(item: Ingredient | RecipeStep): SecretAccess {
+    return getSecretAccess({
+      item,
+      stars,
+      subscriptionActive,
+      recipeShortcut,
+      isAuthor: isMine,
+    })
+  }
+
+  function secretBadge(access: SecretAccess): string {
+    if (access.isAuthor) return 'Tu secreto'
+    if (access.unlockedBySubscription) return 'Yummy+'
+    if (access.unlockedByLevel) return `Nivel ${access.requiredLevel}`
+    if (access.unlockedByShortcut) return 'Desbloqueado'
+    return 'Secreto'
+  }
+
+  const allSecretItems: Array<Ingredient | RecipeStep> = [
+    ...recipe.ingredients,
+    ...recipe.steps,
+  ]
+  const totalSecrets = allSecretItems.filter(isSecretItem).length
+  const lockedSecrets = allSecretItems.filter((item) => {
+    const access = accessFor(item)
+    return access.isSecret && !access.unlocked
+  }).length
 
   function findUser(userId: string): User | undefined {
     return users.find((user) => user.id === userId)
@@ -148,9 +192,9 @@ export function RecipeDetail() {
   }
 
   function handleUnlock(target: Recipe) {
-    if (!canUnlock) return
+    if (!canBuyShortcut) return
     unlockSecrets(target.id)
-    showToast('Contenido secreto desbloqueado')
+    showToast(`Secretos desbloqueados con ${SECRET_STAR_COST} ★`)
   }
 
   function toggleIngredient(ingredientId: string) {
@@ -184,6 +228,7 @@ export function RecipeDetail() {
     addComment(recipeId, trimmed)
     setComposerText('')
     setShowAllComments(true)
+    showToast(`Comentario publicado · +${STAR_REWARDS.comment} ★`)
   }
 
   return (
@@ -347,42 +392,81 @@ export function RecipeDetail() {
             </span>
           </div>
 
+          {totalSecrets > 0 ? (
+            <div className="mt-3 flex items-center gap-2 rounded-xl bg-purple-50 px-3 py-2 text-[11px] font-semibold text-purple-700 dark:bg-purple-900/20 dark:text-purple-200">
+              <Icon name="lock" className="text-[15px]" />
+              <span className="flex-1">
+                {lockedSecrets > 0
+                  ? `${lockedSecrets} de ${totalSecrets} ${totalSecrets === 1 ? 'secreto bloqueado' : 'secretos bloqueados'}`
+                  : `${totalSecrets} ${totalSecrets === 1 ? 'secreto desbloqueado' : 'secretos desbloqueados'}`}
+              </span>
+              {lockedSecrets > 0 && !subscriptionActive ? (
+                <Link
+                  to="/premium"
+                  className="rounded-full bg-purple-600 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm"
+                >
+                  Yummy+
+                </Link>
+              ) : null}
+            </div>
+          ) : null}
+
           <div className="mt-3 flex flex-col gap-2.5">
             {recipe.ingredients.map((ingredient) => {
               const checked = checkedIngredients.has(ingredient.id)
-              const locked = ingredient.secret === true && !secretsUnlocked
+              const access = accessFor(ingredient)
+              const locked = access.isSecret && !access.unlocked
 
               if (locked) {
                 return (
-                  <button
+                  <div
                     key={ingredient.id}
-                    type="button"
-                    onClick={() => handleUnlock(recipe)}
-                    disabled={!canUnlock}
-                    aria-label={
-                      canUnlock
-                        ? `Desbloquear ingrediente secreto con ${SECRET_STAR_COST} estrellas`
-                        : `Ingrediente secreto: necesitas ${SECRET_STAR_COST} estrellas`
-                    }
-                    className="flex items-center gap-3 rounded-xl border border-dashed border-purple-200 bg-purple-50 p-3 text-left transition-colors hover:bg-purple-100/70 disabled:cursor-not-allowed disabled:hover:bg-purple-50 dark:border-purple-800/60 dark:bg-purple-900/15 dark:hover:bg-purple-900/25 dark:disabled:hover:bg-purple-900/15"
+                    className="rounded-xl border border-dashed border-purple-200 bg-purple-50 p-3 dark:border-purple-800/60 dark:bg-purple-900/15"
                   >
-                    <span className="flex size-5 shrink-0 items-center justify-center rounded bg-purple-200 text-purple-600 dark:bg-purple-800 dark:text-purple-200">
-                      <Icon name="lock" className="text-[14px]" />
-                    </span>
-                    <span className="flex-1 select-none text-sm font-medium text-purple-900/60 blur-[3px] dark:text-purple-100/50">
-                      {ingredient.amount} {ingredient.name}
-                    </span>
-                    <span className="flex shrink-0 flex-col items-end">
+                    <div className="flex items-center gap-3">
+                      <span className="flex size-5 shrink-0 items-center justify-center rounded bg-purple-200 text-purple-600 dark:bg-purple-800 dark:text-purple-200">
+                        <Icon name="lock" className="text-[14px]" />
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className="flex-1 select-none text-sm font-medium text-purple-900/60 blur-[3px] dark:text-purple-100/50"
+                      >
+                        {ingredient.amount} {ingredient.name}
+                      </span>
                       <span className="text-[9px] font-bold uppercase tracking-wide text-purple-600 dark:text-purple-300">
-                        Secreto
+                        {access.premiumOnly ? 'Yummy+' : `Nivel ${access.requiredLevel}`}
                       </span>
-                      <span className="text-[10px] font-semibold text-purple-500 dark:text-purple-300">
-                        {canUnlock
-                          ? `Desbloquear · ${SECRET_STAR_COST} ★`
-                          : `Faltan ${SECRET_STAR_COST - stars} ★`}
+                    </div>
+
+                    <div className="mt-2 flex flex-wrap items-center gap-2 pl-8">
+                      <span className="text-[11px] font-semibold text-purple-700 dark:text-purple-200">
+                        {access.premiumOnly
+                          ? 'Exclusivo para suscriptores Yummy+'
+                          : `Se abre en el nivel ${access.requiredLevel} · ${access.requiredRank}`}
                       </span>
-                    </span>
-                  </button>
+                      {access.premiumOnly ? (
+                        <Link
+                          to="/premium"
+                          className="ml-auto rounded-full bg-purple-600 px-3 py-1 text-[10px] font-bold text-white shadow-sm"
+                        >
+                          Ver Yummy+
+                        </Link>
+                      ) : canBuyShortcut ? (
+                        <button
+                          type="button"
+                          onClick={() => handleUnlock(recipe)}
+                          aria-label={`Desbloquear los secretos de esta receta con ${SECRET_STAR_COST} estrellas`}
+                          className="ml-auto rounded-full bg-purple-600 px-3 py-1 text-[10px] font-bold text-white shadow-sm transition-colors hover:bg-purple-700"
+                        >
+                          Desbloquear · {SECRET_STAR_COST} ★
+                        </button>
+                      ) : (
+                        <span className="ml-auto text-[10px] font-semibold text-purple-500 dark:text-purple-300">
+                          Faltan {SECRET_STAR_COST - stars} ★ para el atajo
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 )
               }
 
@@ -410,9 +494,9 @@ export function RecipeDetail() {
                   >
                     <span className="font-bold">{ingredient.amount}</span> {ingredient.name}
                   </span>
-                  {ingredient.secret ? (
+                  {access.isSecret ? (
                     <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-purple-600 dark:bg-purple-900/40 dark:text-purple-300">
-                      Secreto
+                      {secretBadge(access)}
                     </span>
                   ) : null}
                   <Icon
@@ -438,7 +522,8 @@ export function RecipeDetail() {
 
           <ol className="mt-4 space-y-6">
             {recipe.steps.map((step, index) => {
-              const locked = step.secret === true && !secretsUnlocked
+              const access = accessFor(step)
+              const locked = access.isSecret && !access.unlocked
               const done = doneSteps.has(step.id)
               const last = index === recipe.steps.length - 1
 
@@ -464,31 +549,53 @@ export function RecipeDetail() {
                   </span>
 
                   {locked ? (
-                    <button
-                      type="button"
-                      onClick={() => handleUnlock(recipe)}
-                      disabled={!canUnlock}
-                      className="flex-1 rounded-2xl border-2 border-dashed border-purple-200 bg-purple-50/60 p-4 text-left transition-colors hover:bg-purple-100/60 disabled:cursor-not-allowed disabled:hover:bg-purple-50/60 dark:border-purple-800/60 dark:bg-purple-900/10 dark:hover:bg-purple-900/20 dark:disabled:hover:bg-purple-900/10"
-                    >
+                    <div className="flex-1 rounded-2xl border-2 border-dashed border-purple-200 bg-purple-50/60 p-4 text-left dark:border-purple-800/60 dark:bg-purple-900/10">
                       <span className="flex items-center gap-2">
                         <Icon
-                          name="workspace_premium"
+                          name={access.premiumOnly ? 'workspace_premium' : 'lock'}
                           className="text-[20px] text-purple-600 dark:text-purple-300"
                         />
                         <span className="text-base font-bold text-purple-800 dark:text-purple-200">
-                          Paso secreto
+                          {access.premiumOnly ? 'Paso solo Yummy+' : 'Paso secreto'}
                         </span>
                       </span>
-                      <span className="mt-1 block select-none text-sm leading-relaxed text-purple-900/50 blur-[4px] dark:text-purple-100/40">
+                      <span
+                        aria-hidden="true"
+                        className="mt-1 block select-none text-sm leading-relaxed text-purple-900/50 blur-[4px] dark:text-purple-100/40"
+                      >
                         {step.text}
                       </span>
-                      <span className="mt-3 inline-flex items-center gap-1 rounded-full bg-purple-600 px-3 py-1.5 text-[11px] font-bold text-white shadow-md shadow-purple-600/30">
-                        <Icon name="lock_open" className="text-[14px]" />
-                        {canUnlock
-                          ? `Desbloquear con ${SECRET_STAR_COST} estrellas`
-                          : `Necesitas ${SECRET_STAR_COST} estrellas`}
+                      <span className="mt-2 block text-[11px] font-semibold text-purple-700 dark:text-purple-200">
+                        {access.premiumOnly
+                          ? 'Exclusivo para suscriptores Yummy+'
+                          : `Se abre en el nivel ${access.requiredLevel} · ${access.requiredRank}`}
                       </span>
-                    </button>
+                      <div className="mt-3 flex flex-wrap items-center gap-2">
+                        {access.premiumOnly ? (
+                          <Link
+                            to="/premium"
+                            className="inline-flex items-center gap-1 rounded-full bg-purple-600 px-3 py-1.5 text-[11px] font-bold text-white shadow-md shadow-purple-600/30"
+                          >
+                            <Icon name="workspace_premium" className="text-[14px]" />
+                            Ver Yummy+
+                          </Link>
+                        ) : canBuyShortcut ? (
+                          <button
+                            type="button"
+                            onClick={() => handleUnlock(recipe)}
+                            aria-label={`Desbloquear los secretos de esta receta con ${SECRET_STAR_COST} estrellas`}
+                            className="inline-flex items-center gap-1 rounded-full bg-purple-600 px-3 py-1.5 text-[11px] font-bold text-white shadow-md shadow-purple-600/30 transition-colors hover:bg-purple-700"
+                          >
+                            <Icon name="lock_open" className="text-[14px]" />
+                            Desbloquear con {SECRET_STAR_COST} ★
+                          </button>
+                        ) : (
+                          <span className="rounded-full bg-purple-100 px-3 py-1.5 text-[11px] font-bold text-purple-600 dark:bg-purple-900/40 dark:text-purple-200">
+                            Faltan {SECRET_STAR_COST - stars} ★ para el atajo
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   ) : (
                     <button
                       type="button"
@@ -508,9 +615,9 @@ export function RecipeDetail() {
                         >
                           Paso {index + 1}
                         </span>
-                        {step.secret ? (
+                        {access.isSecret ? (
                           <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-purple-600 dark:bg-purple-900/40 dark:text-purple-300">
-                            Secreto
+                            {secretBadge(access)}
                           </span>
                         ) : null}
                       </span>

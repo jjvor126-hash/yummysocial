@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Icon } from './Icon'
+import { countRecipeSecrets } from '../lib/secrets'
 import { formatCount } from '../lib/time'
 import type { Recipe } from '../types'
 
@@ -9,6 +10,8 @@ type RecipeCardProps = {
 }
 
 export function RecipeCard({ recipe, onRemove }: RecipeCardProps) {
+  const secrets = countRecipeSecrets(recipe)
+
   return (
     <div className="group relative">
       <Link
@@ -27,6 +30,16 @@ export function RecipeCard({ recipe, onRemove }: RecipeCardProps) {
           <span className="absolute left-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-ink backdrop-blur">
             {recipe.difficulty}
           </span>
+
+          {secrets.total > 0 ? (
+            <span
+              aria-label={`${secrets.total} ${secrets.total === 1 ? 'secreto' : 'secretos'} en esta receta`}
+              className="absolute left-2.5 top-9 flex items-center gap-0.5 rounded-full bg-purple-600/90 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur"
+            >
+              <Icon name="lock" className="text-[11px]" />
+              {secrets.total}
+            </span>
+          ) : null}
 
           {recipe.savedByMe && !onRemove ? (
             <span className="absolute right-2.5 top-2.5 flex size-6 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur">

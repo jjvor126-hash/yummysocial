@@ -1,3 +1,4 @@
+import { DEFAULT_SECRET_LEVEL, clampSecretLevel } from './constants'
 import type { Difficulty } from '../types'
 
 export type DraftIngredient = {
@@ -5,12 +6,16 @@ export type DraftIngredient = {
   amount: string
   name: string
   secret: boolean
+  unlockLevel: number
+  premiumOnly: boolean
 }
 
 export type DraftStep = {
   id: string
   text: string
   secret: boolean
+  unlockLevel: number
+  premiumOnly: boolean
 }
 
 export type RecipeDraft = {
@@ -27,6 +32,22 @@ export type RecipeDraft = {
 }
 
 const DRAFT_KEY = 'yummysocial:recipe-draft'
+
+type LegacyDraftItem = {
+  secret?: boolean
+  unlockLevel?: number
+  premiumOnly?: boolean
+}
+
+function normalizeLock<T extends LegacyDraftItem>(item: T): T {
+  const secret = item.secret === true || item.premiumOnly === true
+  return {
+    ...item,
+    secret,
+    unlockLevel: clampSecretLevel(item.unlockLevel ?? DEFAULT_SECRET_LEVEL),
+    premiumOnly: item.premiumOnly === true,
+  }
+}
 
 export function loadDraft(): RecipeDraft | null {
   try {
@@ -45,8 +66,12 @@ export function loadDraft(): RecipeDraft | null {
       servings: parsed.servings ?? '2',
       calories: parsed.calories ?? '',
       tags: parsed.tags ?? '',
-      ingredients: Array.isArray(parsed.ingredients) ? parsed.ingredients : [],
-      steps: Array.isArray(parsed.steps) ? parsed.steps : [],
+      ingredients: Array.isArray(parsed.ingredients)
+        ? parsed.ingredients.map((item) => normalizeLock(item as DraftIngredient))
+        : [],
+      steps: Array.isArray(parsed.steps)
+        ? parsed.steps.map((item) => normalizeLock(item as DraftStep))
+        : [],
     }
   } catch {
     return null

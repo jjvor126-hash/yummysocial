@@ -186,6 +186,13 @@ export const seedRecipes: Recipe[] = [
       { id: 'p2-i5', name: 'Vino blanco', amount: '1/2 taza' },
       { id: 'p2-i6', name: 'Mantequilla', amount: '40 g' },
       { id: 'p2-i7', name: 'Queso parmesano', amount: '50 g' },
+      {
+        id: 'p2-i8',
+        name: 'Brandy',
+        amount: '1 chorrito',
+        secret: true,
+        unlockLevel: 4,
+      },
     ],
     steps: [
       { id: 'p2-s1', text: 'Sofríe la cebolla en mantequilla hasta que esté transparente.' },
@@ -266,7 +273,13 @@ export const seedRecipes: Recipe[] = [
       { id: 'p4-i5', name: 'Ajo', amount: '2 dientes' },
       { id: 'p4-i6', name: 'Pechuga de pollo', amount: '300 g' },
       { id: 'p4-i7', name: 'Perejil fresco', amount: 'al gusto' },
-      { id: 'p4-i8', name: 'Nuez moscada', amount: '1 pizca', secret: true },
+      {
+        id: 'p4-i8',
+        name: 'Nuez moscada',
+        amount: '1 pizca',
+        secret: true,
+        unlockLevel: 2,
+      },
     ],
     steps: [
       { id: 'p4-s1', text: 'Hierve la pasta en agua con sal hasta que esté al dente.' },
@@ -286,6 +299,7 @@ export const seedRecipes: Recipe[] = [
         id: 'p4-s5',
         text: 'El toque secreto: una pizca de nuez moscada y perejil fresco al final.',
         secret: true,
+        unlockLevel: 3,
       },
     ],
     likes: 3_420,
@@ -446,6 +460,12 @@ export const seedRecipes: Recipe[] = [
       {
         id: 'p8-s4',
         text: 'Prepara una ganache con crema caliente y chocolate. Cubre la tarta al enfriar.',
+      },
+      {
+        id: 'p8-s5',
+        text: 'El secreto premium: una pizca de sal y una cucharadita de café espresso realzan el chocolate.',
+        secret: true,
+        premiumOnly: true,
       },
     ],
     likes: 1_120,

@@ -6,6 +6,7 @@ import { StoryRing } from '../components/StoryRing'
 import { Toast } from '../components/Toast'
 import { useToast } from '../lib/useToast'
 import { profilePathFor } from '../lib/profiles'
+import { countRecipeSecrets } from '../lib/secrets'
 import { shareLink } from '../lib/share'
 import { groupStoriesByAuthor } from '../lib/stories'
 import { formatCount, timeAgo } from '../lib/time'
@@ -162,6 +163,7 @@ export function Feed() {
           const following = author
             ? (currentUser?.followingIds.includes(author.id) ?? false)
             : false
+          const secrets = countRecipeSecrets(recipe)
 
           return (
             <article
@@ -217,6 +219,15 @@ export function Feed() {
                 <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-ink backdrop-blur">
                   {recipe.difficulty}
                 </span>
+                {secrets.total > 0 ? (
+                  <span
+                    aria-label={`${secrets.total} ${secrets.total === 1 ? 'secreto' : 'secretos'} en esta receta`}
+                    className="absolute left-3 top-11 flex items-center gap-1 rounded-full bg-purple-600/90 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur"
+                  >
+                    <Icon name="lock" className="text-[12px]" />
+                    {secrets.total}
+                  </span>
+                ) : null}
               </Link>
 
               <div className="flex items-center gap-4 px-4 pt-3">

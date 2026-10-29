@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { clearDraft } from '../lib/draft'
 import { clearStoryDraft } from '../lib/storyDraft'
+import { isSubscriptionActive, subscriptionEndLabel } from '../lib/subscription'
 import { toggleTheme } from '../lib/theme'
 import { useAppStore, useCurrentUser } from '../store/useAppStore'
 
@@ -40,6 +41,8 @@ export function Settings() {
   const user = useCurrentUser()
   const logout = useAppStore((state) => state.logout)
   const resetDemoData = useAppStore((state) => state.resetDemoData)
+  const subscription = useAppStore((state) => state.subscription)
+  const subscriptionActive = isSubscriptionActive(subscription)
   const [isDark, setIsDark] = useState(() =>
     document.documentElement.classList.contains('dark'),
   )
@@ -55,7 +58,7 @@ export function Settings() {
 
   function handleReset() {
     const confirmed = window.confirm(
-      '¿Restablecer los datos de demostración? Se perderán tus likes, comentarios, recetas guardadas, recetas creadas, historias y los cambios de perfil.',
+      '¿Restablecer los datos de demostración? Se perderán tus likes, comentarios, recetas guardadas, recetas creadas, historias, estrellas ganadas, suscripción Yummy+ y los cambios de perfil.',
     )
     if (!confirmed) return
     clearDraft()
@@ -113,6 +116,36 @@ export function Settings() {
               </div>
               <Switch checked={isDark} onChange={handleThemeToggle} label="Modo oscuro" />
             </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="mb-3 px-1 text-lg font-bold">Membresía</h2>
+          <div className="overflow-hidden rounded-2xl border border-line bg-white dark:border-white/10 dark:bg-card-dark">
+            <Link
+              to="/premium"
+              className="flex items-center gap-3 p-4 transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+            >
+              <span className="flex size-9 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-300">
+                <Icon name="workspace_premium" filled className="text-xl" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="flex items-center gap-1.5 text-sm font-bold">
+                  Yummy+
+                  {subscriptionActive ? (
+                    <span className="rounded-full bg-purple-600 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+                      Activo
+                    </span>
+                  ) : null}
+                </p>
+                <p className="truncate text-xs text-muted dark:text-gray-400">
+                  {subscriptionActive
+                    ? `Todos los secretos abiertos · hasta el ${subscriptionEndLabel(subscription)}`
+                    : 'Desbloquea todos los secretos de las recetas'}
+                </p>
+              </div>
+              <Icon name="chevron_right" className="text-muted dark:text-gray-500" />
+            </Link>
           </div>
         </section>
 
